@@ -28,18 +28,34 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     [HideInInspector] public float devotion;
 
+    public Vector3Int moveModel;
+
+    public Vector3Int attackModel;
+
     /// <summary>
     /// Проверка, мёртв ли персонаж
     /// </summary>
     public bool isDead;
 
+    /// <summary>
+    /// Проверяет, выбрана ли сейчас эта фигура
+    /// </summary>
+    public bool isSelected;
+
 
     private void Start() 
     {
-        morality = character.MaxMorality;
-        anger = character.MaxAnger;
-        devotion = character.MaxDevotion;
+        if(character != null)
+        {
+            morality = character.MaxMorality;
+            anger = character.MaxAnger;
+            devotion = character.MaxDevotion;
+            moveModel = InitializeMoveModel();
+        }
+
     }
+
+    
 
     /// <summary>
     /// Обрабатывает отказ фигуры ходить в определённом направлении
@@ -51,6 +67,7 @@ public class CharacterController : MonoBehaviour
             //...
         }
     }
+
 
     /// <summary>
     /// Обрабатывает режим ярости фигуры
@@ -72,5 +89,53 @@ public class CharacterController : MonoBehaviour
         {
             //...
         }
+    }
+
+    public Vector3Int InitializeMoveModel()
+    {
+        if((int)character.ChessType == (int)ChessType.pawn)
+        {
+            return new Vector3Int(0, 1, 0);
+        }
+        else if((int)character.ChessType == (int)ChessType.rook)
+        {
+            return new Vector3Int(8, 8, 0);
+        }
+        else if((int)character.ChessType == (int)ChessType.knight)
+        {
+            return new Vector3Int(8, 8, 0);
+        }
+        else if((int)character.ChessType == (int)ChessType.bishop)
+        {
+            return new Vector3Int(0, 0, 8);
+        }
+        else if((int)character.ChessType == (int)ChessType.queen)
+        {
+            return new Vector3Int(8, 8, 8);
+        }
+        else if((int)character.ChessType == (int)ChessType.king)
+        {
+            return new Vector3Int(1, 1, 1);
+        }
+        else return Vector3Int.zero;
+    }
+
+    /// <summary>
+    /// Обрабатывает перемещение фигуры по доске
+    /// </summary>
+    /// <param name="cellCoords"></param>
+    public void MoveCharacter(Vector3 cellCoords)
+    {
+        transform.position = cellCoords;
+    }
+
+    private enum ChessType
+    {
+        pawn,
+        rook,
+        knight,
+        bishop,
+        queen,
+        king
     }
 }
