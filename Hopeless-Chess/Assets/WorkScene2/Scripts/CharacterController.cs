@@ -28,10 +28,6 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     [HideInInspector] public float devotion;
 
-    public Vector3Int moveModel;
-
-    public Vector3Int attackModel;
-
     /// <summary>
     /// Проверка, мёртв ли персонаж
     /// </summary>
@@ -42,6 +38,10 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     public bool isSelected;
 
+    public GameObject[] cellsAvalible;
+
+    private bool isFirstMove;
+
 
     private void Start() 
     {
@@ -50,8 +50,9 @@ public class CharacterController : MonoBehaviour
             morality = character.MaxMorality;
             anger = character.MaxAnger;
             devotion = character.MaxDevotion;
-            moveModel = InitializeMoveModel();
         }
+        isFirstMove = true;
+        
 
     }
 
@@ -91,34 +92,6 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    public Vector3Int InitializeMoveModel()
-    {
-        if((int)character.ChessType == (int)ChessType.pawn)
-        {
-            return new Vector3Int(0, 1, 0);
-        }
-        else if((int)character.ChessType == (int)ChessType.rook)
-        {
-            return new Vector3Int(8, 8, 0);
-        }
-        else if((int)character.ChessType == (int)ChessType.knight)
-        {
-            return new Vector3Int(8, 8, 0);
-        }
-        else if((int)character.ChessType == (int)ChessType.bishop)
-        {
-            return new Vector3Int(0, 0, 8);
-        }
-        else if((int)character.ChessType == (int)ChessType.queen)
-        {
-            return new Vector3Int(8, 8, 8);
-        }
-        else if((int)character.ChessType == (int)ChessType.king)
-        {
-            return new Vector3Int(1, 1, 1);
-        }
-        else return Vector3Int.zero;
-    }
 
     /// <summary>
     /// Обрабатывает перемещение фигуры по доске
@@ -127,6 +100,13 @@ public class CharacterController : MonoBehaviour
     public void MoveCharacter(Vector3 cellCoords)
     {
         transform.position = cellCoords;
+        if(isFirstMove && (int)character.ChessType == (int)ChessType.pawn)
+        {
+            isFirstMove = false;
+            GameObject cellsAfterFirstMove = cellsAvalible[0];
+            cellsAvalible[1].SetActive(false);
+            cellsAvalible = new GameObject[1] {cellsAfterFirstMove};
+        }
     }
 
     private enum ChessType
