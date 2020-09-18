@@ -65,6 +65,8 @@
   <ItemGroup>
     <Compile Include="Assets\AI\CameraRotateAround.cs" />
     <Compile Include="Assets\AI\Free Low Poly Chess Set\Example\Scripts\CameraRotate.cs" />
+    <Compile Include="Assets\AI\GameController.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\BoardController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\CharacterController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\CharactersObject.cs" />
     <None Include="Assets\AI\Free Low Poly Chess Set\README.txt" />
