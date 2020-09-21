@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour
 {
+    //
     public Camera mainCamera;
 
     public Transform cells;

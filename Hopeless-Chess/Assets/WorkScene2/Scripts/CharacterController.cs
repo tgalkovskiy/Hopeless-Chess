@@ -27,11 +27,7 @@ public class CharacterController : MonoBehaviour
     /// Текущий уровень преданности (временно)
     /// </summary>
     [HideInInspector] public float devotion;
-
-    public Vector3Int moveModel;
-
-    public Vector3Int attackModel;
-
+    
     /// <summary>
     /// Проверка, мёртв ли персонаж
     /// </summary>
@@ -42,6 +38,8 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     public bool isSelected;
 
+    public Texture2D moveTexture;
+
 
     private void Start() 
     {
@@ -50,12 +48,33 @@ public class CharacterController : MonoBehaviour
             morality = character.MaxMorality;
             anger = character.MaxAnger;
             devotion = character.MaxDevotion;
-            moveModel = InitializeMoveModel();
         }
 
     }
 
-    
+    /// <summary>
+    /// Возвращает скрипт персонажа, включает флаг isSelected
+    /// </summary>
+    /// <returns></returns>
+    public  CharacterController GetCharacter()
+    {
+        isSelected = true;
+        return gameObject.GetComponent<CharacterController>();
+    }
+
+
+    /// <summary>
+    /// Возвращает текстуру хода персонажа (Синий(0;0;255) - ход, если нет препядствий;
+    /// белый (0;0;0) - первый ход за игру;
+    /// зелёный (0;255;0) - безпрепятственный ход
+    /// красный (255;0;0) - ход только в случае атаки)
+    /// </summary>
+    /// <returns></returns>
+    public Texture2D GetMoveTexture()
+    {
+        return moveTexture;
+    }
+
 
     /// <summary>
     /// Обрабатывает отказ фигуры ходить в определённом направлении
@@ -89,35 +108,6 @@ public class CharacterController : MonoBehaviour
         {
             //...
         }
-    }
-
-    public Vector3Int InitializeMoveModel()
-    {
-        if((int)character.ChessType == (int)ChessType.pawn)
-        {
-            return new Vector3Int(0, 1, 0);
-        }
-        else if((int)character.ChessType == (int)ChessType.rook)
-        {
-            return new Vector3Int(8, 8, 0);
-        }
-        else if((int)character.ChessType == (int)ChessType.knight)
-        {
-            return new Vector3Int(8, 8, 0);
-        }
-        else if((int)character.ChessType == (int)ChessType.bishop)
-        {
-            return new Vector3Int(0, 0, 8);
-        }
-        else if((int)character.ChessType == (int)ChessType.queen)
-        {
-            return new Vector3Int(8, 8, 8);
-        }
-        else if((int)character.ChessType == (int)ChessType.king)
-        {
-            return new Vector3Int(1, 1, 1);
-        }
-        else return Vector3Int.zero;
     }
 
     /// <summary>

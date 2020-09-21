@@ -26,6 +26,7 @@ public class CharactersObject : ScriptableObject
     [SerializeField] private float maxDevotion;
 
 
+
     /// <summary>
     /// Имя персонажа
     /// </summary>

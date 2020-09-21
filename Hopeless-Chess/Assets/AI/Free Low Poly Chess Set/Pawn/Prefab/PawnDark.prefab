@@ -110,7 +110,6 @@ MonoBehaviour:
   morality: 0
   anger: 0
   devotion: 0
-  moveModel: {x: 0, y: 0, z: 0}
-  attackModel: {x: 0, y: 0, z: 0}
   isDead: 0
   isSelected: 0
+  moveTexture: {fileID: 2800000, guid: 1c28be9c56140204596fe27b257ac4ca, type: 3}
