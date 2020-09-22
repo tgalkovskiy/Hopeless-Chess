@@ -16,4 +16,10 @@ public class VirtualBoardController : MonoBehaviour
 	public virtual bool IsItMate(CharacterController figur, GameObject cell, bool isWhitesTurn) { return false; }
 
 	public virtual void MoveFigur(CharacterController figur, GameObject cell) { }
+
+	// Для AI
+	public virtual string [] GiveAllFiguresMoves(bool isWhitesTurn) { return null; }
+	public virtual float BoardScore(string move) { return 0; }
+	public virtual void MoveFigurVirtual(string move) { }
+	public virtual void UndoMoveFigurVirtual(string move) { }
 }

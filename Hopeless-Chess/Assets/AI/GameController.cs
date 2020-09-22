@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField]
-    bool isWhitesTurn;
-    [SerializeField]
-    VirtualBoardController board;
+
+	bool isWhitesTurn;
+	[SerializeField]
+	VirtualBoardController board;
 
 	[SerializeField]
 	Camera mainCamera;
@@ -19,12 +19,12 @@ public class GameController : MonoBehaviour
 
 
 	void Start()
-    {
-        NextTurn();
-    }
+	{
+		NextTurn();
+	}
 
-    void Update()
-    {
+	void Update()
+	{
 		if (Input.GetMouseButtonDown(0))
 		{
 			ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -77,21 +77,26 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-    void NextTurn()
+	void NextTurn()
 	{
-        isWhitesTurn = !isWhitesTurn;
-        if (isWhitesTurn)
+		isWhitesTurn = !isWhitesTurn;
+		if (isWhitesTurn)
 		{
-            board.SwitchOffBlackColliders();
-            board.SwitchOnWhiteColliders();
+			board.SwitchOffBlackColliders();
+			board.SwitchOnWhiteColliders();
 		}
-		else 
-        {
-            board.SwitchOffWhiteColliders();
-            board.SwitchOnBlackColliders();
-        }
+		else
+		{
+			board.SwitchOffWhiteColliders();
+			board.SwitchOnBlackColliders();
+		}
 	}
 
-
-
+	public bool IsWhitesTurn
+	{
+		get
+		{
+			return isWhitesTurn;
+		}
+	}
 }
