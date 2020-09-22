@@ -685,7 +685,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93783273}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64d08423a5048e9419752cff584998be, type: 3}
   m_Name: 
@@ -695,6 +695,18 @@ MonoBehaviour:
   cellPrefab: {fileID: 2518886261552816897, guid: a9a39ba0040358d4aa259cbf4bff740a,
     type: 3}
   lastCharacterSelected: {fileID: 0}
+--- !u!114 &93783276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93783273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d501272377e28b34797529d744d2e50b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &95638034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6409,8 +6421,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWhitesTurn: 0
-  whites: {fileID: 933976147}
-  blacks: {fileID: 1420980495}
+  board: {fileID: 93783276}
+  mainCamera: {fileID: 1271300251}
+  lastCharacterSelected: {fileID: 0}
 --- !u!4 &1413725187
 Transform:
   m_ObjectHideFlags: 0

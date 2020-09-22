@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraRotateAround : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
 
 	public Transform target;
@@ -16,7 +16,7 @@ public class CameraRotateAround : MonoBehaviour
 	public float zoomMin = 5; // мин. увеличение
 	private float X, Y;
 
-	Vector2 tempCursorPosition;
+
 
 	void Start()
 	{
@@ -35,17 +35,9 @@ public class CameraRotateAround : MonoBehaviour
 
 		if (Input.GetMouseButton(1))
 		{
-			//Cursor.visible = false;
-			//Cursor.lockState = CursorLockMode.Locked;
-
 			X = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivity;
 			Y += Input.GetAxis("Mouse Y") * sensitivity;
 			Y = Mathf.Clamp(Y, -limit, limit);
-		}
-		else
-		{
-			//Cursor.lockState = CursorLockMode.None;
-			//Cursor.visible = true;
 		}
 
 		transform.localEulerAngles = new Vector3(-Y, X, 0);

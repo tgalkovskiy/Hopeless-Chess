@@ -7,45 +7,91 @@ public class GameController : MonoBehaviour
     [SerializeField]
     bool isWhitesTurn;
     [SerializeField]
-    GameObject whites;
-    [SerializeField]
-    GameObject blacks;
+    VirtualBoardController board;
 
-    BoxCollider[] whiteFiguresCollider;
-    BoxCollider[] blackFiguresCollider;
+	[SerializeField]
+	Camera mainCamera;
+	Ray ray;
+	RaycastHit hit;
+	GameObject hitObject;
+	[SerializeField]
+	CharacterController lastCharacterSelected;
 
-    void Start()
+
+	void Start()
     {
-        whiteFiguresCollider = whites.GetComponentsInChildren<BoxCollider>();
-        blackFiguresCollider = blacks.GetComponentsInChildren<BoxCollider>();
+        NextTurn();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void nextTurn()
-	{
-        isWhitesTurn = !isWhitesTurn;
-        switchWhiteColliders(isWhitesTurn);
-        switchBlackColliders(isWhitesTurn);
-    }
-
-    void switchBlackColliders(bool enabled)
-	{
-		foreach (var item in blackFiguresCollider)
+		if (Input.GetMouseButtonDown(0))
 		{
-            item.enabled = enabled;
+			ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+			if (Physics.Raycast(ray, out hit, 1000))
+			{
+				//Сокращаю строчку.
+				hitObject = hit.collider.gameObject;
+
+				if (hitObject.layer == LayerMask.NameToLayer("Figure"))
+				{
+					//Выбираем новую фигуру, когда нажимаем на неё
+					if (lastCharacterSelected != null)
+					{
+						lastCharacterSelected.isSelected = false;
+					}
+					lastCharacterSelected = hitObject.GetComponent<CharacterController>();
+					lastCharacterSelected.isSelected = true;
+
+
+					// Новое
+					board.ShowFiguresMoves(lastCharacterSelected);
+
+
+				}
+				//Перемещаем фигуру на нужную клетку
+				else if (hitObject.layer == LayerMask.NameToLayer("Cell") &&
+						lastCharacterSelected != null)
+				{
+					lastCharacterSelected.MoveCharacter(hitObject.transform.position);
+
+
+					// Новое
+					if (!board.IsItShah(lastCharacterSelected, hitObject, isWhitesTurn))
+					{
+						if (!board.IsItMate(lastCharacterSelected, hitObject, isWhitesTurn))
+						{
+							board.MoveFigur(lastCharacterSelected, hitObject);
+							NextTurn();
+						}
+						else Debug.Log("Игра окончена, это мат!");
+					}
+					else Debug.Log("Так ходить нельзя, будет шах.");
+
+				}
+				// Отменяем выделение
+				else board.StopShowFiguresMoves(lastCharacterSelected);
+
+			}
 		}
 	}
 
-    void switchWhiteColliders(bool enabled)
-    {
-        foreach (var item in whiteFiguresCollider)
+    void NextTurn()
+	{
+        isWhitesTurn = !isWhitesTurn;
+        if (isWhitesTurn)
+		{
+            board.SwitchOffBlackColliders();
+            board.SwitchOnWhiteColliders();
+		}
+		else 
         {
-            item.enabled = enabled;
+            board.SwitchOffWhiteColliders();
+            board.SwitchOnBlackColliders();
         }
-    }
+	}
+
+
+
 }
