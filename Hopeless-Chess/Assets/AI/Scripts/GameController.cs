@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
 
-	bool isWhitesTurn;
+	bool isLightTurn;
 	[SerializeField]
-	VirtualBoardController board;
+	BoardController2 board;
 
 	[SerializeField]
 	Camera mainCamera;
@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
 				//Сокращаю строчку.
 				hitObject = hit.collider.gameObject;
 
-				if (hitObject.layer == LayerMask.NameToLayer("Figure"))
+				if (hitObject.layer == LayerMask.NameToLayer("Piece"))
 				{
 					//Выбираем новую фигуру, когда нажимаем на неё
 					if (lastCharacterSelected != null)
@@ -48,21 +48,20 @@ public class GameController : MonoBehaviour
 					// Новое
 					board.ShowFiguresMoves(lastCharacterSelected);
 
-
 				}
 				//Перемещаем фигуру на нужную клетку
-				else if (hitObject.layer == LayerMask.NameToLayer("Cell") &&
+				else if (hitObject.layer == LayerMask.NameToLayer("Square") &&
 						lastCharacterSelected != null)
 				{
-					lastCharacterSelected.MoveCharacter(hitObject.transform.position);
-
+					//lastCharacterSelected.MoveCharacter(hitObject.transform.position);
 
 					// Новое
-					if (!board.IsItShah(lastCharacterSelected, hitObject, isWhitesTurn))
+					if (!board.IsItShah(lastCharacterSelected, hitObject, isLightTurn))
 					{
-						if (!board.IsItMate(lastCharacterSelected, hitObject, isWhitesTurn))
+						if (!board.IsItMate(lastCharacterSelected, hitObject, isLightTurn))
 						{
 							board.MoveFigur(lastCharacterSelected, hitObject);
+							lastCharacterSelected = null;
 							NextTurn();
 						}
 						else Debug.Log("Игра окончена, это мат!");
@@ -79,24 +78,26 @@ public class GameController : MonoBehaviour
 
 	void NextTurn()
 	{
-		isWhitesTurn = !isWhitesTurn;
-		if (isWhitesTurn)
+		board.ShowBoard();
+
+		isLightTurn = !isLightTurn;
+		if (isLightTurn)
 		{
 			board.SwitchOffBlackColliders();
-			board.SwitchOnWhiteColliders();
+			board.SwitchOnLhiteColliders();
 		}
 		else
 		{
-			board.SwitchOffWhiteColliders();
+			board.SwitchOffLhiteColliders();
 			board.SwitchOnBlackColliders();
 		}
 	}
 
-	public bool IsWhitesTurn
+	public bool IsLightTurn
 	{
 		get
 		{
-			return isWhitesTurn;
+			return isLightTurn;
 		}
 	}
 }
