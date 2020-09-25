@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23259757595946094}
   - component: {fileID: 3180237914771315157}
   - component: {fileID: 4618358323094855719}
+  - component: {fileID: -2629119124711217197}
   m_Layer: 10
   m_Name: QueenDark
   m_TagString: Untagged
@@ -113,3 +114,19 @@ MonoBehaviour:
   isDead: 0
   isSelected: 0
   moveTexture: {fileID: 2800000, guid: f3413e2d4c425ce4486334936c72425b, type: 3}
+--- !u!111 &-2629119124711217197
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471985601831630}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

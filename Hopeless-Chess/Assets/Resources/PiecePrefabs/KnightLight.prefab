@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23756955892116760}
   - component: {fileID: 8387786499026689993}
   - component: {fileID: 1923942258722672445}
+  - component: {fileID: -5102525415788878710}
   m_Layer: 10
   m_Name: KnightLight
   m_TagString: Untagged
@@ -113,3 +114,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.77336395, y: 1.1832346, z: 0.6999463}
   m_Center: {x: -0.008549452, y: 0.5916173, z: 0.02355808}
+--- !u!111 &-5102525415788878710
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992623236052302}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

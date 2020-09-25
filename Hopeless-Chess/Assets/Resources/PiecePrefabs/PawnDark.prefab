@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23288229226541454}
   - component: {fileID: 4330691268992561390}
   - component: {fileID: 6129825377671206377}
+  - component: {fileID: 2312386843770524627}
   m_Layer: 10
   m_Name: PawnDark
   m_TagString: Untagged
@@ -113,3 +114,19 @@ MonoBehaviour:
   isDead: 0
   isSelected: 0
   moveTexture: {fileID: 2800000, guid: 1c28be9c56140204596fe27b257ac4ca, type: 3}
+--- !u!111 &2312386843770524627
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867195236767680}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -36,18 +37,22 @@ public class GameController : MonoBehaviour
 
 				if (hitObject.layer == LayerMask.NameToLayer("Piece"))
 				{
-					//Выбираем новую фигуру, когда нажимаем на неё
-					if (lastCharacterSelected != null)
+					// Повторное нажатие отменеят выделение
+					if ( lastCharacterSelected == hitObject.GetComponent<CharacterController>())
 					{
-						lastCharacterSelected.isSelected = false;
+						lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
 					}
-					lastCharacterSelected = hitObject.GetComponent<CharacterController>();
-					lastCharacterSelected.isSelected = true;
+					else
+					{
+						//Выбираем новую фигуру, когда нажимаем на неё
+						if (lastCharacterSelected != null )
+						{
+							lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
+						}
+						lastCharacterSelected = hitObject.GetComponent<CharacterController>().SelecteCharacter();
 
-
-					// Новое
-					board.ShowFiguresMoves(lastCharacterSelected);
-
+						board.ShowFiguresMoves(lastCharacterSelected);
+					}
 				}
 				//Перемещаем фигуру на нужную клетку
 				else if (hitObject.layer == LayerMask.NameToLayer("Square") &&
@@ -61,17 +66,19 @@ public class GameController : MonoBehaviour
 						if (!board.IsItMate(lastCharacterSelected, hitObject, isLightTurn))
 						{
 							board.MoveFigur(lastCharacterSelected, hitObject);
-							lastCharacterSelected = null;
+							lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
 							NextTurn();
 						}
 						else Debug.Log("Игра окончена, это мат!");
 					}
 					else Debug.Log("Так ходить нельзя, будет шах.");
-
 				}
+			}
+			else
+			{
 				// Отменяем выделение
-				else board.StopShowFiguresMoves(lastCharacterSelected);
-
+				board.StopShowFiguresMoves(lastCharacterSelected);
+				lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
 			}
 		}
 	}

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23939737083662754}
   - component: {fileID: 2211830865044798288}
   - component: {fileID: 2583508202621935215}
+  - component: {fileID: -1804870307509393090}
   m_Layer: 10
   m_Name: KnightDark
   m_TagString: Untagged
@@ -113,3 +114,19 @@ MonoBehaviour:
   isDead: 0
   isSelected: 0
   moveTexture: {fileID: 2800000, guid: 40d2ae9f42933604bb423de70858daa3, type: 3}
+--- !u!111 &-1804870307509393090
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179637952412708}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
