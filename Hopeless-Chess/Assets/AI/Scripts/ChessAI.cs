@@ -32,14 +32,14 @@ public class ChessAI : MonoBehaviour
 			case 1:
 				#region Первый уровень погружения (рандомные ходы)
 
-				bestMove = board.GiveAllFiguresMoves(isWhitesTurn)[UnityEngine.Random.Range(0, board.GiveAllFiguresMoves(isWhitesTurn).Length)];
+				bestMove = board.GiveAllPieceMoves(isWhitesTurn)[UnityEngine.Random.Range(0, board.GiveAllPieceMoves(isWhitesTurn).Length)];
 
 				#endregion
 				break;
 			case 2:
 				#region Второй уровень погружения (если можно съесть - съест)
 
-				Moves = board.GiveAllFiguresMoves(isWhitesTurn);
+				Moves = board.GiveAllPieceMoves(isWhitesTurn);
 
 				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
 				if (isWhitesTurn)
@@ -76,7 +76,7 @@ public class ChessAI : MonoBehaviour
 			case 3:
 				#region Третий уровень погружения (просчет ходов)
 
-				Moves = board.GiveAllFiguresMoves(isWhitesTurn);
+				Moves = board.GiveAllPieceMoves(isWhitesTurn);
 
 				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
 				if (isWhitesTurn)
@@ -113,7 +113,7 @@ public class ChessAI : MonoBehaviour
 
 				depth = 2;
 
-				Moves = board.GiveAllFiguresMoves(isWhitesTurn);
+				Moves = board.GiveAllPieceMoves(isWhitesTurn);
 
 				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
 				if (isWhitesTurn)
@@ -162,7 +162,7 @@ public class ChessAI : MonoBehaviour
 		isWhitesTurn = !isWhitesTurn;
 		//Делвем выртуальный ход
 
-		string[] Moves = board.GiveAllFiguresMoves(isWhitesTurn);
+		string[] Moves = board.GiveAllPieceMoves(isWhitesTurn);
 
 		if (isWhitesTurn)
 		{
@@ -201,7 +201,7 @@ public class ChessAI : MonoBehaviour
 		isWhitesTurn = !isWhitesTurn;
 		//Делвем выртуальный ход
 
-		string[] Moves = board.GiveAllFiguresMoves(isWhitesTurn);
+		string[] Moves = board.GiveAllPieceMoves(isWhitesTurn);
 
 		if (isWhitesTurn)
 		{

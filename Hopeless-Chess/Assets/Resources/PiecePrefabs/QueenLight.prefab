@@ -113,7 +113,7 @@ MonoBehaviour:
   devotion: 0
   isDead: 0
   isSelected: 0
-  moveTexture: {fileID: 2800000, guid: f3413e2d4c425ce4486334936c72425b, type: 3}
+  moveTexture: {fileID: 2800000, guid: a03f60c6d1b3e3f47a9a408efaf37895, type: 3}
 --- !u!111 &-1579206305959217321
 Animation:
   m_ObjectHideFlags: 0

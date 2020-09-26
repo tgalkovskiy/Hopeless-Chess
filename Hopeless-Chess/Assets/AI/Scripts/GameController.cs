@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour
 					if ( lastCharacterSelected == hitObject.GetComponent<CharacterController>())
 					{
 						lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
+						board.StopShowPieceMoves();
 					}
 					else
 					{
@@ -48,10 +49,11 @@ public class GameController : MonoBehaviour
 						if (lastCharacterSelected != null )
 						{
 							lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
+							board.StopShowPieceMoves();
 						}
 						lastCharacterSelected = hitObject.GetComponent<CharacterController>().SelecteCharacter();
 
-						board.ShowFiguresMoves(lastCharacterSelected);
+						board.ShowPieceMoves(lastCharacterSelected);
 					}
 				}
 				//Перемещаем фигуру на нужную клетку
@@ -61,13 +63,14 @@ public class GameController : MonoBehaviour
 					//lastCharacterSelected.MoveCharacter(hitObject.transform.position);
 
 					// Новое
-					if (!board.IsItShah(lastCharacterSelected, hitObject, isLightTurn))
+					if (!board.IsItCheck(lastCharacterSelected, hitObject, isLightTurn))
 					{
 						if (!board.IsItMate(lastCharacterSelected, hitObject, isLightTurn))
 						{
-							board.MoveFigur(lastCharacterSelected, hitObject);
-							lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
+							board.MovePiece(lastCharacterSelected, hitObject);
+							if (lastCharacterSelected != null)  lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
 							NextTurn();
+							board.StopShowPieceMoves();
 						}
 						else Debug.Log("Игра окончена, это мат!");
 					}
@@ -77,15 +80,15 @@ public class GameController : MonoBehaviour
 			else
 			{
 				// Отменяем выделение
-				board.StopShowFiguresMoves(lastCharacterSelected);
-				lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
+				board.StopShowPieceMoves();
+				if(lastCharacterSelected!=null) lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
 			}
 		}
 	}
 
 	void NextTurn()
 	{
-		board.ShowBoard();
+		//board.ShowBoard();
 
 		isLightTurn = !isLightTurn;
 		if (isLightTurn)

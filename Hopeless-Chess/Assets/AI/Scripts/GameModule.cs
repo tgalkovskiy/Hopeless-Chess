@@ -21,23 +21,25 @@ public class GameModule : MonoBehaviour
 
     }
 
+
+    GameObject[] piecePrefabs;
+    GameObject squarePrefab;
+    GameObject selectedPrefab;
+
     [Space]
     [SerializeField]
-    private GameController gameController;
+    Color none;
+    [SerializeField]
+    Color move;
+    [SerializeField]
+    Color attack;
+    [SerializeField]
+    Color moveAndAttack;
+    [SerializeField]
+    Color jump;
 
-
-    /// <summary>
-    /// 1 - King
-    /// 2 - Queen
-    /// 3 - Bishop
-    /// 4 - Knight
-    /// 5 - Rock
-    /// 6 - Pawn
-    /// </summary>
-    private GameObject[] piecePrefabs;
-    private GameObject squarePrefabs;
-
-    public GameController GameContol { get { return gameController; } }
+    Color[] moveColors;
+    Texture2D emptyMoveTexture;
 
     /// <summary>
     /// 1 - King
@@ -48,7 +50,18 @@ public class GameModule : MonoBehaviour
     /// 6 - Pawn
     /// </summary>
     public GameObject[] PiecePrefabs { get { return piecePrefabs; } }
-    public GameObject SquarePrefabs { get { return squarePrefabs; } }
+
+    public GameObject SquarePrefab { get { return squarePrefab; } }
+    public GameObject SelectedPrefab { get { return selectedPrefab; } }
+    /// <summary>
+    /// 0 - none
+    /// 1 - move
+    /// 2 - attack
+    /// 3 - move and attack
+    /// 4 - jump
+    /// </summary>
+    public Color[] MoveColors { get { return moveColors; } }
+    public Texture2D EmptyMoveTexture { get { return emptyMoveTexture; } }
 
     public void GetResources()
     {
@@ -66,6 +79,12 @@ public class GameModule : MonoBehaviour
         piecePrefabs[15] = Resources.Load<GameObject>("PiecePrefabs/RookDark");
         piecePrefabs[16] = Resources.Load<GameObject>("PiecePrefabs/PawnDark");
 
-        squarePrefabs = Resources.Load<GameObject>("Square");
+        squarePrefab = Resources.Load<GameObject>("Square");
+        selectedPrefab = Resources.Load<GameObject>("Selected");
+
+        moveColors = new Color[] { none, move, attack, moveAndAttack, jump };
+
+        emptyMoveTexture = Resources.Load<Texture2D>("Textures/Empty");
+
     }
 }

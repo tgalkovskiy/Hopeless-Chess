@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992623236052302}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &33961714295525734
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   devotion: 0
   isDead: 0
   isSelected: 0
-  moveTexture: {fileID: 2800000, guid: 40d2ae9f42933604bb423de70858daa3, type: 3}
+  moveTexture: {fileID: 2800000, guid: 223ac666a1bca254b843fe1fc9c4d6c6, type: 3}
 --- !u!65 &1923942258722672445
 BoxCollider:
   m_ObjectHideFlags: 0
