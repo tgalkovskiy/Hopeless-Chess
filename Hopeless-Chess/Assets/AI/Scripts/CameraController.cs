@@ -78,7 +78,6 @@ public class CameraController : MonoBehaviour
 		if (Input.GetMouseButtonUp(1))
 		{
 			if ( Math.Abs( Input.GetAxis("Mouse X")) > inertiaStartOn) inertia = Input.GetAxis("Mouse X");
-			Debug.Log(Input.GetAxis("Mouse X"));
 			if (Math.Abs(inertia) > maxInetia) inertia = inertia/Math.Abs(inertia)*maxInetia;
 		}
 
@@ -105,7 +104,6 @@ public class CameraController : MonoBehaviour
 	{
 		goToPosition = true;
 		isItLight = light;
-		Debug.Log("ПОВОРОТ!");
 	}
 
 }

@@ -53,7 +53,8 @@ public class GameController : MonoBehaviour
 						}
 						lastCharacterSelected = hitObject.GetComponent<CharacterController>().SelecteCharacter();
 
-						board.ShowPieceMoves(lastCharacterSelected);
+						board.GlowSquares(board.FindPieceMoves(lastCharacterSelected));
+
 					}
 				}
 				//Перемещаем фигуру на нужную клетку

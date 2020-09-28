@@ -7,19 +7,20 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
-public class BoardController2 : VirtualBoardController
+public class BoardController2 : MonoBehaviour
 {
 	int[][] board;
+	List<string> movesArchive;
+	int moveNumber;
 	GameObject[][] squares;
 	List<GameObject> selectedSquars;
-	List<GameObject> lightPieces;
+	List<GameObject> lightPieces;	
 	List<GameObject> darkPieces;
 
 	[SerializeField]
 	Transform fatherBoard2;
 	[SerializeField]
 	GameObject image;
-
 
 	Vector2[] spiralSequence;
 
@@ -28,6 +29,7 @@ public class BoardController2 : VirtualBoardController
 		selectedSquars = new List<GameObject>();
 		lightPieces = new List<GameObject>();
 		darkPieces = new List<GameObject>();
+		movesArchive = new List<string>();
 
 		SetupStartPosition();
 		//ShowBoard();
@@ -36,6 +38,7 @@ public class BoardController2 : VirtualBoardController
 		SwitchOffLhiteColliders();
 		SwitchOffBlackColliders();
 		SwitchOffAllSquars();
+
 
 	}
 
@@ -59,6 +62,8 @@ public class BoardController2 : VirtualBoardController
 			new int [8] { 16, 16, 16, 16, 16, 16, 16, 16 },
 			new int [8] { 15, 14, 13, 11, 12, 13, 14, 15 }
 		};
+
+		moveNumber = 1;
 	}
 
 	public void ShowBoard()
@@ -123,7 +128,7 @@ public class BoardController2 : VirtualBoardController
 		}
 	}
 
-	public override void SwitchOffBlackColliders()
+	public void SwitchOffBlackColliders()
 	{
 		foreach (var item in darkPieces)
 		{
@@ -131,7 +136,7 @@ public class BoardController2 : VirtualBoardController
 		}
 	}
 
-	public override void SwitchOnBlackColliders()
+	public void SwitchOnBlackColliders()
 	{
 		foreach (var item in darkPieces)
 		{
@@ -139,7 +144,7 @@ public class BoardController2 : VirtualBoardController
 		}
 	}
 
-	public override void SwitchOffLhiteColliders()
+	public void SwitchOffLhiteColliders()
 	{
 		foreach (var item in lightPieces)
 		{
@@ -147,7 +152,7 @@ public class BoardController2 : VirtualBoardController
 		}
 	}
 
-	public override void SwitchOnLhiteColliders()
+	public void SwitchOnLhiteColliders()
 	{
 		foreach (var item in lightPieces)
 		{
@@ -155,8 +160,10 @@ public class BoardController2 : VirtualBoardController
 		}
 	}
 
-	public override void ShowPieceMoves(CharacterController piece)
+	public List <Vector2Int> FindPieceMoves(CharacterController piece)
 	{
+		var selectedSquars2 = new List<Vector2Int>();
+
 		var piecePosition = FindSquare(piece.transform.parent.gameObject);
 		var moveTexture = CutMoveTexture( piece.GetMoveTexture() , piecePosition);
 
@@ -198,13 +205,16 @@ public class BoardController2 : VirtualBoardController
 			switch (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y)))
 			{
 				case 1:
-					if (isMoveSquareAround(blackTexture,X,Y) && board[Y][X] == 0)
-					{
-						// Заполняем для дальнещего анализа
-						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
-						blackTexture.Apply();
-						selectedSquars.Add(squares[Y][X]);
-					}
+					if (!(isMoveSquareAround(blackTexture, X, Y) && board[Y][X] == 0)) continue;
+					// Исправления бага с ферзем
+					if (Math.Abs(spiralSequence[i].x) == 2 && spiralSequence[i].y ==0) 
+						if (board[Y][(int)(piecePosition.x + spiralSequence[i].x/2)] != 0) continue;
+					if (Math.Abs(spiralSequence[i].y) == 2 && spiralSequence[i].x == 0) 
+						if (board[(int)(piecePosition.y + spiralSequence[i].y/2)][X] != 0) continue;
+					// Заполняем для дальнещего анализа
+					blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
+					blackTexture.Apply();
+					selectedSquars2.Add(new Vector2Int(X, Y));					
 					break;
 				case 2:
 					if (board[Y][X] == 0) continue;
@@ -215,11 +225,16 @@ public class BoardController2 : VirtualBoardController
 						{
 							blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
 							blackTexture.Apply();
-							selectedSquars.Add(squares[Y][X]);
+							selectedSquars2.Add(new Vector2Int(X, Y));
 						}
 					break;
 				case 3:
 					if (!isMoveSquareAround(blackTexture, X, Y)) continue;
+					// Исправления бага с ферзем
+					if (Math.Abs(spiralSequence[i].x) == 2 && spiralSequence[i].y == 0)
+						if (board[Y][(int)(piecePosition.x + spiralSequence[i].x / 2)] != 0) continue;
+					if (Math.Abs(spiralSequence[i].y) == 2 && spiralSequence[i].x == 0)
+						if (board[(int)(piecePosition.y + spiralSequence[i].y / 2)][X] != 0) continue;
 					if (board[Y][X] == 0)
 					{
 						if (isMoveSquareAround(blackTexture, X, Y))
@@ -227,7 +242,7 @@ public class BoardController2 : VirtualBoardController
 							// Заполняем для дальнещего анализа
 							blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
 							blackTexture.Apply();
-							selectedSquars.Add(squares[Y][X]);
+							selectedSquars2.Add(new Vector2Int(X, Y));
 						}
 					}
 					else
@@ -237,7 +252,7 @@ public class BoardController2 : VirtualBoardController
 							{
 								blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
 								blackTexture.Apply();
-								selectedSquars.Add(squares[Y][X]);
+								selectedSquars2.Add(new Vector2Int(X, Y));
 							}
 					}
 					break;
@@ -245,9 +260,9 @@ public class BoardController2 : VirtualBoardController
 					if (board[Y][X] == 0)
 					{
 						// Заполняем для дальнещего анализа
-						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
+						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[4]);
 						blackTexture.Apply();
-						selectedSquars.Add(squares[Y][X]);
+						selectedSquars2.Add(new Vector2Int(X, Y));
 					}
 					else
 					{
@@ -256,7 +271,7 @@ public class BoardController2 : VirtualBoardController
 							{
 								blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
 								blackTexture.Apply();
-								selectedSquars.Add(squares[Y][X]);
+								selectedSquars2.Add(new Vector2Int(X, Y));
 							}
 					}
 					break;
@@ -266,8 +281,7 @@ public class BoardController2 : VirtualBoardController
 			}
 		}
 
-		GlowSquares();
-		
+		return selectedSquars2;
 	}
 
 
@@ -340,7 +354,31 @@ public class BoardController2 : VirtualBoardController
 				if (squares[i][j] == square) return new Vector2Int(j, i);
 			}
 		}
-		return new Vector2Int(9, 9);
+		return new Vector2Int(squares.GetLength(0)+1, squares[0].GetLength(0)+1);
+	}
+
+	Vector2Int FindPosition(int index, bool isItLight)
+	{
+		//var index = 0;
+		//if (!piece.gameObject.name.Contains("Light")) index += 10;
+		//if (piece.pieceType == CharacterController.ChessType.pawn) index += 6;
+		//else if (piece.pieceType == CharacterController.ChessType.rook) index += 5;
+		//else if (piece.pieceType == CharacterController.ChessType.knight) index += 4;
+		//else if (piece.pieceType == CharacterController.ChessType.bishop) index += 3;
+		//else if (piece.pieceType == CharacterController.ChessType.queen) index += 2;
+		//else if (piece.pieceType == CharacterController.ChessType.king) index += 1;
+		//else index += 9;
+
+		if (!isItLight) index += 10;
+
+		for (int i = 0; i < board.GetLength(0); i++)
+		{
+			for (int j = 0; j < board[i].GetLength(0); j++)
+			{
+				if (board[i][j] == index) return new Vector2Int(j, i);
+			}
+		}
+		return new Vector2Int(board.GetLength(0) + 1, board[0].GetLength(0) + 1);
 	}
 
 	/// <summary>
@@ -376,21 +414,22 @@ public class BoardController2 : VirtualBoardController
 		return moveTexture;
 	}
 
-	void GlowSquares()
+	#endregion
+
+
+	public void GlowSquares(List<Vector2Int> positions)
 	{
-		foreach (var item in selectedSquars)
+		foreach (var item in positions)
 		{
 			Instantiate(
 				GameModule.instance.SelectedPrefab,
-				item.transform
-				).transform.position = item.transform.position;
-			item.GetComponent<BoxCollider>().enabled = true;
+				squares[item.y][item.x].transform
+				).transform.position = squares[item.y][item.x].transform.position;
+			squares[item.y][item.x].GetComponent<BoxCollider>().enabled = true;
 		}
 	}
 
-	#endregion
-
-	public override void StopShowPieceMoves()
+	public void StopShowPieceMoves()
 	{
 		foreach (var item in GameObject.FindGameObjectsWithTag("Selected"))
 		{
@@ -425,7 +464,7 @@ public class BoardController2 : VirtualBoardController
 		}
 	}
 
-	public override void MovePiece(CharacterController piece, GameObject square)
+	public void MovePiece(CharacterController piece, GameObject square)
 	{
 		var squarePosition = FindSquare(square);
 		var piecePosition = FindSquare(piece.transform.parent.gameObject);
@@ -450,4 +489,69 @@ public class BoardController2 : VirtualBoardController
 
 	}
 
+	public bool IsItCheck(CharacterController piece, GameObject square, bool isLightTurn)
+	{
+
+		MovePieceOnBoard(piece, square);
+
+		foreach (var item in isLightTurn? darkPieces:lightPieces)
+		{
+			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
+			{
+				if (FindPosition(1,isLightTurn) == item2)
+				{
+					UndoMovePieceOnBord();
+					return true;
+				}
+			}
+		}
+
+		UndoMovePieceOnBord();
+		return false;
+	}
+
+	#region Дополнительные функции для IsItCheck
+
+	Vector2Int FindPieceOnBoard (int pieceIndex)
+	{
+		for (int i = 0; i < board.GetLength(0); i++)
+		{
+			for (int j = 0; j < board[i].GetLength(0); j++)
+			{
+				if (board[i][j] == pieceIndex) return new Vector2Int(j, i);
+			}
+		}
+		return new Vector2Int(board.GetLength(0)+1, board[0].GetLength(0)+1);
+	}
+
+	#endregion
+
+	void MovePieceOnBoard (CharacterController piece, GameObject square)
+	{
+		var piecePosition = FindSquare(piece.transform.parent.gameObject);
+		var squarePosition = FindSquare(square);
+
+		movesArchive.Add($"{moveNumber}-{piecePosition.x}:{piecePosition.y}-{squarePosition.x}:{squarePosition.y}-{board[squarePosition.y][squarePosition.x]}");
+
+		//Перестановка фигуры на вспомогательной доске
+		board[squarePosition.y][squarePosition.x] = board[piecePosition.y][piecePosition.x];
+		board[piecePosition.y][piecePosition.x] = 0;
+
+	}
+
+	void UndoMovePieceOnBord()
+	{
+		var temp = movesArchive[movesArchive.Count - 1].Split(new char[] { '-' });
+		var piecePosition = new Vector2Int(int.Parse(temp[1].Split(new char[] { ':' })[0]), int.Parse(temp[1].Split(new char[] { ':' })[1]));
+		var squarePosition = new Vector2Int(int.Parse(temp[2].Split(new char[] { ':' })[0]), int.Parse(temp[2].Split(new char[] { ':' })[1]));
+		var eatenPiece = int.Parse(temp[3]);
+
+		board[piecePosition.y][piecePosition.x] = board[squarePosition.y][squarePosition.x];
+		board[squarePosition.y][squarePosition.x] = eatenPiece;
+	}
+
+	public bool IsItMate(CharacterController piece, GameObject square, bool isLightTurn) 
+	{
+		return false;
+	}
 }

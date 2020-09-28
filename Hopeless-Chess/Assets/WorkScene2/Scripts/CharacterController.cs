@@ -87,7 +87,7 @@ public class CharacterController : Afflictions
                 
                 if(gameModule.PawnsData[i] != null)
                 {
-                    Debug.Log(gameModule.PawnsData.Length);
+                    //Debug.Log(gameModule.PawnsData.Length);
                     character = gameModule.PawnsData[i];
                     gameModule.PawnsData[i] = null;
                     break;
@@ -100,7 +100,7 @@ public class CharacterController : Afflictions
             {
                 if(gameModule.RooksData[i] != null)
                 {
-                    Debug.Log(gameModule.RooksData.Length);
+                    //Debug.Log(gameModule.RooksData.Length);
                     character = gameModule.RooksData[i];
                     gameModule.RooksData[i] = null;
                     break;
@@ -113,7 +113,7 @@ public class CharacterController : Afflictions
             {
                 if(gameModule.BishopsData[i] != null)
                 {
-                    Debug.Log(gameModule.BishopsData.Length);
+                    //Debug.Log(gameModule.BishopsData.Length);
                     character = gameModule.BishopsData[i];
                     gameModule.BishopsData[i] = null;
                     break;
@@ -126,7 +126,7 @@ public class CharacterController : Afflictions
             {
                 if(gameModule.KnightData[i] != null)
                 {
-                    Debug.Log(gameModule.KnightData.Length);
+                    //Debug.Log(gameModule.KnightData.Length);
                     character = gameModule.KnightData[i];
                     gameModule.KnightData[i] = null;
                     break;
@@ -139,7 +139,7 @@ public class CharacterController : Afflictions
             {
                 if(gameModule.QueenData[i] != null)
                 {
-                    Debug.Log(gameModule.QueenData.Length);
+                    //Debug.Log(gameModule.QueenData.Length);
                     character = gameModule.QueenData[i];
                     gameModule.QueenData[i] = null;
                     break;
@@ -152,7 +152,7 @@ public class CharacterController : Afflictions
             {
                 if(gameModule.QueenData[i] != null)
                 {
-                    Debug.Log(gameModule.KingData.Length);
+                    //Debug.Log(gameModule.KingData.Length);
                     character = gameModule.KingData[i];
                     gameModule.KingData[i] = null;
                     break;

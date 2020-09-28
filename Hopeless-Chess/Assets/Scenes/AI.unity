@@ -3149,6 +3149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1235710357}
   startPosition: {x: 25, y: 50}
+  startPositionLight: {x: 45, y: 180, z: 0}
+  startPositionDark: {x: 45, y: 0, z: 0}
   sensitivity: 2.5
   verticalLimit: 80
   zoomSensitivity: 0.25
