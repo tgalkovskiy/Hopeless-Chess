@@ -63,6 +63,14 @@ public class GameModule : MonoBehaviour
     public Color[] MoveColors { get { return moveColors; } }
     public Texture2D EmptyMoveTexture { get { return emptyMoveTexture; } }
 
+    public CharactersObject[] PawnsData {get; set;}
+    public CharactersObject[] RooksData {get; set;}
+    public CharactersObject[] BishopsData {get; set;}
+    public CharactersObject[] KnightData {get; set;}
+    public CharactersObject[] QueenData {get; set;}
+    public CharactersObject[] KingData {get; set;}
+    
+
     public void GetResources()
     {
         piecePrefabs = new GameObject[17];
@@ -85,6 +93,15 @@ public class GameModule : MonoBehaviour
         moveColors = new Color[] { none, move, attack, moveAndAttack, jump };
 
         emptyMoveTexture = Resources.Load<Texture2D>("Textures/Empty");
+
+        PawnsData = Resources.LoadAll<CharactersObject>("Characters/Pawns");
+        RooksData = Resources.LoadAll<CharactersObject>("Characters/Rooks");
+        BishopsData = Resources.LoadAll<CharactersObject>("Characters/Bishops");
+        KnightData = Resources.LoadAll<CharactersObject>("Characters/Knights");
+        QueenData = Resources.LoadAll<CharactersObject>("Characters/Queens");
+        KingData = Resources.LoadAll<CharactersObject>("Characters/Kings");
+        
+        
 
     }
 }

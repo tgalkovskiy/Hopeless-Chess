@@ -49,10 +49,15 @@ public class CharacterController : Afflictions
 
     public Texture2D givingupTexture;
 
-
+    public ChessType pieceType;
  //
     private void Start() 
     {
+
+        if(character == null)
+        {
+            InitializeCharacters();
+        }
         if(character != null)
         {
             moralityCount = character.MaxMorality;
@@ -70,6 +75,90 @@ public class CharacterController : Afflictions
     {
         isSelected = true;
         return gameObject.GetComponent<CharacterController>();
+    }
+
+    public void InitializeCharacters()
+    {
+        GameModule gameModule = GameModule.instance;
+        if(pieceType == ChessType.pawn)
+        {
+            for(int i = 0; i < gameModule.PawnsData.Length; i++)
+            {
+                
+                if(gameModule.PawnsData[i] != null)
+                {
+                    Debug.Log(gameModule.PawnsData.Length);
+                    character = gameModule.PawnsData[i];
+                    gameModule.PawnsData[i] = null;
+                    break;
+                }
+            }
+        }
+        else if(pieceType == ChessType.rook)
+        {
+            for(int i = 0; i < gameModule.RooksData.Length; i++)
+            {
+                if(gameModule.RooksData[i] != null)
+                {
+                    Debug.Log(gameModule.RooksData.Length);
+                    character = gameModule.RooksData[i];
+                    gameModule.RooksData[i] = null;
+                    break;
+                }
+            }
+        }
+        else if(pieceType == ChessType.bishop)
+        {
+            for(int i = 0; i < gameModule.BishopsData.Length; i++)
+            {
+                if(gameModule.BishopsData[i] != null)
+                {
+                    Debug.Log(gameModule.BishopsData.Length);
+                    character = gameModule.BishopsData[i];
+                    gameModule.BishopsData[i] = null;
+                    break;
+                }
+            }
+        }
+        else if(pieceType == ChessType.knight)
+        {
+            for(int i = 0; i < gameModule.KnightData.Length; i++)
+            {
+                if(gameModule.KnightData[i] != null)
+                {
+                    Debug.Log(gameModule.KnightData.Length);
+                    character = gameModule.KnightData[i];
+                    gameModule.KnightData[i] = null;
+                    break;
+                }
+            }
+        }
+        else if(pieceType == ChessType.queen)
+        {
+            for(int i = 0; i < gameModule.QueenData.Length; i++)
+            {
+                if(gameModule.QueenData[i] != null)
+                {
+                    Debug.Log(gameModule.QueenData.Length);
+                    character = gameModule.QueenData[i];
+                    gameModule.QueenData[i] = null;
+                    break;
+                }
+            }
+        }
+        else if(pieceType == ChessType.king)
+        {
+            for(int i = 0; i < gameModule.KingData.Length; i++)
+            {
+                if(gameModule.QueenData[i] != null)
+                {
+                    Debug.Log(gameModule.KingData.Length);
+                    character = gameModule.KingData[i];
+                    gameModule.KingData[i] = null;
+                    break;
+                }
+            }
+        }
     }
 
 
@@ -91,10 +180,7 @@ public class CharacterController : Afflictions
 
 
     /// <summary>
-    /// Возвращает текстуру хода персонажа (Синий(0;0;255) - ход, если нет препядствий;
-    /// белый (0;0;0) - первый ход за игру;
-    /// зелёный (0;255;0) - безпрепятственный ход
-    /// красный (255;0;0) - ход только в случае атаки)
+    
     /// </summary>
     /// <returns></returns>
     public Texture2D GetMoveTexture()
@@ -140,8 +226,9 @@ public class CharacterController : Afflictions
         transform.position = cellCoords;
     }
 
-    private enum ChessType
+    public enum ChessType
     {
+        none,
         pawn,
         rook,
         knight,
