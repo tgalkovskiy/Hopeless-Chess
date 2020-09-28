@@ -13,9 +13,6 @@ public class CharactersObject : ScriptableObject
 
     [SerializeField] [TextArea(3, 10)] private string discription;
 
-    [SerializeField] private GameObject[] friends;
-
-    [SerializeField] private GameObject[] enemies;
     
     [Header("Характеристики")]
 
@@ -55,24 +52,6 @@ public class CharactersObject : ScriptableObject
     }
 
     /// <summary>
-    /// Список друзей (тип GameObject выставил временно до момента, пока буду знать, как всё это будет реагировать)
-    /// </summary>
-    /// <value></value>
-    public GameObject[] Friends
-    {
-        get {return friends;}
-    }
-
-    /// <summary>
-    /// Список врагов (тип GameObject выставил временно до момента, пока буду знать, как всё это будет реагировать)
-    /// </summary>
-    /// <value></value>
-    public GameObject[] Enemies
-    {
-        get {return enemies;}
-    }
-
-    /// <summary>
     /// Мораль персонажа, которая позволяет двигать фигуру (нет морали - персонаж стоит)
     /// </summary>
     /// <value></value>
@@ -98,6 +77,9 @@ public class CharactersObject : ScriptableObject
     { 
         get {return maxDevotion;}
     }
+
+
+
 
 
 

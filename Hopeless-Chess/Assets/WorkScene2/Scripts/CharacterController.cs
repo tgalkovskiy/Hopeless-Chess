@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 /// <summary>
 /// Обрабатывает состояние фигуры в текущий момент времени
 /// </summary>
-public class CharacterController : MonoBehaviour
+public class CharacterController : Afflictions
 {
     /// <summary>
     /// Основная информация о персонаже (не изменяется в ходе игры)
@@ -16,17 +17,21 @@ public class CharacterController : MonoBehaviour
     /// <summary>
     /// Текущий уровень морали фигуры
     /// </summary>
-    [HideInInspector] public float morality;
+    [HideInInspector] public float moralityCount;
 
     /// <summary>
     /// Текущий уровень злости (временно)
     /// </summary>
-    [HideInInspector] public float anger;
+    [HideInInspector] public float angerCount;
 
     /// <summary>
     /// Текущий уровень преданности (временно)
     /// </summary>
     [HideInInspector] public float devotion;
+
+    public CharacterController[] friends;
+
+    public CharacterController[] enemies;
     
     /// <summary>
     /// Проверка, мёртв ли персонаж
@@ -40,13 +45,18 @@ public class CharacterController : MonoBehaviour
 
     public Texture2D moveTexture;
 
+    public Texture2D rageTexture;
 
+    public Texture2D givingupTexture;
+
+
+ //
     private void Start() 
     {
         if(character != null)
         {
-            morality = character.MaxMorality;
-            anger = character.MaxAnger;
+            moralityCount = character.MaxMorality;
+            angerCount = character.MaxAnger;
             devotion = character.MaxDevotion;
         }
 
@@ -81,10 +91,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     public void GivingUp()
     {
-        if(morality == 0f)
-        {
-            //...
-        }
+
     }
 
 
@@ -93,10 +100,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     public void RageMode()
     {
-        if(anger == 0)
-        {
-            //...
-        }
+        
     }
 
     /// <summary>
@@ -127,5 +131,10 @@ public class CharacterController : MonoBehaviour
         bishop,
         queen,
         king
+    }
+
+    private IEnumerator Giving()
+    {
+        yield return new WaitForSeconds(1);
     }
 }

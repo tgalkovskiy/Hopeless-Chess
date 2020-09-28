@@ -21,7 +21,7 @@ MonoBehaviour:
     \u043A\u0430\u043A \u043D\u0430 \u0434\u0435\u043B\u0435 \u043D\u0438\u043A\u0442\u043E
     \u043D\u0435 \u0437\u043D\u0430\u0435\u0442."
   friends:
-  - {fileID: 7885713757363731588, guid: b6479c049a119b44c9fefcf770177a5b, type: 3}
+  - {fileID: 3242639530245603508, guid: 73eb93377a6fcd24eae0a3ed22573f7f, type: 3}
   enemies: []
   maxMorality: 999
   maxAnger: 999
