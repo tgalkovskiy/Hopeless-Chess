@@ -3150,10 +3150,14 @@ MonoBehaviour:
   target: {fileID: 1235710357}
   startPosition: {x: 25, y: 50}
   sensitivity: 2.5
-  limit: 89
-  zoom: 0.5
+  verticalLimit: 80
+  zoomSensitivity: 0.25
   zoomMax: 20
   zoomMin: 8
+  maxInetia: 2
+  inertiaStartOn: 0.5
+  inertiaDecrease: 1
+  startInertiaDecrease: 0.2
 --- !u!81 &1271300250
 AudioListener:
   m_ObjectHideFlags: 0
