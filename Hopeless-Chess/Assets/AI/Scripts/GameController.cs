@@ -91,6 +91,7 @@ public class GameController : MonoBehaviour
 		//board.ShowBoard();
 
 		isLightTurn = !isLightTurn;
+		mainCamera.GetComponent<CameraController>().GoToPosition(isLightTurn);
 		if (isLightTurn)
 		{
 			board.SwitchOffBlackColliders();

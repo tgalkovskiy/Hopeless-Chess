@@ -2,25 +2,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
 	[Header("Main Variables:")]
-	Vector3 offset;
-	float X, Y;
+
 	[SerializeField]
 	[Tooltip("Rotation point")]  Transform target; // Точка вращения
 	[SerializeField]
 	Vector2 startPosition;
 	[SerializeField]
+	Vector3 startPositionLight = new Vector3(45, 180, 0);
+	[SerializeField]
+	Vector3 startPositionDark = new Vector3 (45,0, 0);
+	[SerializeField]
 	float sensitivity = 3; // чувствительность мышки
 	[SerializeField]
 	float verticalLimit = 80; // ограничение вращения по Y
+
+	Vector3 offset;
+	float X, Y;
+	bool goToPosition;
+	bool isItLight;
 	[Space]
 
 	[Header("Zoom Variables:")]
-	[Space]
+
 	[SerializeField]
 	float zoomSensitivity = 0.25f; // чувствительность при увеличении, колесиком мышки
 	[SerializeField]
@@ -30,8 +39,7 @@ public class CameraController : MonoBehaviour
 	[Space]
 
 	[Header("Inertia Variables:")]
-	[Space]
-	float inertia;
+
 	[SerializeField]
 	float maxInetia = 1.5f;
 	[SerializeField]
@@ -40,6 +48,8 @@ public class CameraController : MonoBehaviour
 	float inertiaDecrease = 0.2f;
 	[SerializeField]
 	float startInertiaDecrease = 0.5f;
+
+	float inertia;
 
 	void Start()
 	{
@@ -58,6 +68,7 @@ public class CameraController : MonoBehaviour
 
 		if (Input.GetMouseButton(1))
 		{
+			goToPosition = false;
 			inertia = 0;
 			X = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivity;
 			Y += Input.GetAxis("Mouse Y") * sensitivity;
@@ -79,17 +90,22 @@ public class CameraController : MonoBehaviour
 
 		}
 
-		transform.localEulerAngles = new Vector3(-Y, X, 0);
+		if (goToPosition)
+		{
+			transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, isItLight ? startPositionLight : startPositionDark , Time.deltaTime * sensitivity);
+			transform.position = transform.localRotation * offset + target.position;
+			if (transform.localEulerAngles == (isItLight ? startPositionLight : startPositionDark)) goToPosition = false;
+		}
+		else transform.localEulerAngles = new Vector3(-Y, X, 0);
+
 		transform.position = transform.localRotation * offset + target.position;
 	}
 
-	public void CameraRotation()
+	public void GoToPosition (bool light)
 	{
-		StartCoroutine(Rotation());
+		goToPosition = true;
+		isItLight = light;
+		Debug.Log("ПОВОРОТ!");
 	}
 
-	IEnumerator Rotation()
-	{
-		yield return new WaitForSeconds(1);
-	}
 }

@@ -192,15 +192,12 @@ public class BoardController2 : VirtualBoardController
 			Y = (int)(piecePosition.y + spiralSequence[i].y);
 			if (X > 7 || Y > 7 || X<0 || Y<0) continue;
 
-			if (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y))==2)
-			Debug.Log(FindMoveColor(moveTexture.GetPixel(X, moveTexture.height -1 -Y)) + "X=" +X+ " Y="+  Y);
+			//if (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y))==2)
+			//Debug.Log(FindMoveColor(moveTexture.GetPixel(X, moveTexture.height -1 -Y)) + "X=" +X+ " Y="+  Y);
 
 			switch (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y)))
 			{
 				case 1:
-					Debug.Log("1-ПолУЧИЛСЯ!");
-					//Debug.Log(isMoveSquareAround(blackTexture, X, Y));
-					//Debug.Log((board[Y][X] == 0) + " " + board[Y][X]);
 					if (isMoveSquareAround(blackTexture,X,Y) && board[Y][X] == 0)
 					{
 						// Заполняем для дальнещего анализа
@@ -210,7 +207,6 @@ public class BoardController2 : VirtualBoardController
 					}
 					break;
 				case 2:
-
 					if (board[Y][X] == 0) continue;
 					if (!isMoveSquareAround(blackTexture, X, Y)) continue;
 					// Проверяем что фигуры из разных команд
@@ -269,7 +265,7 @@ public class BoardController2 : VirtualBoardController
 					break;
 			}
 		}
-		//image.GetComponent<MeshRenderer>().material.mainTexture = blackTexture;
+
 		GlowSquares();
 		
 	}
