@@ -73,6 +73,23 @@ public class CharacterController : Afflictions
     }
 
 
+    public CharacterController SelecteCharacter()
+    {
+        isSelected = true;
+        // Анимация подпрыгивания.
+        this.GetComponent<Animation>().Play();
+        return this;
+    }
+
+    public CharacterController CanсelSelecteCharacter()
+    {
+        isSelected = false;
+        // Анимация подпрыгивания.
+        this.GetComponent<Animation>().Stop();
+        return null;
+    }
+
+
     /// <summary>
     /// Возвращает текстуру хода персонажа (Синий(0;0;255) - ход, если нет препядствий;
     /// белый (0;0;0) - первый ход за игру;

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-
+	[SerializeField]
 	public Transform target;
+	[SerializeField]
 	public Vector2 startPosition;
 	private Vector3 offset;
 
@@ -42,5 +43,15 @@ public class CameraController : MonoBehaviour
 
 		transform.localEulerAngles = new Vector3(-Y, X, 0);
 		transform.position = transform.localRotation * offset + target.position;
+	}
+
+	public void CameraRotation()
+	{
+		StartCoroutine(Rotation());
+	}
+
+	IEnumerator Rotation()
+	{
+		yield return new WaitForSeconds(1);
 	}
 }

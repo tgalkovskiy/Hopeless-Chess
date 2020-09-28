@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23923637149797032}
   - component: {fileID: -4843811240145729922}
   - component: {fileID: -7212469269998972757}
+  - component: {fileID: 6181604525918913086}
   m_Layer: 10
   m_Name: RookLight
   m_TagString: Untagged
@@ -99,7 +100,7 @@ MonoBehaviour:
   devotion: 0
   isDead: 0
   isSelected: 0
-  moveTexture: {fileID: 2800000, guid: 62c0deaf6dfd2654694fa2fef3a81a39, type: 3}
+  moveTexture: {fileID: 2800000, guid: d6a748737a59b774586fab9a974d0c4b, type: 3}
 --- !u!65 &-7212469269998972757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -113,3 +114,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7150118, y: 1.2563593, z: 0.6126931}
   m_Center: {x: -0.0026229322, y: 0.62817967, z: 0.0058778524}
+--- !u!111 &6181604525918913086
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971375302472462}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

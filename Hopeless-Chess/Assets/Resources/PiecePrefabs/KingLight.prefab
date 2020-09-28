@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23126716194031272}
   - component: {fileID: 3407921352892826775}
   - component: {fileID: 2755661412493854482}
+  - component: {fileID: 3183276480837025191}
   m_Layer: 10
   m_Name: KingLight
   m_TagString: Untagged
@@ -99,7 +100,7 @@ MonoBehaviour:
   devotion: 0
   isDead: 0
   isSelected: 0
-  moveTexture: {fileID: 2800000, guid: 7436377eb5a130a4b9d07e066c7a69c5, type: 3}
+  moveTexture: {fileID: 2800000, guid: aa1bba4a9fa6c134d90d8f3c08979de0, type: 3}
 --- !u!65 &2755661412493854482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -113,3 +114,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6475475, y: 1.648105, z: 0.6052656}
   m_Center: {x: 0.009247422, y: 0.8240525, z: 0.00089240074}
+--- !u!111 &3183276480837025191
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389686872840900}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

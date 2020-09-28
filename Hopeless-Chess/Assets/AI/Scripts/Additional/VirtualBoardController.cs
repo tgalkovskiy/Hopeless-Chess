@@ -9,16 +9,16 @@ public class VirtualBoardController : MonoBehaviour
 	public virtual void SwitchOnBlackColliders() { }
 	public virtual void SwitchOffBlackColliders() { }
 
-	public virtual void ShowFiguresMoves(CharacterController piece) { }
-	public virtual void StopShowFiguresMoves(CharacterController piece) { }
+	public virtual void ShowPieceMoves(CharacterController piece) { }
+	public virtual void StopShowPieceMoves() { }
 
-	public virtual bool IsItShah(CharacterController piece, GameObject square, bool isLightTurn) { return false; }
+	public virtual bool IsItCheck(CharacterController piece, GameObject square, bool isLightTurn) { return false; }
 	public virtual bool IsItMate(CharacterController piece, GameObject square, bool isLightTurn) { return false; }
 
-	public virtual void MoveFigur(CharacterController figpieceur, GameObject cell) { }
+	public virtual void MovePiece(CharacterController piece, GameObject cell) { }
 
 	// Для AI
-	public virtual string [] GiveAllFiguresMoves(bool isLightTurn) { return null; }
+	public virtual string [] GiveAllPieceMoves(bool isLightTurn) { return null; }
 	public virtual float BoardScore(string move) { return 0; }
 	public virtual void MoveFigurVirtual(string move) { }
 	public virtual void UndoMoveFigurVirtual(string move) { }

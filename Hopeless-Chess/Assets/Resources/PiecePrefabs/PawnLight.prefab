@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23160403841118764}
   - component: {fileID: 4746033856200489836}
   - component: {fileID: 8199312520464116949}
+  - component: {fileID: -9034811604710914543}
   m_Layer: 10
   m_Name: PawnLight
   m_TagString: Untagged
@@ -112,4 +113,20 @@ MonoBehaviour:
   devotion: 0
   isDead: 0
   isSelected: 0
-  moveTexture: {fileID: 2800000, guid: 1c28be9c56140204596fe27b257ac4ca, type: 3}
+  moveTexture: {fileID: 2800000, guid: af447f676a632b74083c9fd16b3388c6, type: 3}
+--- !u!111 &-9034811604710914543
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1006356879557798}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

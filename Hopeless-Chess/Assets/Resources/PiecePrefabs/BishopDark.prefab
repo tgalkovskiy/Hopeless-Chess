@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23625353231150336}
   - component: {fileID: 1169688684020085640}
   - component: {fileID: 7515674358979673930}
+  - component: {fileID: 9113081450708528708}
   m_Layer: 10
   m_Name: BishopDark
   m_TagString: Untagged
@@ -99,7 +100,7 @@ MonoBehaviour:
   devotion: 0
   isDead: 0
   isSelected: 0
-  moveTexture: {fileID: 2800000, guid: 5111a1c00b523e74d8c48880789854f8, type: 3}
+  moveTexture: {fileID: 2800000, guid: 801c053d063bc6b4b99c16539bc78f6f, type: 3}
 --- !u!65 &7515674358979673930
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -113,3 +114,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.59906054, y: 1.4058228, z: 0.51611805}
   m_Center: {x: -0.031460285, y: 0.7029114, z: -0.028951049}
+--- !u!111 &9113081450708528708
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672242659374470}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0b5246fae3dc1ef4680d92eba4ce0b51, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
