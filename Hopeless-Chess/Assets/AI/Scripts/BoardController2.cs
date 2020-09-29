@@ -498,12 +498,11 @@ public class BoardController2 : MonoBehaviour
 		//Удаление съеденной фигруы
 		if (board[squarePosition.y][squarePosition.x] != 0)
 		{
-			var temp = squares[squarePosition.y][squarePosition.x].transform.GetChild(0).gameObject;
-
+			var temp = FindCharacterByIndex(board[squarePosition.y][squarePosition.x]);
 
 			//YTANTEIMORALITY
 			//изменение морали дружеским и вражеским фигурам
-			if(temp.GetComponent<CharacterController>().isLight)
+			if(temp.isLight)
 			{
 				morality.AddMorality(GetControllers(lightPieces).ToArray(), -3);
 				morality.AddMorality(GetControllers(darkPieces).ToArray(), 3);
@@ -514,8 +513,8 @@ public class BoardController2 : MonoBehaviour
 				morality.AddMorality(GetControllers(lightPieces).ToArray(), +3);
 			}
 
-			lastEatenPiece = temp.GetComponent<CharacterController>();
-			temp.SetActive(false);
+			lastEatenPiece = temp;
+			temp.gameObject.SetActive(false);
 			
 			//darkPieces.Remove(temp);
 			//lightPieces.Remove(temp);
@@ -531,6 +530,15 @@ public class BoardController2 : MonoBehaviour
 
 		MovePieceOnBoard(piecePosition, squarePosition);
 
+	}
+
+	CharacterController FindCharacterByIndex(int index)
+	{
+		foreach (var item in index < 900 ? lightPieces : darkPieces)
+		{
+			if (item.GetComponent<CharacterController>().boardIndex == index) return item.GetComponent<CharacterController>();
+		}
+		return null;
 	}
 
 	public bool IsItCheck(CharacterController piece, GameObject square, bool isLightTurn)
