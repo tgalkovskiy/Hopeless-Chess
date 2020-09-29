@@ -13,7 +13,6 @@ public class BoardController2 : MonoBehaviour
 	List<string> movesArchive;
 	int moveNumber;
 	GameObject[][] squares;
-	List<GameObject> selectedSquars;
 	List<GameObject> lightPieces;	
 	List<GameObject> darkPieces;
 
@@ -26,13 +25,13 @@ public class BoardController2 : MonoBehaviour
 
 	private void Start()
 	{
-		selectedSquars = new List<GameObject>();
 		lightPieces = new List<GameObject>();
 		darkPieces = new List<GameObject>();
 		movesArchive = new List<string>();
 
-		SetupStartPosition();
+		//SetupStartPosition();
 		//ShowBoard();
+		SetupMatePosition();
 		CreateBoard();
 		PlacePieces();
 
@@ -55,14 +54,30 @@ public class BoardController2 : MonoBehaviour
 	void SetupStartPosition()
 	{
 		board = new int[8][] {
-			new int [8] {  5,  4,  3,  1,  2,  3,  4,  5 },
-			new int [8] {  6,  6,  6,  6,  6,  6,  6,  6,},
-			new int [8] {  0,  0,  0,  0,  0,  0,  0,  0 },
-			new int [8] {  0,  0,  0,  0,  0,  0,  0,  0 },
-			new int [8] {  0,  0,  0,  0,  0,  0,  0,  0 },
-			new int [8] {  0,  0,  0,  0,  0,  0,  0,  0 },
-			new int [8] { 16, 16, 16, 16, 16, 16, 16, 16 },
-			new int [8] { 15, 14, 13, 11, 12, 13, 14, 15 }
+			new int [8] {  105, 104, 103, 101, 102, 113, 114, 115 },
+			new int [8] {  106, 116, 126, 136, 146, 156, 166, 176 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {  906, 916, 926, 936, 946, 956, 966, 976 },
+			new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
+		};
+
+		moveNumber = 1;
+	}
+
+	void SetupMatePosition()
+	{
+		board = new int[8][] {
+			new int [8] {  105,   0, 103, 101, 102, 113, 114, 115 },
+			new int [8] {  106, 116, 126,   0, 146, 156, 166, 176 },
+			new int [8] {  104,   0,   0, 136,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0, 916,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0, 926,   0,   0,   0,   0,   0 },
+			new int [8] {  906,   0,   0, 936, 946, 956, 966, 976 },
+			new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
 		};
 
 		moveNumber = 1;
@@ -92,8 +107,8 @@ public class BoardController2 : MonoBehaviour
 			ranks = null;
 			for (int j = 0; j < board[i].Length; j++)
 			{
-				if (board[i][j].ToString().Length == 2) ranks += board[i][j].ToString() + " ";
-				else ranks += " " + board[i][j].ToString() + "  ";
+				if (board[i][j].ToString().Length == 3) ranks += board[i][j].ToString() + " ";
+				else ranks += "  " + board[i][j].ToString() + "   ";
 			}
 			bordView += ranks + "\n";
 		}
@@ -134,12 +149,18 @@ public class BoardController2 : MonoBehaviour
 				// Пропускаем пустые клетки
 				if (board[i][j] == 0) continue;
 
+				var prefabIndex = (int)board[i][j].ToString()[board[i][j].ToString().Length-1] - (int)'0';
+				if (board[i][j].ToString()[0] == '9') prefabIndex += 10;
+
+
 				var temp = Instantiate(
-					GameModule.instance.PiecePrefabs[board[i][j]],
+					GameModule.instance.PiecePrefabs[prefabIndex],
 					squares[i][j].transform
 					);
 
-				if (board[i][j] < 10) { lightPieces.Add(temp); temp.GetComponent<CharacterController>().isLight = true;}
+				temp.GetComponent<CharacterController>().boardIndex = board[i][j];
+
+				if (board[i][j] < 900) {lightPieces.Add(temp); temp.GetComponent<CharacterController>().isLight = true;}
 				else darkPieces.Add(temp);
 			}
 		}
@@ -179,7 +200,7 @@ public class BoardController2 : MonoBehaviour
 
 	public List <Vector2Int> FindPieceMoves(CharacterController piece)
 	{
-		var selectedSquars2 = new List<Vector2Int>();
+		var selectedSquars = new List<Vector2Int>();
 
 		var piecePosition = FindSquare(piece.transform.parent.gameObject);
 		var moveTexture = CutMoveTexture( piece.GetMoveTexture() , piecePosition);
@@ -212,13 +233,13 @@ public class BoardController2 : MonoBehaviour
 		for (int i = 1; i < spiralSequence.Length; i++)
 		{
 			X = (int)(piecePosition.x + spiralSequence[i].x);
-			// Y в texture2d отчитывается снизу вверх.
 			Y = (int)(piecePosition.y + spiralSequence[i].y);
-			if (X > 7 || Y > 7 || X<0 || Y<0) continue;
+			if (X >= board[0].GetLength(0) || Y >= board.GetLength(0) || X<0 || Y<0) continue;
 
 			//if (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y))==2)
 			//Debug.Log(FindMoveColor(moveTexture.GetPixel(X, moveTexture.height -1 -Y)) + "X=" +X+ " Y="+  Y);
 
+			// Y в texture2d отчитывается снизу вверх.
 			switch (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y)))
 			{
 				case 1:
@@ -231,19 +252,18 @@ public class BoardController2 : MonoBehaviour
 					// Заполняем для дальнещего анализа
 					blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
 					blackTexture.Apply();
-					selectedSquars2.Add(new Vector2Int(X, Y));					
+					selectedSquars.Add(new Vector2Int(X, Y));					
 					break;
 				case 2:
 					if (board[Y][X] == 0) continue;
 					if (!isMoveSquareAround(blackTexture, X, Y)) continue;
 					// Проверяем что фигуры из разных команд
-					if (Math.Abs( board[Y][X] - board[piecePosition.y][piecePosition.x]) >=5)
-						if (board[piecePosition.y][piecePosition.x] != 1 && board[piecePosition.y][piecePosition.x] != 11)
-						{
-							blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
-							blackTexture.Apply();
-							selectedSquars2.Add(new Vector2Int(X, Y));
-						}
+					if (Math.Abs( board[Y][X] - board[piecePosition.y][piecePosition.x]) >700)
+					{
+						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
+						blackTexture.Apply();
+						selectedSquars.Add(new Vector2Int(X, Y));
+					}
 					break;
 				case 3:
 					if (!isMoveSquareAround(blackTexture, X, Y)) continue;
@@ -259,18 +279,17 @@ public class BoardController2 : MonoBehaviour
 							// Заполняем для дальнещего анализа
 							blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
 							blackTexture.Apply();
-							selectedSquars2.Add(new Vector2Int(X, Y));
+							selectedSquars.Add(new Vector2Int(X, Y));
 						}
 					}
 					else
 					{
-						if (Math.Abs(board[Y][X] - board[piecePosition.y][piecePosition.x]) >= 5)
-							if (board[piecePosition.y][piecePosition.x] != 1 && board[piecePosition.y][piecePosition.x] != 11)
-							{
-								blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
-								blackTexture.Apply();
-								selectedSquars2.Add(new Vector2Int(X, Y));
-							}
+						if (Math.Abs(board[Y][X] - board[piecePosition.y][piecePosition.x]) > 700)
+						{
+							blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
+							blackTexture.Apply();
+							selectedSquars.Add(new Vector2Int(X, Y));
+						}
 					}
 					break;
 				case 4:
@@ -279,17 +298,16 @@ public class BoardController2 : MonoBehaviour
 						// Заполняем для дальнещего анализа
 						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[4]);
 						blackTexture.Apply();
-						selectedSquars2.Add(new Vector2Int(X, Y));
+						selectedSquars.Add(new Vector2Int(X, Y));
 					}
 					else
 					{
-						if (Math.Abs(board[Y][X] - board[piecePosition.y][piecePosition.x]) >= 5)
-							if (board[piecePosition.y][piecePosition.x] != 1 && board[piecePosition.y][piecePosition.x] != 11)
-							{
-								blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
-								blackTexture.Apply();
-								selectedSquars2.Add(new Vector2Int(X, Y));
-							}
+						if (Math.Abs(board[Y][X] - board[piecePosition.y][piecePosition.x]) > 700)
+						{
+							blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
+							blackTexture.Apply();
+							selectedSquars.Add(new Vector2Int(X, Y));
+						}
 					}
 					break;
 				default:
@@ -298,7 +316,7 @@ public class BoardController2 : MonoBehaviour
 			}
 		}
 
-		return selectedSquars2;
+		return selectedSquars;
 	}
 
 
@@ -374,19 +392,8 @@ public class BoardController2 : MonoBehaviour
 		return new Vector2Int(squares.GetLength(0)+1, squares[0].GetLength(0)+1);
 	}
 
-	Vector2Int FindPosition(int index, bool isItLight)
+	Vector2Int FindPosition(int index)
 	{
-		//var index = 0;
-		//if (!piece.gameObject.name.Contains("Light")) index += 10;
-		//if (piece.pieceType == CharacterController.ChessType.pawn) index += 6;
-		//else if (piece.pieceType == CharacterController.ChessType.rook) index += 5;
-		//else if (piece.pieceType == CharacterController.ChessType.knight) index += 4;
-		//else if (piece.pieceType == CharacterController.ChessType.bishop) index += 3;
-		//else if (piece.pieceType == CharacterController.ChessType.queen) index += 2;
-		//else if (piece.pieceType == CharacterController.ChessType.king) index += 1;
-		//else index += 9;
-
-		if (!isItLight) index += 10;
 
 		for (int i = 0; i < board.GetLength(0); i++)
 		{
@@ -450,13 +457,9 @@ public class BoardController2 : MonoBehaviour
 	{
 		foreach (var item in GameObject.FindGameObjectsWithTag("Selected"))
 		{
+			item.transform.parent.GetComponent<BoxCollider>().enabled = false;
 			Destroy(item);
 		}
-		foreach (var item in selectedSquars)
-		{
-			item.GetComponent<BoxCollider>().enabled = false;
-		}
-		selectedSquars.Clear();
 	}
 
 	public void SwitchOffAllSquars()
@@ -524,22 +527,28 @@ public class BoardController2 : MonoBehaviour
 
 	public bool IsItCheck(CharacterController piece, GameObject square, bool isLightTurn)
 	{
-
 		MovePieceOnBoard(piece, square);
 
-		foreach (var item in isLightTurn? darkPieces:lightPieces)
+		if (IsItCheck(isLightTurn))
 		{
-			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
-			{
-				if (FindPosition(1,isLightTurn) == item2)
-				{
-					UndoMovePieceOnBord();
-					return true;
-				}
-			}
+			UndoMovePieceOnBord();
+			return true;
 		}
 
 		UndoMovePieceOnBord();
+		return false;
+	}
+
+	public bool IsItCheck(bool isLightTurn)
+	{
+		var kingPosition = FindPosition(isLightTurn ? 101 : 901);
+		foreach (var item in isLightTurn ? darkPieces : lightPieces)
+		{
+			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
+			{
+				if (kingPosition == item2)	return true;
+			}
+		}
 		return false;
 	}
 
@@ -559,10 +568,16 @@ public class BoardController2 : MonoBehaviour
 
 	#endregion
 
-	void MovePieceOnBoard (CharacterController piece, GameObject square)
+	void MovePieceOnBoard (CharacterController piece, GameObject square) 		
 	{
 		var piecePosition = FindSquare(piece.transform.parent.gameObject);
 		var squarePosition = FindSquare(square);
+
+		MovePieceOnBoard(piecePosition, squarePosition);
+	}
+
+	void MovePieceOnBoard(Vector2Int piecePosition, Vector2Int squarePosition)
+	{
 
 		movesArchive.Add($"{moveNumber}-{piecePosition.x}:{piecePosition.y}-{squarePosition.x}:{squarePosition.y}-{board[squarePosition.y][squarePosition.x]}");
 
@@ -585,6 +600,29 @@ public class BoardController2 : MonoBehaviour
 
 	public bool IsItMate(CharacterController piece, GameObject square, bool isLightTurn) 
 	{
+		// Смотрим противоположную командую
+		isLightTurn = !isLightTurn;
+
+		// Проверим есть ли вообще шах.
+		if (!IsItCheck(isLightTurn)) return false ;
+
+		bool isChek = false;
+		var kingPosition = FindPosition(isLightTurn ? 101 : 901);
+
+		foreach (var item in isLightTurn ? darkPieces : lightPieces)
+		{
+			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
+			{
+				MovePieceOnBoard(
+					FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
+					item2
+					);
+				if (IsItCheck(isLightTurn)) isChek = true;
+				UndoMovePieceOnBord();
+			}
+			if (isChek) isChek = false;
+			else return true;
+		}
 		return false;
 	}
 
@@ -600,6 +638,26 @@ public class BoardController2 : MonoBehaviour
 			allPieces.Add(lightPieces[i].GetComponent<CharacterController>());
 		}
 		return allPieces.ToArray();
+
+	}
 		
+	public string[] GiveAllPieceMoves(bool turn)
+	{
+		return null;
+	}
+
+	public float BoardScore(string turn)
+	{
+		return 0;
+	}
+
+	public void MoveFigurVirtual(string turn)
+	{
+
+	}
+
+	public void UndoMoveFigurVirtual(string turn)
+	{
+
 	}
 }

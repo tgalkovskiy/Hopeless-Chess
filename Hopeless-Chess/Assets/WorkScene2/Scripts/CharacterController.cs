@@ -55,6 +55,8 @@ public class CharacterController : Afflictions
 
     public Texture2D oldMoveTexture = null;
  //
+    public int boardIndex;
+
     private void Start() 
     {
 

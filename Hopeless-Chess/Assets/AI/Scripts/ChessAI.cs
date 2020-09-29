@@ -6,7 +6,7 @@ using UnityEngine;
 public class ChessAI : MonoBehaviour
 {
 	[SerializeField]
-	VirtualBoardController board;
+	BoardController2 board;
 
 	[SerializeField]
 	int AIPower = 1;
