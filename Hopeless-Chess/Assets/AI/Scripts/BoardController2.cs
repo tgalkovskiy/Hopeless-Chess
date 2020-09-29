@@ -23,6 +23,12 @@ public class BoardController2 : MonoBehaviour
 
 	Vector2[] spiralSequence;
 
+	CharacterController lastMovedPiece;
+	CharacterController lastEatenPiece;
+
+	public CharacterController LastMovedPiece { get { return lastMovedPiece; } }
+	public CharacterController LastEatenPiece { get { return lastEatenPiece; } }
+
 	private void Start()
 	{
 		lightPieces = new List<GameObject>();
@@ -508,20 +514,22 @@ public class BoardController2 : MonoBehaviour
 				morality.AddMorality(GetControllers(lightPieces).ToArray(), +3);
 			}
 
+			lastEatenPiece = temp.GetComponent<CharacterController>();
 			temp.SetActive(false);
 			
 			//darkPieces.Remove(temp);
 			//lightPieces.Remove(temp);
 			//Destroy(temp);
 		}
+		else lastEatenPiece = null;
+
+		lastMovedPiece = piece;
 
 		//Перестановка фигуры
 		piece.transform.parent = square.transform;
 		piece.transform.position = square.transform.position;
 
-		//Перестановка фигуры на вспомогательной доске
-		board[squarePosition.y][squarePosition.x] = board[piecePosition.y][piecePosition.x];
-		board[piecePosition.y][piecePosition.x] = 0;		
+		MovePieceOnBoard(piecePosition, squarePosition);
 
 	}
 
@@ -568,6 +576,11 @@ public class BoardController2 : MonoBehaviour
 
 	#endregion
 
+	/// <summary>
+	/// Перестановка фигур на вспомогательной доске.
+	/// </summary>
+	/// <param name="piecePosition"></param>
+	/// <param name="squarePosition"></param>
 	void MovePieceOnBoard (CharacterController piece, GameObject square) 		
 	{
 		var piecePosition = FindSquare(piece.transform.parent.gameObject);
@@ -576,6 +589,11 @@ public class BoardController2 : MonoBehaviour
 		MovePieceOnBoard(piecePosition, squarePosition);
 	}
 
+	/// <summary>
+	/// Перестановка фигур на вспомогательной доске.
+	/// </summary>
+	/// <param name="piecePosition"></param>
+	/// <param name="squarePosition"></param>
 	void MovePieceOnBoard(Vector2Int piecePosition, Vector2Int squarePosition)
 	{
 
@@ -587,6 +605,9 @@ public class BoardController2 : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Загрузка из архива последнего хода.
+	/// </summary>
 	void UndoMovePieceOnBord()
 	{
 		var temp = movesArchive[movesArchive.Count - 1].Split(new char[] { '-' });
