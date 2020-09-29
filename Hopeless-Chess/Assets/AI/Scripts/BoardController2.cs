@@ -529,7 +529,7 @@ public class BoardController2 : MonoBehaviour
 		piece.transform.position = square.transform.position;
 
 		MovePieceOnBoard(piecePosition, squarePosition);
-
+		moveNumber++;
 	}
 
 	CharacterController FindCharacterByIndex(int index)
@@ -604,8 +604,7 @@ public class BoardController2 : MonoBehaviour
 	/// <param name="squarePosition"></param>
 	void MovePieceOnBoard(Vector2Int piecePosition, Vector2Int squarePosition)
 	{
-
-		movesArchive.Add($"{moveNumber}-{piecePosition.x}:{piecePosition.y}-{squarePosition.x}:{squarePosition.y}-{board[squarePosition.y][squarePosition.x]}");
+		ArchiveMove(piecePosition, squarePosition);
 
 		//Перестановка фигуры на вспомогательной доске
 		board[squarePosition.y][squarePosition.x] = board[piecePosition.y][piecePosition.x];
@@ -613,32 +612,46 @@ public class BoardController2 : MonoBehaviour
 
 	}
 
+	void ArchiveMove(Vector2Int form, Vector2Int to)
+	{
+		movesArchive.Add($"{moveNumber}:{board[to.y][to.x]}-{form.x}:{form.y}-{to.x}:{to.y}");
+	}
+
 	/// <summary>
 	/// Загрузка из архива последнего хода.
 	/// </summary>
 	void UndoMovePieceOnBord()
 	{
-		var temp = movesArchive[movesArchive.Count - 1].Split(new char[] { '-' });
-		var piecePosition = new Vector2Int(int.Parse(temp[1].Split(new char[] { ':' })[0]), int.Parse(temp[1].Split(new char[] { ':' })[1]));
-		var squarePosition = new Vector2Int(int.Parse(temp[2].Split(new char[] { ':' })[0]), int.Parse(temp[2].Split(new char[] { ':' })[1]));
-		var eatenPiece = int.Parse(temp[3]);
+		var temp = UndoArchiveMove();
+		var piecePosition = temp[1];
+		var squarePosition = temp[2];
+		var eatenPiece = temp[0].y;
 
 		board[piecePosition.y][piecePosition.x] = board[squarePosition.y][squarePosition.x];
 		board[squarePosition.y][squarePosition.x] = eatenPiece;
 	}
 
+	Vector2Int[] UndoArchiveMove ()
+	{
+		var vectors = new Vector2Int[3];
+		var temp = movesArchive[movesArchive.Count - 1].Split(new char[] { '-' });
+		for (int i = 0; i < vectors.Length; i++)
+		{
+			vectors[i] = new Vector2Int(int.Parse(temp[i].Split(new char[] { ':' })[0]), int.Parse(temp[i].Split(new char[] { ':' })[1]));
+		}
+		return vectors;
+	}	
+
 	public bool IsItMate(CharacterController piece, GameObject square, bool isLightTurn) 
 	{
-		// Смотрим противоположную командую
+		// Смотрим противоположную команду
 		isLightTurn = !isLightTurn;
 
 		// Проверим есть ли вообще шах.
 		if (!IsItCheck(isLightTurn)) return false ;
 
-		bool isChek = false;
-		var kingPosition = FindPosition(isLightTurn ? 101 : 901);
-
-		foreach (var item in isLightTurn ? darkPieces : lightPieces)
+		//Перебераем все свои(вражеские) фигуры
+		foreach (var item in isLightTurn ? lightPieces : darkPieces)
 		{
 			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
 			{
@@ -646,13 +659,12 @@ public class BoardController2 : MonoBehaviour
 					FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
 					item2
 					);
-				if (IsItCheck(isLightTurn)) isChek = true;
+
+				if (!IsItCheck(isLightTurn)) return false;
 				UndoMovePieceOnBord();
 			}
-			if (isChek) isChek = false;
-			else return true;
 		}
-		return false;
+		return true;
 	}
 
 	public CharacterController[] GaveupPieces()
@@ -689,4 +701,5 @@ public class BoardController2 : MonoBehaviour
 	{
 
 	}
+
 }

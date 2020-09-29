@@ -7,12 +7,20 @@ public class ChessAI : MonoBehaviour
 {
 	[SerializeField]
 	BoardController2 board;
+	[Space]
 
+	[SerializeField]
+	Side AIside;
 	[SerializeField]
 	int AIPower = 1;
-
 	[SerializeField]
 	int depth = 2;
+
+	public enum Side
+	{
+		light, dark, none
+	}
+
 
 	private void Start()
 	{

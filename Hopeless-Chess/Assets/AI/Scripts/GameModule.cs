@@ -28,6 +28,10 @@ public class GameModule : MonoBehaviour
 
     [Space]
     [SerializeField]
+    ChessAI.Side aISide;
+
+    [Space]
+    [SerializeField]
     Color none;
     [SerializeField]
     Color move;
@@ -53,6 +57,8 @@ public class GameModule : MonoBehaviour
 
     public GameObject SquarePrefab { get { return squarePrefab; } }
     public GameObject SelectedPrefab { get { return selectedPrefab; } }
+    public ChessAI.Side AISide { get { return aISide; } }
+
     /// <summary>
     /// 0 - none
     /// 1 - move

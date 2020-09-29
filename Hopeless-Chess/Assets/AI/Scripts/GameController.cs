@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
 	bool isLightTurn;
 	[SerializeField]
 	BoardController2 board;
+	[SerializeField]
+	ChessAI AI;
 
 	[SerializeField]
 	Camera mainCamera;
@@ -19,7 +21,6 @@ public class GameController : MonoBehaviour
 	CharacterController lastCharacterSelected;
 
 	bool isFirstMove;
-
 
 	void Start()
 	{
@@ -99,15 +100,23 @@ public class GameController : MonoBehaviour
 
 		isLightTurn = !isLightTurn;
 		mainCamera.GetComponent<CameraController>().GoToPosition(isLightTurn);
+
 		if (isLightTurn)
 		{
 			board.SwitchOffBlackColliders();
-			board.SwitchOnLhiteColliders();
+			if (GameModule.instance.AISide != ChessAI.Side.light)
+				board.SwitchOnLhiteColliders();
 		}
 		else
 		{
 			board.SwitchOffLhiteColliders();
-			board.SwitchOnBlackColliders();
+			if (GameModule.instance.AISide != ChessAI.Side.dark)
+				board.SwitchOnBlackColliders();
+		}
+
+		if (GameModule.instance.AISide != ChessAI.Side.none)
+		{
+			AI.BestMove(isLightTurn);
 		}
 
 		//sh255 //yukit
