@@ -66,16 +66,19 @@ public class GameController : MonoBehaviour
 					// Новое
 					if (!board.IsItCheck(lastCharacterSelected, hitObject, isLightTurn))
 					{
-						if (!board.IsItMate(lastCharacterSelected, hitObject, isLightTurn))
+						board.MovePiece(lastCharacterSelected, hitObject);
+
+						if (board.IsItMate(lastCharacterSelected, hitObject, isLightTurn))
 						{
-							board.MovePiece(lastCharacterSelected, hitObject);
-							if (lastCharacterSelected != null)  lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
-							NextTurn();
-							board.StopShowPieceMoves();
+							Debug.Log("Игра окончена, это мат!");
+							//Destroy(this);
 						}
-						else Debug.Log("Игра окончена, это мат!");
+
+						if (lastCharacterSelected != null)  lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
+						NextTurn();
+						board.StopShowPieceMoves();
 					}
-					else Debug.Log("Так ходить нельзя, будет шах.");
+					else Debug.Log("Так ходить нельзя, тебе шах.");
 				}
 			}
 			else

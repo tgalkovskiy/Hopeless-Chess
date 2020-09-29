@@ -50,7 +50,9 @@ public class CharacterController : Afflictions
     public Texture2D givingupTexture;
 
     public ChessType pieceType;
- //
+
+    public int boardIndex;
+
     private void Start() 
     {
 

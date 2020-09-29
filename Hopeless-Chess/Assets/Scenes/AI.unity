@@ -1494,7 +1494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &622595932
 Transform:
   m_ObjectHideFlags: 0
@@ -3157,7 +3157,7 @@ MonoBehaviour:
   zoomMax: 20
   zoomMin: 8
   maxInetia: 2
-  inertiaStartOn: 0.5
+  inertiaStartOn: 0
   inertiaDecrease: 1
   startInertiaDecrease: 0.2
 --- !u!81 &1271300250
