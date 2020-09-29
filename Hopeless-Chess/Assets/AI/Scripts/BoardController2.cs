@@ -35,9 +35,11 @@ public class BoardController2 : MonoBehaviour
 		//ShowBoard();
 		CreateBoard();
 		PlacePieces();
+
 		SwitchOffLhiteColliders();
 		SwitchOffBlackColliders();
 		SwitchOffAllSquars();
+		
 
 
 	}
@@ -64,6 +66,21 @@ public class BoardController2 : MonoBehaviour
 		};
 
 		moveNumber = 1;
+	}
+
+	/// <summary>
+	/// Получает список контроллеров персонажей из листа фигур
+	/// </summary>
+	/// <param name="keys"></param>
+	/// <returns></returns>
+	public List<CharacterController> GetControllers(List<GameObject> keys)
+	{
+		List<CharacterController> characters = new List<CharacterController>();
+		for(int i = 0; i < keys.Count; i++)
+		{
+			characters.Add(keys[i].GetComponent<CharacterController>());
+		}
+		return characters;
 	}
 
 	public void ShowBoard()
@@ -122,7 +139,7 @@ public class BoardController2 : MonoBehaviour
 					squares[i][j].transform
 					);
 
-				if (board[i][j] < 10) lightPieces.Add(temp);
+				if (board[i][j] < 10) { lightPieces.Add(temp); temp.GetComponent<CharacterController>().isLight = true;}
 				else darkPieces.Add(temp);
 			}
 		}
@@ -468,12 +485,28 @@ public class BoardController2 : MonoBehaviour
 	{
 		var squarePosition = FindSquare(square);
 		var piecePosition = FindSquare(piece.transform.parent.gameObject);
-
+		Morality morality = Morality.GetInstance();
 		//Удаление съеденной фигруы
 		if (board[squarePosition.y][squarePosition.x] != 0)
 		{
 			var temp = squares[squarePosition.y][squarePosition.x].transform.GetChild(0).gameObject;
+
+
+			//YTANTEIMORALITY
+			//изменение морали дружеским и вражеским фигурам
+			if(temp.GetComponent<CharacterController>().isLight)
+			{
+				morality.AddMorality(GetControllers(lightPieces).ToArray(), -3);
+				morality.AddMorality(GetControllers(darkPieces).ToArray(), 3);
+			}
+			else
+			{
+				morality.AddMorality(GetControllers(darkPieces).ToArray(), -3);
+				morality.AddMorality(GetControllers(lightPieces).ToArray(), +3);
+			}
+
 			temp.SetActive(false);
+			
 			//darkPieces.Remove(temp);
 			//lightPieces.Remove(temp);
 			//Destroy(temp);

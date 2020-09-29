@@ -17,7 +17,7 @@ public class CharacterController : Afflictions
     /// <summary>
     /// Текущий уровень морали фигуры
     /// </summary>
-    [HideInInspector] public float moralityCount;
+     public float moralityCount;
 
     /// <summary>
     /// Текущий уровень злости (временно)
@@ -50,6 +50,8 @@ public class CharacterController : Afflictions
     public Texture2D givingupTexture;
 
     public ChessType pieceType;
+
+    public bool isLight;
  //
     private void Start() 
     {

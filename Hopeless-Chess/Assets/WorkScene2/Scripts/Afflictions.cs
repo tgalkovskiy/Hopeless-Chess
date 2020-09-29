@@ -5,18 +5,19 @@ using UnityEngine;
 public class Afflictions : MonoBehaviour
 {
 
-    [HideInInspector] public Morality morality = Morality.GetInstance();
-    
-    [HideInInspector] public Mood mood = Mood.GetInstance();
-
-    [HideInInspector] public Anger anger = Anger.GetInstance();
 }
 
 
+/// <summary>
+/// Контроллер злости персонажей
+/// </summary>
 public class Anger : MonoBehaviour
 {
 
     #region Singleton
+
+
+   
 
     public static Anger instance;
 
@@ -34,14 +35,26 @@ public class Anger : MonoBehaviour
     }
 
     #endregion
+    
+    /// <summary>
+    /// Старая текстура ходя
+    /// </summary>
     private Texture2D oldMoveTexture;
 
+    /// <summary>
+    /// Режим берсерка
+    /// </summary>
+    /// <param name="character"></param>
     public void RageMode(CharacterController character)
     {
         oldMoveTexture = character.moveTexture;
         character.moveTexture = character.rageTexture;
     }
 
+    /// <summary>
+    /// Выключение режима берсерка
+    /// </summary>
+    /// <param name="character"></param>
     public void DisableRageMode(CharacterController character)
     {
         character.moveTexture = oldMoveTexture;
@@ -49,6 +62,9 @@ public class Anger : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Оббработка морали
+/// </summary>
 public class Morality : MonoBehaviour
 {
     #region Singleton
@@ -69,11 +85,20 @@ public class Morality : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Восстанавливает половину морали фигуры
+    /// </summary>
+    /// <param name="piece"></param>
     public void Overcoming(CharacterController piece)
     {
         piece.moralityCount = piece.character.MaxMorality / 2;
     }
 
+    /// <summary>
+    /// Добавляет мораль фигурам
+    /// </summary>
+    /// <param name="pieces"></param>
+    /// <param name="moralityCount"></param>
     public void AddMorality(CharacterController[] pieces, float moralityCount)
     {
         for(int i = 0; i < pieces.Length; i++)
@@ -81,11 +106,22 @@ public class Morality : MonoBehaviour
             pieces[i].moralityCount += moralityCount;
         }
     }
+
+    /// <summary>
+    /// Добавляет мораль фигуре
+    /// </summary>
+    /// <param name="piece"></param>
+    /// <param name="moralityCount"></param>
     public void AddMorality(CharacterController piece, float moralityCount)
     {
             piece.moralityCount += moralityCount;
     }
 
+    /// <summary>
+    /// Добавление морали при превращении фигуры
+    /// </summary>
+    /// <param name="piece"></param>
+    /// <param name="pieces"></param>
     public void OnTransformPiece(CharacterController piece, CharacterController[] pieces)
     {
         piece.moralityCount += 100f;
@@ -94,12 +130,21 @@ public class Morality : MonoBehaviour
 
 
    Texture2D oldTexture;
+
+   /// <summary>
+   /// Изменение текстуры хода при отсутствии морали
+   /// </summary>
+   /// <param name="piece"></param>
     public void Givingup(CharacterController piece)
     {
         oldTexture = piece.moveTexture;
         piece.moveTexture = piece.givingupTexture;
     }
 
+    /// <summary>
+    /// Переключение на обычную текстуру хода
+    /// </summary>
+    /// <param name="piece"></param>
     public void DisableGivingup(CharacterController piece)
     {
         piece.moveTexture = oldTexture;
@@ -131,6 +176,10 @@ public class Mood : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Обработка смерти друга
+    /// </summary>
+    /// <param name="killedPiece"></param>
     public void FriendKilled(CharacterController killedPiece)
     {
         CharacterController[] friends = killedPiece.friends;
@@ -145,6 +194,11 @@ public class Mood : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Обработка смерти врага
+    /// </summary>
+    /// <param name="killedPiece"></param>
     public void EnemyKilled(CharacterController killedPiece)
     {
         CharacterController[] enemies = killedPiece.enemies;
