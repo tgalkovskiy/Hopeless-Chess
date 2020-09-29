@@ -587,4 +587,19 @@ public class BoardController2 : MonoBehaviour
 	{
 		return false;
 	}
+
+	public CharacterController[] GaveupPieces()
+	{
+		List<CharacterController> allPieces = new List<CharacterController>();	
+		for(int i = 0; i < darkPieces.Count; i++)
+		{
+			allPieces.Add(darkPieces[i].GetComponent<CharacterController>());	
+		}
+		for(int i = 0; i < lightPieces.Count; i++)
+		{
+			allPieces.Add(lightPieces[i].GetComponent<CharacterController>());
+		}
+		return allPieces.ToArray();
+		
+	}
 }

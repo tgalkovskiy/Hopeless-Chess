@@ -129,7 +129,6 @@ public class Morality : MonoBehaviour
     }
 
 
-   Texture2D oldTexture;
 
    /// <summary>
    /// Изменение текстуры хода при отсутствии морали
@@ -137,7 +136,7 @@ public class Morality : MonoBehaviour
    /// <param name="piece"></param>
     public void Givingup(CharacterController piece)
     {
-        oldTexture = piece.moveTexture;
+        piece.oldMoveTexture = piece.moveTexture;
         piece.moveTexture = piece.givingupTexture;
     }
 
@@ -147,8 +146,28 @@ public class Morality : MonoBehaviour
     /// <param name="piece"></param>
     public void DisableGivingup(CharacterController piece)
     {
-        piece.moveTexture = oldTexture;
-        oldTexture = null;
+        if(piece.oldMoveTexture != null)
+        {
+            piece.moveTexture = piece.oldMoveTexture;
+            piece.oldMoveTexture = null;
+        }
+    }
+
+    public void CheckMorality(CharacterController[] pieces)
+    {
+        for(int i = 0; i < pieces.Length; i++)
+        {
+            
+            if(pieces[i].moralityCount < 5f)
+            {
+                Givingup(pieces[i]);
+            }
+            else
+            {
+                
+                DisableGivingup(pieces[i]);
+            }
+        }
     }
 }
 

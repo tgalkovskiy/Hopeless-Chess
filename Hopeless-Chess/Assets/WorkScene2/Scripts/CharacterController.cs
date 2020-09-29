@@ -52,6 +52,8 @@ public class CharacterController : Afflictions
     public ChessType pieceType;
 
     public bool isLight;
+
+    public Texture2D oldMoveTexture = null;
  //
     private void Start() 
     {

@@ -18,10 +18,14 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	CharacterController lastCharacterSelected;
 
+	bool isFirstMove;
+
 
 	void Start()
 	{
+		isFirstMove = true;
 		NextTurn();
+		isFirstMove = false;
 	}
 
 	void Update()
@@ -52,7 +56,6 @@ public class GameController : MonoBehaviour
 							board.StopShowPieceMoves();
 						}
 						lastCharacterSelected = hitObject.GetComponent<CharacterController>().SelecteCharacter();
-
 						board.GlowSquares(board.FindPieceMoves(lastCharacterSelected));
 
 					}
@@ -103,6 +106,13 @@ public class GameController : MonoBehaviour
 			board.SwitchOffLhiteColliders();
 			board.SwitchOnBlackColliders();
 		}
+
+		//sh255 //yukit
+		if(isFirstMove == false)
+		{
+			Morality.GetInstance().CheckMorality(board.GaveupPieces());
+		}
+
 	}
 
 	public bool IsLightTurn
