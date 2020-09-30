@@ -110,9 +110,15 @@ public class GameController : MonoBehaviour
 			board.SwitchOnBlackColliders();
 		}
 
+
+
 		//sh255 //yukit
+
+		
+		
 		if(isFirstMove == false)
 		{
+			PieceEated();
 			Morality.GetInstance().CheckMorality(board.GaveupPieces());
 		}
 
@@ -125,4 +131,22 @@ public class GameController : MonoBehaviour
 			return isLightTurn;
 		}
 	}
+
+	public void PieceEated()
+	{
+		if(board.LastEatenPiece != null)
+		{
+			if(board.LastEatenPiece.isLight)
+			{
+				Morality.GetInstance().AddMorality(board.GetControllers(board.lightPieces).ToArray(), -3);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.darkPieces).ToArray(), 3);
+			}
+			else
+			{
+				Morality.GetInstance().AddMorality(board.GetControllers(board.lightPieces).ToArray(), 3);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.darkPieces).ToArray(), -3);
+			}
+		}
+	}
+
 }

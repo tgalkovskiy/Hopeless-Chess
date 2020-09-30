@@ -107,9 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44fb27eb4464a24478ccde96713cdad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  morality: {fileID: 0}
-  mood: {fileID: 0}
-  anger: {fileID: 0}
   character: {fileID: 0}
   moralityCount: 0
   angerCount: 0
@@ -120,8 +117,11 @@ MonoBehaviour:
   isSelected: 0
   moveTexture: {fileID: 2800000, guid: af447f676a632b74083c9fd16b3388c6, type: 3}
   rageTexture: {fileID: 0}
-  givingupTexture: {fileID: 0}
+  givingupTexture: {fileID: 2800000, guid: 47746a3af98592a4e81957666cf50792, type: 3}
   pieceType: 1
+  isLight: 0
+  oldMoveTexture: {fileID: 0}
+  boardIndex: 0
 --- !u!111 &-9034811604710914543
 Animation:
   m_ObjectHideFlags: 0
