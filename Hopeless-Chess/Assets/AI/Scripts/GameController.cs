@@ -81,6 +81,7 @@ public class GameController : MonoBehaviour
 						if (lastCharacterSelected != null)  lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
 						NextTurn();
 						board.StopShowPieceMoves();
+
 					}
 					else Debug.Log("Так ходить нельзя, тебе шах.");
 				}
@@ -147,13 +148,13 @@ public class GameController : MonoBehaviour
 		{
 			if(board.LastEatenPiece.isLight)
 			{
-				Morality.GetInstance().AddMorality(board.GetControllers(board.lightPieces).ToArray(), -3);
-				Morality.GetInstance().AddMorality(board.GetControllers(board.darkPieces).ToArray(), 3);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), -3);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), 3);
 			}
 			else
 			{
-				Morality.GetInstance().AddMorality(board.GetControllers(board.lightPieces).ToArray(), 3);
-				Morality.GetInstance().AddMorality(board.GetControllers(board.darkPieces).ToArray(), -3);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), 3);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), -3);
 			}
 		}
 	}

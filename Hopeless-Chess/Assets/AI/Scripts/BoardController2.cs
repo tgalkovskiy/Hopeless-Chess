@@ -41,7 +41,9 @@ public class BoardController2 : MonoBehaviour
 
 		//SetupStartPosition();
 		//SetupMatePosition();
-		SetupMiniGame();
+		//SetupMiniGame();
+		SetupMiniGame2();
+
 		CreateBoard();
 		PlacePieces();
 
@@ -96,6 +98,18 @@ public class BoardController2 : MonoBehaviour
 			new int [] {  105,   0,   0 },
 			new int [] {  104,   0, 103 },
 			new int [] {    0, 903,   0 }
+		};
+
+		moveNumber = 1;
+	}
+
+	void SetupMiniGame2()
+	{
+		board = new int[][] {
+			new int [] { 101,   0,   0,   0,   0},
+			new int [] {   0,   0, 901,   0, 905},
+			new int [] {   0,   0,   0,   0,   0},
+			new int [] {   0,   0,   0,   0,   0},
 		};
 
 		moveNumber = 1;
@@ -220,7 +234,7 @@ public class BoardController2 : MonoBehaviour
 	{
 		var selectedSquars = new List<Vector2Int>();
 
-		var piecePosition = FindSquare(piece.transform.parent.gameObject);
+		var piecePosition = FindPieceOnBoard(piece.boardIndex);
 		var moveTexture = CutMoveTexture( piece.GetMoveTexture() , piecePosition);
 
 		// Координаты клетки обхода по спирали
@@ -257,16 +271,20 @@ public class BoardController2 : MonoBehaviour
 			//if (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y))==2)
 			//Debug.Log(FindMoveColor(moveTexture.GetPixel(X, moveTexture.height -1 -Y)) + "X=" +X+ " Y="+  Y);
 
+
 			// Y в texture2d отчитывается снизу вверх.
 			switch (FindMoveColor(moveTexture.GetPixel(X, moveTexture.height - 1 - Y)))
 			{
 				case 1:
 					if (!(isMoveSquareAround(blackTexture, X, Y) && board[Y][X] == 0)) continue;
+
 					// Исправления бага с ферзем
 					if (Math.Abs(spiralSequence[i].x) == 2 && spiralSequence[i].y ==0) 
 						if (board[Y][(int)(piecePosition.x + spiralSequence[i].x/2)] != 0) continue;
 					if (Math.Abs(spiralSequence[i].y) == 2 && spiralSequence[i].x == 0) 
 						if (board[(int)(piecePosition.y + spiralSequence[i].y/2)][X] != 0) continue;
+					// Исправления бага с ферзем
+
 					// Заполняем для дальнещего анализа
 					blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
 					blackTexture.Apply();
@@ -285,11 +303,14 @@ public class BoardController2 : MonoBehaviour
 					break;
 				case 3:
 					if (!isMoveSquareAround(blackTexture, X, Y)) continue;
+
 					// Исправления бага с ферзем
 					if (Math.Abs(spiralSequence[i].x) == 2 && spiralSequence[i].y == 0)
 						if (board[Y][(int)(piecePosition.x + spiralSequence[i].x / 2)] != 0) continue;
 					if (Math.Abs(spiralSequence[i].y) == 2 && spiralSequence[i].x == 0)
 						if (board[(int)(piecePosition.y + spiralSequence[i].y / 2)][X] != 0) continue;
+					// Исправления бага с ферзем
+
 					if (board[Y][X] == 0)
 					{
 						// Заполняем для дальнещего анализа
@@ -338,6 +359,8 @@ public class BoardController2 : MonoBehaviour
 
 		return selectedSquars;
 	}
+
+
 
 
 	#region Дополнительный функции для ShowPieceMoves
@@ -464,6 +487,8 @@ public class BoardController2 : MonoBehaviour
 	}
 
 	#endregion
+
+
 
 
 	public void GlowSquares(List<Vector2Int> positions)
@@ -676,8 +701,11 @@ public class BoardController2 : MonoBehaviour
 					FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
 					item2
 					);
-
-				if (!IsItCheck(isLightTurn)) return false;
+				if (!IsItCheck(isLightTurn))
+				{
+					UndoMovePieceOnBord(movesArchive[movesArchive.Count - 1]);
+					return false;
+				}
 				UndoMovePieceOnBord(movesArchive[movesArchive.Count - 1]);
 			}
 		}
@@ -712,15 +740,39 @@ public class BoardController2 : MonoBehaviour
 
 			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
 			{
-				allMoves.Add(ArchiveMove(
+				var temp = ArchiveMove(
 				FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
 				item2
-				));
+				);
+
+				allMoves.Add(temp);
 			}
 		}
 
 		return allMoves;
 	}
+
+	bool KingDilemma (Vector2Int piece2, GameObject piece1,  bool turn, string move)
+	{
+		//Король короля может съесть всегда.
+		if (piece1.GetComponent<CharacterController>().boardIndex == (turn ? 101 : 901))
+			if (board[piece2.y][piece2.x] == (turn ? 901 : 101))
+				return true;
+
+
+		bool answer = true;
+
+		//Нельзя ходить туда где шах.
+		MovePieceOnBoard(move);
+		if (IsItCheck(turn)) answer =  false;
+		UndoMovePieceOnBord(move);
+
+		return answer;
+	}
+
+
+
+
 
 	public float BoardScore(string turn)
 	{

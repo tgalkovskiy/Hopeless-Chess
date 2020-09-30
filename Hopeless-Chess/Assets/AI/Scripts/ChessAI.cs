@@ -97,7 +97,9 @@ public class ChessAI : MonoBehaviour
 				#region Третий уровень погружения (просчет ходов)
 
 				Moves = board.GiveAllPieceMoves(isWhitesTurn);
-				
+
+				//Debug.Log(Moves.Count);
+
 				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
 				if (isWhitesTurn)
 				{
@@ -126,9 +128,8 @@ public class ChessAI : MonoBehaviour
 							bestMove = item;
 						}
 					}
+					Debug.Log("bestMove = " + bestMove + "MINbestBoardScore = " + bestBoardScore);
 				}
-
-				board.ShowBoard();
 
 				#endregion
 				break;
@@ -183,6 +184,7 @@ public class ChessAI : MonoBehaviour
 		{
 			board.MovePieceOnBoard(move);
 			var temp = BoardScore();
+			//Debug.Log(temp);
 			board.UndoMovePieceOnBord(move);
 			return temp;
 		}
@@ -194,8 +196,6 @@ public class ChessAI : MonoBehaviour
 
 		List<string> Moves = board.GiveAllPieceMoves(isWhitesTurn);
 
-		//Debug.Log(Moves.Count);
-
 		if (isWhitesTurn)
 		{
 			float bestBoardScore = -9999;
@@ -206,6 +206,8 @@ public class ChessAI : MonoBehaviour
 
 			//Отменяем вмрутальный ход
 			board.UndoMovePieceOnBord(move);
+			if (curentDepth==2)
+				Debug.Log("curentDepth = " + curentDepth + " move = " + move + "MAXSbestBoardScore =" + bestBoardScore);
 			return bestBoardScore;
 		}
 		else
@@ -218,6 +220,8 @@ public class ChessAI : MonoBehaviour
 
 			//Отменяем вмрутальный ход
 			board.UndoMovePieceOnBord(move);
+
+				//Debug.Log("curentDepth = " + curentDepth + " move = " + move + "MINSbestBoardScore =" + bestBoardScore);
 			return bestBoardScore;
 		}
 	}
@@ -303,6 +307,8 @@ public class ChessAI : MonoBehaviour
 		50,  //Ладья
 		10	 //Пешка
 	};
+
+
 
 
 
