@@ -104,19 +104,19 @@ public class GameController : MonoBehaviour
 		if (isLightTurn)
 		{
 			board.SwitchOffBlackColliders();
-			if (GameModule.instance.AISide != ChessAI.Side.light)
+			//if (GameModule.instance.AISide != ChessAI.Side.light)
 				board.SwitchOnLhiteColliders();
 		}
 		else
 		{
 			board.SwitchOffLhiteColliders();
-			if (GameModule.instance.AISide != ChessAI.Side.dark)
+			//if (GameModule.instance.AISide != ChessAI.Side.dark)
 				board.SwitchOnBlackColliders();
 		}
 
-		if (GameModule.instance.AISide != ChessAI.Side.none)
+		if (AI.Side != ChessAI.SideAI.none)
 		{
-			AI.BestMove(isLightTurn);
+			Debug.Log(AI.BestMove(isLightTurn));
 		}
 
 		//sh255 //yukit

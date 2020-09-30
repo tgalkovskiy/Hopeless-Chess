@@ -28,6 +28,10 @@ public class BoardController2 : MonoBehaviour
 
 	public CharacterController LastMovedPiece { get { return lastMovedPiece; } }
 	public CharacterController LastEatenPiece { get { return lastEatenPiece; } }
+	public int[][] Board { get { return board; } }
+
+	public List<GameObject> LightPieces { get { return lightPieces; } }
+	public List<GameObject> DarkPieces { get { return darkPieces; } }
 
 	private void Start()
 	{
@@ -36,17 +40,14 @@ public class BoardController2 : MonoBehaviour
 		movesArchive = new List<string>();
 
 		//SetupStartPosition();
-		//ShowBoard();
-		SetupMatePosition();
+		//SetupMatePosition();
+		SetupMiniGame();
 		CreateBoard();
 		PlacePieces();
 
 		SwitchOffLhiteColliders();
 		SwitchOffBlackColliders();
 		SwitchOffAllSquars();
-		
-
-
 	}
 
 	/// <summary>
@@ -84,6 +85,17 @@ public class BoardController2 : MonoBehaviour
 			new int [8] {    0,   0, 926,   0,   0,   0,   0,   0 },
 			new int [8] {  906,   0,   0, 936, 946, 956, 966, 976 },
 			new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
+		};
+
+		moveNumber = 1;
+	}
+
+	void SetupMiniGame()
+	{
+		board = new int[][] {
+			new int [] {  105,   0,   0 },
+			new int [] {  104,   0, 103 },
+			new int [] {    0, 903,   0 }
 		};
 
 		moveNumber = 1;
@@ -234,7 +246,7 @@ public class BoardController2 : MonoBehaviour
 
 		image.GetComponent<MeshRenderer>().material.mainTexture = moveTexture;
 
-		StartSpiralSecuence(board.GetLength(0));
+		StartSpiralSecuence(Math.Max(board.GetLength(0), board[0].GetLength(0)));
 
 		for (int i = 1; i < spiralSequence.Length; i++)
 		{
@@ -280,13 +292,10 @@ public class BoardController2 : MonoBehaviour
 						if (board[(int)(piecePosition.y + spiralSequence[i].y / 2)][X] != 0) continue;
 					if (board[Y][X] == 0)
 					{
-						if (isMoveSquareAround(blackTexture, X, Y))
-						{
-							// Заполняем для дальнещего анализа
-							blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
-							blackTexture.Apply();
-							selectedSquars.Add(new Vector2Int(X, Y));
-						}
+						// Заполняем для дальнещего анализа
+						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[1]);
+						blackTexture.Apply();
+						selectedSquars.Add(new Vector2Int(X, Y));
 					}
 					else
 					{
@@ -321,6 +330,11 @@ public class BoardController2 : MonoBehaviour
 					break;
 			}
 		}
+
+		//foreach (var item in selectedSquars)
+		//{
+		//	Debug.Log(item);
+		//}
 
 		return selectedSquars;
 	}
@@ -422,8 +436,11 @@ public class BoardController2 : MonoBehaviour
 		{
 			for (int j = Y-1; j <= Y+1; j++)
 			{
-				if (i > 7 || j > 7 || i < 0 || j < 0) continue;
-				if (textur.GetPixel(i, textur.height - 1 - j) == GameModule.instance.MoveColors[1]) return true;
+				if (i >= textur.width || j >= textur.height || i < 0 || j < 0) continue;
+				if (textur.GetPixel(i, textur.height - 1 - j) == GameModule.instance.MoveColors[1])
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -432,13 +449,15 @@ public class BoardController2 : MonoBehaviour
 	Texture2D CutMoveTexture ( Texture2D texture, Vector2Int shift)
 	{
 		var start = new Vector2Int((int)texture.width/2 +1 , (int)texture.height / 2 + 1);
-		var width = board.GetLength(0);
-		var height = board[0].GetLength(0);
+		var width = board[0].GetLength(0);
+		var height = board.GetLength(0);
 
 		var moveTexture = new Texture2D(width, height);
 		// Чтобы не блюрила
 		moveTexture.filterMode = FilterMode.Point ;
-		moveTexture.SetPixels(texture.GetPixels(start.x - 1 - shift.x, shift.y , width, height));
+		moveTexture.SetPixels(
+			texture.GetPixels(start.x - 1 - shift.x, shift.y + ((int)texture.height / 2 + 1 - height) , width, height)
+			);
 		moveTexture.Apply();
 		//image.GetComponent<MeshRenderer>().material.mainTexture = texture;
 		return moveTexture;
@@ -500,24 +519,11 @@ public class BoardController2 : MonoBehaviour
 		{
 			var temp = FindCharacterByIndex(board[squarePosition.y][squarePosition.x]);
 
-			//YTANTEIMORALITY
-			//изменение морали дружеским и вражеским фигурам
-			if(temp.isLight)
-			{
-				morality.AddMorality(GetControllers(lightPieces).ToArray(), -3);
-				morality.AddMorality(GetControllers(darkPieces).ToArray(), 3);
-			}
-			else
-			{
-				morality.AddMorality(GetControllers(darkPieces).ToArray(), -3);
-				morality.AddMorality(GetControllers(lightPieces).ToArray(), +3);
-			}
-
 			lastEatenPiece = temp;
 			temp.gameObject.SetActive(false);
 			
-			//darkPieces.Remove(temp);
-			//lightPieces.Remove(temp);
+			darkPieces.Remove(temp.gameObject);
+			lightPieces.Remove(temp.gameObject);
 			//Destroy(temp);
 		}
 		else lastEatenPiece = null;
@@ -530,6 +536,8 @@ public class BoardController2 : MonoBehaviour
 
 		MovePieceOnBoard(piecePosition, squarePosition);
 		moveNumber++;
+
+		//ShowBoard();
 	}
 
 	CharacterController FindCharacterByIndex(int index)
@@ -547,11 +555,11 @@ public class BoardController2 : MonoBehaviour
 
 		if (IsItCheck(isLightTurn))
 		{
-			UndoMovePieceOnBord();
+			UndoMovePieceOnBord(movesArchive[movesArchive.Count-1]);
 			return true;
 		}
 
-		UndoMovePieceOnBord();
+		UndoMovePieceOnBord(movesArchive[movesArchive.Count - 1]);
 		return false;
 	}
 
@@ -568,8 +576,6 @@ public class BoardController2 : MonoBehaviour
 		return false;
 	}
 
-	#region Дополнительные функции для IsItCheck
-
 	Vector2Int FindPieceOnBoard (int pieceIndex)
 	{
 		for (int i = 0; i < board.GetLength(0); i++)
@@ -581,8 +587,6 @@ public class BoardController2 : MonoBehaviour
 		}
 		return new Vector2Int(board.GetLength(0)+1, board[0].GetLength(0)+1);
 	}
-
-	#endregion
 
 	/// <summary>
 	/// Перестановка фигур на вспомогательной доске.
@@ -604,25 +608,38 @@ public class BoardController2 : MonoBehaviour
 	/// <param name="squarePosition"></param>
 	void MovePieceOnBoard(Vector2Int piecePosition, Vector2Int squarePosition)
 	{
-		ArchiveMove(piecePosition, squarePosition);
+		movesArchive.Add (ArchiveMove(piecePosition, squarePosition)) ;
 
-		//Перестановка фигуры на вспомогательной доске
 		board[squarePosition.y][squarePosition.x] = board[piecePosition.y][piecePosition.x];
 		board[piecePosition.y][piecePosition.x] = 0;
 
 	}
 
-	void ArchiveMove(Vector2Int form, Vector2Int to)
+	/// <summary>
+	/// Перестановка фигур на вспомогательной доске.
+	/// </summary>
+	/// <param name="piecePosition"></param>
+	/// <param name="squarePosition"></param>
+	public void MovePieceOnBoard(string move)
 	{
-		movesArchive.Add($"{moveNumber}:{board[to.y][to.x]}-{form.x}:{form.y}-{to.x}:{to.y}");
+		var temp = UndoArchiveMove(move);
+		var piecePosition = temp[1];
+		var squarePosition = temp[2];
+
+		MovePieceOnBoard(piecePosition, squarePosition);
+	}
+
+	string ArchiveMove(Vector2Int form, Vector2Int to)
+	{
+		return ($"{moveNumber}:{board[to.y][to.x]}-{form.x}:{form.y}-{to.x}:{to.y}");
 	}
 
 	/// <summary>
-	/// Загрузка из архива последнего хода.
+	/// Отмена хода
 	/// </summary>
-	void UndoMovePieceOnBord()
+	public void UndoMovePieceOnBord(string move)
 	{
-		var temp = UndoArchiveMove();
+		var temp = UndoArchiveMove(move);
 		var piecePosition = temp[1];
 		var squarePosition = temp[2];
 		var eatenPiece = temp[0].y;
@@ -631,10 +648,10 @@ public class BoardController2 : MonoBehaviour
 		board[squarePosition.y][squarePosition.x] = eatenPiece;
 	}
 
-	Vector2Int[] UndoArchiveMove ()
+	Vector2Int[] UndoArchiveMove (string move)
 	{
 		var vectors = new Vector2Int[3];
-		var temp = movesArchive[movesArchive.Count - 1].Split(new char[] { '-' });
+		var temp = move.Split(new char[] { '-' });
 		for (int i = 0; i < vectors.Length; i++)
 		{
 			vectors[i] = new Vector2Int(int.Parse(temp[i].Split(new char[] { ':' })[0]), int.Parse(temp[i].Split(new char[] { ':' })[1]));
@@ -661,7 +678,7 @@ public class BoardController2 : MonoBehaviour
 					);
 
 				if (!IsItCheck(isLightTurn)) return false;
-				UndoMovePieceOnBord();
+				UndoMovePieceOnBord(movesArchive[movesArchive.Count - 1]);
 			}
 		}
 		return true;
@@ -682,9 +699,27 @@ public class BoardController2 : MonoBehaviour
 
 	}
 		
-	public string[] GiveAllPieceMoves(bool turn)
+	public List<string> GiveAllPieceMoves(bool turn)
 	{
-		return null;
+		var allMoves = new List<string>();
+		foreach (var item in turn? lightPieces:darkPieces)
+		{
+			// Проверка. Есть ли фигура на доске. Ее могли виртуально съесть
+			if (
+				FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex) ==
+				new Vector2Int(board.GetLength(0) + 1, board[0].GetLength(0) + 1)
+				) continue;
+
+			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
+			{
+				allMoves.Add(ArchiveMove(
+				FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
+				item2
+				));
+			}
+		}
+
+		return allMoves;
 	}
 
 	public float BoardScore(string turn)

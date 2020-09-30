@@ -3567,6 +3567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   board: {fileID: 57326719}
+  AI: {fileID: 1413725188}
   mainCamera: {fileID: 1271300251}
   lastCharacterSelected: {fileID: 0}
 --- !u!4 &1413725187
@@ -3590,14 +3591,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413725185}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 582bb345b4af2964a996b5b9364d1095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 0}
-  AIPower: 0
-  depth: 0
+  board: {fileID: 57326719}
+  side: 1
+  AIPower: 2
+  depth: 2
 --- !u!1 &1420980495
 GameObject:
   m_ObjectHideFlags: 0

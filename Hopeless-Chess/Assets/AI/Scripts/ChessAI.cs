@@ -10,17 +10,18 @@ public class ChessAI : MonoBehaviour
 	[Space]
 
 	[SerializeField]
-	Side AIside;
+	SideAI side;
 	[SerializeField]
 	int AIPower = 1;
 	[SerializeField]
 	int depth = 2;
 
-	public enum Side
+	public enum SideAI
 	{
 		light, dark, none
 	}
 
+	public SideAI Side { get { return side; } } 
 
 	private void Start()
 	{
@@ -29,25 +30,30 @@ public class ChessAI : MonoBehaviour
 
 	public string BestMove(bool isWhitesTurn)
 	{
+		if (isWhitesTurn && side == SideAI.dark) return null;
+		if (!isWhitesTurn && side == SideAI.light) return null;
+
 		string bestMove = null;
 
-		string[] Moves;
 		float boardScore;
 		float tempBoardScore;
+
+		//List<string> Moves = new List<string>();
 
 		switch (AIPower)
 		{
 			case 1:
 				#region Первый уровень погружения (рандомные ходы)
-
-				bestMove = board.GiveAllPieceMoves(isWhitesTurn)[UnityEngine.Random.Range(0, board.GiveAllPieceMoves(isWhitesTurn).Length)];
+			
+				bestMove = board.GiveAllPieceMoves(isWhitesTurn)[UnityEngine.Random.Range(0, board.GiveAllPieceMoves(isWhitesTurn).Count - 1)];
 
 				#endregion
 				break;
 			case 2:
 				#region Второй уровень погружения (если можно съесть - съест)
 
-				Moves = board.GiveAllPieceMoves(isWhitesTurn);
+
+				List<string>  Moves=  board.GiveAllPieceMoves(isWhitesTurn);
 
 				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
 				if (isWhitesTurn)
@@ -55,8 +61,11 @@ public class ChessAI : MonoBehaviour
 					boardScore = -9999;
 					foreach (var item in Moves)
 					{
-						tempBoardScore = board.BoardScore(item);
-						if (tempBoardScore < boardScore)
+						board.MovePieceOnBoard(item);
+						tempBoardScore = BoardScore();
+						board.UndoMovePieceOnBord(item);
+
+						if (tempBoardScore > boardScore)
 						{
 							boardScore = tempBoardScore;
 							bestMove = item;
@@ -68,8 +77,13 @@ public class ChessAI : MonoBehaviour
 					boardScore = 9999;
 					foreach (var item in Moves)
 					{
-						tempBoardScore = board.BoardScore(item);
-						if (tempBoardScore > boardScore)
+						board.MovePieceOnBoard(item);
+						tempBoardScore = BoardScore();
+						board.UndoMovePieceOnBord(item);
+
+						//Debug.Log(boardScore);
+
+						if (tempBoardScore < boardScore)
 						{
 							boardScore = tempBoardScore;
 							bestMove = item;
@@ -77,15 +91,13 @@ public class ChessAI : MonoBehaviour
 					}
 				}
 
-					
-
 				#endregion
 				break;
 			case 3:
 				#region Третий уровень погружения (просчет ходов)
 
 				Moves = board.GiveAllPieceMoves(isWhitesTurn);
-
+				
 				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
 				if (isWhitesTurn)
 				{
@@ -93,7 +105,8 @@ public class ChessAI : MonoBehaviour
 					foreach (var item in Moves)
 					{
 						tempBoardScore = MinMaxVirtualScore(depth -1,item, isWhitesTurn);
-						if (tempBoardScore <= bestBoardScore)
+						
+						if (tempBoardScore >= bestBoardScore)
 						{
 							bestBoardScore = tempBoardScore;
 							bestMove = item;
@@ -106,13 +119,16 @@ public class ChessAI : MonoBehaviour
 					foreach (var item in Moves)
 					{
 						tempBoardScore = MinMaxVirtualScore(depth -1,item, isWhitesTurn);
-						if (tempBoardScore >= bestBoardScore)
+
+						if (tempBoardScore <= bestBoardScore)
 						{
 							bestBoardScore = tempBoardScore;
 							bestMove = item;
 						}
 					}
 				}
+
+				board.ShowBoard();
 
 				#endregion
 				break;
@@ -153,8 +169,6 @@ public class ChessAI : MonoBehaviour
 
 				#endregion
 				break;
-
-
 		}
 
 		return bestMove;
@@ -162,15 +176,25 @@ public class ChessAI : MonoBehaviour
 
 	float MinMaxVirtualScore (float curentDepth, string move, bool isWhitesTurn)
 	{
+		//Debug.Log("curentDepth = " + curentDepth +" move = " + move);
+
 		//Выход из рекурсии
-		if (curentDepth == 0) return board.BoardScore(move);
+		if (curentDepth == 0)
+		{
+			board.MovePieceOnBoard(move);
+			var temp = BoardScore();
+			board.UndoMovePieceOnBord(move);
+			return temp;
+		}
 
-		//Делвем выртуальный ход
-		board.MoveFigurVirtual(move);
+		//Делаем виртуальный ход
+		board.MovePieceOnBoard(move);
 		isWhitesTurn = !isWhitesTurn;
-		//Делвем выртуальный ход
+		//Делаем виртуальный ход
 
-		string[] Moves = board.GiveAllPieceMoves(isWhitesTurn);
+		List<string> Moves = board.GiveAllPieceMoves(isWhitesTurn);
+
+		//Debug.Log(Moves.Count);
 
 		if (isWhitesTurn)
 		{
@@ -181,7 +205,7 @@ public class ChessAI : MonoBehaviour
 			}
 
 			//Отменяем вмрутальный ход
-			board.UndoMoveFigurVirtual(move);
+			board.UndoMovePieceOnBord(move);
 			return bestBoardScore;
 		}
 		else
@@ -193,7 +217,7 @@ public class ChessAI : MonoBehaviour
 			}
 
 			//Отменяем вмрутальный ход
-			board.UndoMoveFigurVirtual(move);
+			board.UndoMovePieceOnBord(move);
 			return bestBoardScore;
 		}
 	}
@@ -209,7 +233,7 @@ public class ChessAI : MonoBehaviour
 		isWhitesTurn = !isWhitesTurn;
 		//Делвем выртуальный ход
 
-		string[] Moves = board.GiveAllPieceMoves(isWhitesTurn);
+		List<string> Moves = board.GiveAllPieceMoves(isWhitesTurn);
 
 		if (isWhitesTurn)
 		{
@@ -245,5 +269,43 @@ public class ChessAI : MonoBehaviour
 			return bestBoardScore;
 		}
 	}
+
+
+	float BoardScore()
+	{
+		var curentBoard = board.Board;
+		float boardScore = 0;
+		int piece;
+		float side;
+
+		//board.ShowBoard();
+
+		for (int i = 0; i < curentBoard.Length; i++)
+		{
+			for (int j = 0; j < curentBoard[i].Length; j++)
+			{
+				piece = curentBoard[i][j] % 10;
+				side = curentBoard[i][j] > 500 ? -1 : 1 ;
+				boardScore += side * pieceCost[piece];
+				//Debug.Log($"piece= {piece} side= {side} ++ = {side * pieceCost[piece]}  boardScore= {boardScore}");
+			}
+		}
+		return boardScore;
+	}
+
+	static float[] pieceCost = new float[]
+	{
+		0,   //Пустое место
+		900, //Король
+		90,  //Королева
+		30,  //Слон
+		30,  //Конь
+		50,  //Ладья
+		10	 //Пешка
+	};
+
+
+
+
 }
 
