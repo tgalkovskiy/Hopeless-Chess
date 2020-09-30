@@ -129,6 +129,7 @@ public class GameController : MonoBehaviour
 		if(isFirstMove == false)
 		{
 			PieceEated();
+			Anger.GetInstance().CheckAnger(board.GaveupPieces());
 			Morality.GetInstance().CheckMorality(board.GaveupPieces());
 		}
 
