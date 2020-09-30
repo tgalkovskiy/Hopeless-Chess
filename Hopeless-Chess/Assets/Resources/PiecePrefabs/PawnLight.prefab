@@ -116,7 +116,7 @@ MonoBehaviour:
   isDead: 0
   isSelected: 0
   moveTexture: {fileID: 2800000, guid: af447f676a632b74083c9fd16b3388c6, type: 3}
-  rageTexture: {fileID: 0}
+  rageTexture: {fileID: 2800000, guid: 1df21396ec472004081cdaf5fbc9cb41, type: 3}
   givingupTexture: {fileID: 2800000, guid: 47746a3af98592a4e81957666cf50792, type: 3}
   pieceType: 1
   isLight: 0

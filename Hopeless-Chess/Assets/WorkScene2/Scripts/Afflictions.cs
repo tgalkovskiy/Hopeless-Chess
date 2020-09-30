@@ -36,10 +36,6 @@ public class Anger : MonoBehaviour
 
     #endregion
     
-    /// <summary>
-    /// Старая текстура ходя
-    /// </summary>
-    private Texture2D oldMoveTexture;
 
     /// <summary>
     /// Режим берсерка
@@ -47,7 +43,7 @@ public class Anger : MonoBehaviour
     /// <param name="character"></param>
     public void RageMode(CharacterController character)
     {
-        oldMoveTexture = character.moveTexture;
+        character.oldMoveTexture = character.moveTexture;
         character.moveTexture = character.rageTexture;
     }
 
@@ -57,8 +53,29 @@ public class Anger : MonoBehaviour
     /// <param name="character"></param>
     public void DisableRageMode(CharacterController character)
     {
-        character.moveTexture = oldMoveTexture;
-        oldMoveTexture = null;
+        character.moveTexture = character.oldMoveTexture;
+        character.oldMoveTexture = null;
+    }
+
+    public void CheckAnger(CharacterController[] characters)
+    {
+        
+        for(int i = 0; i < characters.Length; i++)
+        {
+            
+            if(characters[i].angerCount < 3f)
+            {
+                RageMode(characters[i]);
+                
+            }
+            else
+            {
+                if(characters[i].oldMoveTexture != null && characters[i].moveTexture.name.Contains("rage"))
+                {
+                    DisableRageMode(characters[i]);
+                }
+            }
+        }
     }
 }
 
@@ -146,7 +163,7 @@ public class Morality : MonoBehaviour
     /// <param name="piece"></param>
     public void DisableGivingup(CharacterController piece)
     {
-        if(piece.oldMoveTexture != null)
+        if(piece.oldMoveTexture != null && piece.moveTexture.name.Contains("givingup"))
         {
             piece.moveTexture = piece.oldMoveTexture;
             piece.oldMoveTexture = null;
