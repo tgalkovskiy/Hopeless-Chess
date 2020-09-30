@@ -39,10 +39,10 @@ public class BoardController2 : MonoBehaviour
 		darkPieces = new List<GameObject>();
 		movesArchive = new List<string>();
 
-		//SetupStartPosition();
+		SetupStartPosition();
 		//SetupMatePosition();
 		//SetupMiniGame();
-		SetupMiniGame2();
+		//SetupMiniGame2();
 
 		CreateBoard();
 		PlacePieces();
@@ -230,6 +230,12 @@ public class BoardController2 : MonoBehaviour
 		}
 	}
 
+
+
+
+
+
+
 	public List <Vector2Int> FindPieceMoves(CharacterController piece)
 	{
 		var selectedSquars = new List<Vector2Int>();
@@ -359,9 +365,6 @@ public class BoardController2 : MonoBehaviour
 
 		return selectedSquars;
 	}
-
-
-
 
 	#region Дополнительный функции для ShowPieceMoves
 

@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AI\Free Low Poly Chess Set\Example\Scripts\CameraRotate.cs" />
-    <Compile Include="Assets\AI\Scripts\Additional\VirtualBoardController.cs" />
     <Compile Include="Assets\AI\Scripts\BoardController2.cs" />
     <Compile Include="Assets\AI\Scripts\CameraController.cs" />
     <Compile Include="Assets\AI\Scripts\ChessAI.cs" />

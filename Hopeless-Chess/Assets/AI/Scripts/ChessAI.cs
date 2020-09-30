@@ -128,7 +128,7 @@ public class ChessAI : MonoBehaviour
 							bestMove = item;
 						}
 					}
-					Debug.Log("bestMove = " + bestMove + "MINbestBoardScore = " + bestBoardScore);
+					//Debug.Log("bestMove = " + bestMove + "MINbestBoardScore = " + bestBoardScore);
 				}
 
 				#endregion
@@ -206,8 +206,8 @@ public class ChessAI : MonoBehaviour
 
 			//Отменяем вмрутальный ход
 			board.UndoMovePieceOnBord(move);
-			if (curentDepth==2)
-				Debug.Log("curentDepth = " + curentDepth + " move = " + move + "MAXSbestBoardScore =" + bestBoardScore);
+			//if (curentDepth==2)
+			//	Debug.Log("curentDepth = " + curentDepth + " move = " + move + "MAXSbestBoardScore =" + bestBoardScore);
 			return bestBoardScore;
 		}
 		else
