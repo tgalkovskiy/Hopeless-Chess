@@ -37,6 +37,10 @@ public class GameModule : MonoBehaviour
     Color moveAndAttack;
     [SerializeField]
     Color jump;
+    [SerializeField]
+    Color jumpAndMove;
+    [SerializeField]
+    Color jumpAndAttack;
 
     Color[] moveColors;
     Texture2D emptyMoveTexture;
@@ -54,11 +58,13 @@ public class GameModule : MonoBehaviour
     public GameObject SquarePrefab { get { return squarePrefab; } }
     public GameObject SelectedPrefab { get { return selectedPrefab; } }
     /// <summary>
-    /// 0 - none
-    /// 1 - move
-    /// 2 - attack
-    /// 3 - move and attack
-    /// 4 - jump
+    /// 0 - none; 
+    /// 1 - move; 
+    /// 2 - attack; 
+    /// 3 - move and attack; 
+    /// 4 - jump and move and attack; 
+    /// 5 - junp and move; 
+    /// 6 - jump and attack; 
     /// </summary>
     public Color[] MoveColors { get { return moveColors; } }
     public Texture2D EmptyMoveTexture { get { return emptyMoveTexture; } }

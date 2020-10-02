@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -264,7 +265,7 @@ public class BoardController2 : MonoBehaviour
 		blackTexture.SetPixel(piecePosition.x, blackTexture.height -1 - piecePosition.y, GameModule.instance.MoveColors[1]);
 		blackTexture.Apply();
 
-		image.GetComponent<MeshRenderer>().material.mainTexture = moveTexture;
+		image.GetComponent<MeshRenderer>().material.mainTexture = blackTexture;
 
 		StartSpiralSecuence(Math.Max(board.GetLength(0), board[0].GetLength(0)));
 
@@ -350,6 +351,22 @@ public class BoardController2 : MonoBehaviour
 							blackTexture.Apply();
 							selectedSquars.Add(new Vector2Int(X, Y));
 						}
+					}
+					break;
+				case 5:
+					if (board[Y][X] != 0) continue;
+					// Заполняем для дальнещего анализа
+					blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[4]);
+					blackTexture.Apply();
+					selectedSquars.Add(new Vector2Int(X, Y));
+					break;
+				case 6:
+					if (board[Y][X] == 0) continue;
+					if (Math.Abs(board[Y][X] - board[piecePosition.y][piecePosition.x]) > 700)
+					{
+						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
+						blackTexture.Apply();
+						selectedSquars.Add(new Vector2Int(X, Y));
 					}
 					break;
 				default:
@@ -636,7 +653,7 @@ public class BoardController2 : MonoBehaviour
 	/// <param name="squarePosition"></param>
 	void MovePieceOnBoard(Vector2Int piecePosition, Vector2Int squarePosition)
 	{
-		movesArchive.Add (ArchiveMove(piecePosition, squarePosition)) ;
+		movesArchive.Add (Archivator(piecePosition, squarePosition)) ;
 
 		board[squarePosition.y][squarePosition.x] = board[piecePosition.y][piecePosition.x];
 		board[piecePosition.y][piecePosition.x] = 0;
@@ -650,14 +667,20 @@ public class BoardController2 : MonoBehaviour
 	/// <param name="squarePosition"></param>
 	public void MovePieceOnBoard(string move)
 	{
-		var temp = UndoArchiveMove(move);
+		var temp = DeArchivator(move);
 		var piecePosition = temp[1];
 		var squarePosition = temp[2];
 
 		MovePieceOnBoard(piecePosition, squarePosition);
 	}
 
-	string ArchiveMove(Vector2Int form, Vector2Int to)
+	/// <summary>
+	/// Turn : died piece - from.x : from.y  - to.x : to.y 
+	/// </summary>
+	/// <param name="form"></param>
+	/// <param name="to"></param>
+	/// <returns></returns>
+	string Archivator(Vector2Int form, Vector2Int to)
 	{
 		return ($"{moveNumber}:{board[to.y][to.x]}-{form.x}:{form.y}-{to.x}:{to.y}");
 	}
@@ -667,7 +690,7 @@ public class BoardController2 : MonoBehaviour
 	/// </summary>
 	public void UndoMovePieceOnBord(string move)
 	{
-		var temp = UndoArchiveMove(move);
+		var temp = DeArchivator(move);
 		var piecePosition = temp[1];
 		var squarePosition = temp[2];
 		var eatenPiece = temp[0].y;
@@ -676,7 +699,12 @@ public class BoardController2 : MonoBehaviour
 		board[squarePosition.y][squarePosition.x] = eatenPiece;
 	}
 
-	Vector2Int[] UndoArchiveMove (string move)
+	/// <summary>
+	/// Turn : died piece - from.x : from.y  - to.x : to.y 
+	/// </summary>
+	/// <param name="move"></param>
+	/// <returns></returns>
+	Vector2Int[] DeArchivator (string move)
 	{
 		var vectors = new Vector2Int[3];
 		var temp = move.Split(new char[] { '-' });
@@ -743,7 +771,7 @@ public class BoardController2 : MonoBehaviour
 
 			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
 			{
-				var temp = ArchiveMove(
+				var temp = Archivator(
 				FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
 				item2
 				);
@@ -792,4 +820,98 @@ public class BoardController2 : MonoBehaviour
 
 	}
 
+
+
+	///
+	/// Методы для Affliction
+	///
+
+
+	public bool IsAlliesDieNear (CharacterController piece)
+	{
+		var temp = DeArchivator(movesArchive[movesArchive.Count]);
+		var isLight = piece.boardIndex > 700 ? false : true;
+
+		if (temp[0].y == 0) return false;
+		if (temp[0].y < 700 && !isLight) return false;
+		if (temp[0].y > 700 && isLight) return false;
+
+		var position = FindPieceOnBoard(piece.boardIndex);
+
+		for (int y = position.y - 1; y <= position.y + 1; y++)
+		{
+			for (int x = position.x - 1; x <= position.x + 1; x++)
+			{
+				if (y >= board.Length || x >= board[0].Length || y < 0 || x < 0) continue;
+				if (temp[2] == new Vector2Int[x][y]) return true;
+			}
+		}
+
+		return false;
+	}
+
+	public int EmenyCount(CharacterController piece)
+	{
+		int count=0;
+		var isLight = piece.boardIndex > 700 ? false : true;
+		var position = FindPieceOnBoard(piece.boardIndex);
+
+		for (int y = position.y - 1; y <= position.y + 1; y++)		
+		{
+			for (int x = position.x - 1; x <= position.x + 1; x++)
+			{
+				if (y >= board.Length || x >= board[0].Length || y < 0 || x < 0) continue;
+				if (board[y][x] == 0) continue;
+				if (board[y][x] > 700 && isLight) count++;
+				if (board[y][x] < 700 && !isLight) count++;
+			}
+		}
+		return count;
+	}
+
+	public int AlliesCount(CharacterController piece)
+	{
+		int count = 0;
+		var isLight = piece.boardIndex > 700 ? false : true;
+		var position = FindPieceOnBoard(piece.boardIndex);
+
+		for (int y = position.y - 1; y <= position.y + 1; y++)
+		{
+			for (int x = position.x - 1; x <= position.x + 1; x++)
+			{
+				if (y >= board.Length || x >= board[0].Length || y < 0 || x < 0) continue;
+				if (board[y][x] == 0) continue;
+				if (board[y][x] < 700 && isLight) count++;
+				if (board[y][x] > 700 && !isLight) count++;
+			}
+		}
+		return count;
+	}
+
+	public bool IsMyQweenDie(CharacterController piece)
+	{
+		var temp = DeArchivator(movesArchive[movesArchive.Count]);
+		var qweenIndex = piece.boardIndex > 700 ? 902 : 102;
+
+		if (temp[0].y == qweenIndex) return true;
+
+		return false;
+	}
+
+	public bool IsMyQweenOrKingNear (CharacterController piece)
+	{
+		var qweenIndex = piece.boardIndex > 700 ? 902 : 102;
+		var kingIndex = piece.boardIndex > 700 ? 901 : 101;
+		var position = FindPieceOnBoard(piece.boardIndex);
+
+		for (int y = position.y - 1; y <= position.y + 1; y++)
+		{
+			for (int x = position.x - 1; x <= position.x + 1; x++)
+			{
+				if (y >= board.Length || x >= board[0].Length || y < 0 || x < 0) continue;
+				if (board[y][x] == qweenIndex || board[y][x] == kingIndex) return true;
+			}
+		}
+		return false;
+	}
 }
