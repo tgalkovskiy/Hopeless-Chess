@@ -26,6 +26,9 @@ public class GameModule : MonoBehaviour
     GameObject squarePrefab;
     GameObject selectedPrefab;
 
+    [SerializeField]
+    Camera mainCamera;
+
     [Space]
     [SerializeField]
     Color none;
@@ -56,7 +59,12 @@ public class GameModule : MonoBehaviour
     public GameObject[] PiecePrefabs { get { return piecePrefabs; } }
 
     public GameObject SquarePrefab { get { return squarePrefab; } }
+
     public GameObject SelectedPrefab { get { return selectedPrefab; } }
+
+    public Camera MainCamera { get { return mainCamera; } }
+
+
     /// <summary>
     /// 0 - none; 
     /// 1 - move; 
@@ -75,6 +83,7 @@ public class GameModule : MonoBehaviour
     public CharactersObject[] KnightData {get; set;}
     public CharactersObject[] QueenData {get; set;}
     public CharactersObject[] KingData {get; set;}
+
     
 
     public void GetResources()

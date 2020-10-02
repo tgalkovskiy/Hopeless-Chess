@@ -51,6 +51,19 @@ public class CameraController : MonoBehaviour
 
 	float inertia;
 
+	[Space]
+
+	[Header("Piece Variables:")]
+
+	[SerializeField]
+	float transitionAngle = 55;
+	[SerializeField]
+	float deltatransitionAngle = 10;
+
+	public float TransitionAngle { get { return transitionAngle; } }
+	public float DeltatransitionAngle { get { return deltatransitionAngle; } }
+
+
 	void Start()
 	{
 		verticalLimit = Mathf.Abs(verticalLimit);
