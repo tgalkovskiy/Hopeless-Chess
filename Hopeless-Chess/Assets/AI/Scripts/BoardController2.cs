@@ -242,6 +242,9 @@ public class BoardController2 : MonoBehaviour
 		var selectedSquars = new List<Vector2Int>();
 
 		var piecePosition = FindPieceOnBoard(piece.boardIndex);
+		///Проверка - есть ли такая фигруа на доске
+		if (piecePosition == new Vector2Int(board.GetLength(0) + 1, board[0].GetLength(0) + 1)) return selectedSquars;
+
 		var moveTexture = CutMoveTexture( piece.GetMoveTexture() , piecePosition);
 
 		// Координаты клетки обхода по спирали
@@ -829,7 +832,7 @@ public class BoardController2 : MonoBehaviour
 
 	public bool IsAlliesDieNear (CharacterController piece)
 	{
-		var temp = DeArchivator(movesArchive[movesArchive.Count]);
+		var temp = DeArchivator(movesArchive[movesArchive.Count-1]);
 		var isLight = piece.boardIndex > 700 ? false : true;
 
 		if (temp[0].y == 0) return false;
@@ -890,7 +893,7 @@ public class BoardController2 : MonoBehaviour
 
 	public bool IsMyQweenDie(CharacterController piece)
 	{
-		var temp = DeArchivator(movesArchive[movesArchive.Count]);
+		var temp = DeArchivator(movesArchive[movesArchive.Count-1]);
 		var qweenIndex = piece.boardIndex > 700 ? 902 : 102;
 
 		if (temp[0].y == qweenIndex) return true;
