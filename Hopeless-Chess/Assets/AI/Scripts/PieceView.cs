@@ -17,6 +17,8 @@ public class PieceView : MonoBehaviour
     Material frontViewMaterial;
     Material topViewMaterial;
 
+    float deltaTopView;
+
     float topAngle;
     float delta;
     float CA;
@@ -33,6 +35,7 @@ public class PieceView : MonoBehaviour
 
         topAngle = camera.GetComponent<CameraController>().TransitionAngle;
         delta = camera.GetComponent<CameraController>().DeltatransitionAngle;
+        deltaTopView = camera.GetComponent<CameraController>().AngleStartTopViewRotation;
     }
 
     // Update is called once per frame
@@ -42,9 +45,15 @@ public class PieceView : MonoBehaviour
         var cameraProjection = new Vector3(camera.transform.position.x, transform.position.y, camera.transform.position.z);
         var angle = Vector3.Angle(transform.position - cameraProjection, Vector3.back);
 
-        if (camera.transform.position.x < 0) angle = -angle;
+        if ((camera.transform.position - transform.position).x < 0) angle = -angle;
 
         frontView.transform.eulerAngles = new Vector3( frontView.transform.eulerAngles.x, angle, 0 );
+
+        if (Math.Abs(camera.transform.eulerAngles.y) < deltaTopView || Math.Abs(camera.transform.eulerAngles.y) > 360 - deltaTopView)
+            topView.transform.eulerAngles = new Vector3(0, 180, 0);
+        else if (Math.Abs(camera.transform.eulerAngles.y) > 180 - deltaTopView && Math.Abs(camera.transform.eulerAngles.y) < 180 + deltaTopView)
+            topView.transform.eulerAngles = new Vector3(0, 0, 0);
+
         /// Смотрим на камеру
 
 

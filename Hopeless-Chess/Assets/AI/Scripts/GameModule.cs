@@ -89,18 +89,31 @@ public class GameModule : MonoBehaviour
     public void GetResources()
     {
         piecePrefabs = new GameObject[17];
-        piecePrefabs[1] = Resources.Load<GameObject>("PiecePrefabs/KingLight");
-        piecePrefabs[2] = Resources.Load<GameObject>("PiecePrefabs/QueenLight");
-        piecePrefabs[3] = Resources.Load<GameObject>("PiecePrefabs/BishopLight");
-        piecePrefabs[4] = Resources.Load<GameObject>("PiecePrefabs/KnightLight");
-        piecePrefabs[5] = Resources.Load<GameObject>("PiecePrefabs/RookLight");
-        piecePrefabs[6] = Resources.Load<GameObject>("PiecePrefabs/PawnLight");
-        piecePrefabs[11] = Resources.Load<GameObject>("PiecePrefabs/KingDark");
-        piecePrefabs[12] = Resources.Load<GameObject>("PiecePrefabs/QueenDark");
-        piecePrefabs[13] = Resources.Load<GameObject>("PiecePrefabs/BishopDark");
-        piecePrefabs[14] = Resources.Load<GameObject>("PiecePrefabs/KnightDark");
-        piecePrefabs[15] = Resources.Load<GameObject>("PiecePrefabs/RookDark");
-        piecePrefabs[16] = Resources.Load<GameObject>("PiecePrefabs/PawnDark");
+        //piecePrefabs[1] = Resources.Load<GameObject>("PiecePrefabs/KingLight");
+        //piecePrefabs[2] = Resources.Load<GameObject>("PiecePrefabs/QueenLight");
+        //piecePrefabs[3] = Resources.Load<GameObject>("PiecePrefabs/BishopLight");
+        //piecePrefabs[4] = Resources.Load<GameObject>("PiecePrefabs/KnightLight");
+        //piecePrefabs[5] = Resources.Load<GameObject>("PiecePrefabs/RookLight");
+        //piecePrefabs[6] = Resources.Load<GameObject>("PiecePrefabs/PawnLight");
+        //piecePrefabs[11] = Resources.Load<GameObject>("PiecePrefabs/KingDark");
+        //piecePrefabs[12] = Resources.Load<GameObject>("PiecePrefabs/QueenDark");
+        //piecePrefabs[13] = Resources.Load<GameObject>("PiecePrefabs/BishopDark");
+        //piecePrefabs[14] = Resources.Load<GameObject>("PiecePrefabs/KnightDark");
+        //piecePrefabs[15] = Resources.Load<GameObject>("PiecePrefabs/RookDark");
+        //piecePrefabs[16] = Resources.Load<GameObject>("PiecePrefabs/PawnDark");
+
+        piecePrefabs[1] = Resources.Load<GameObject>("PiecePrefabs2/KingLight");
+        piecePrefabs[2] = Resources.Load<GameObject>("PiecePrefabs2/QueenLight");
+        piecePrefabs[3] = Resources.Load<GameObject>("PiecePrefabs2/BishopLight");
+        piecePrefabs[4] = Resources.Load<GameObject>("PiecePrefabs2/KnightLight");
+        piecePrefabs[5] = Resources.Load<GameObject>("PiecePrefabs2/RookLight");
+        piecePrefabs[6] = Resources.Load<GameObject>("PiecePrefabs2/PawnLight");
+        piecePrefabs[11] = Resources.Load<GameObject>("PiecePrefabs2/KingDark");
+        piecePrefabs[12] = Resources.Load<GameObject>("PiecePrefabs2/QueenDark");
+        piecePrefabs[13] = Resources.Load<GameObject>("PiecePrefabs2/BishopDark");
+        piecePrefabs[14] = Resources.Load<GameObject>("PiecePrefabs2/KnightDark");
+        piecePrefabs[15] = Resources.Load<GameObject>("PiecePrefabs2/RookDark");
+        piecePrefabs[16] = Resources.Load<GameObject>("PiecePrefabs2/PawnDark");
 
         squarePrefab = Resources.Load<GameObject>("Square");
         selectedPrefab = Resources.Load<GameObject>("Selected");

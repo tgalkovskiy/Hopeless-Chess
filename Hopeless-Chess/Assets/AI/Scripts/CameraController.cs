@@ -59,9 +59,13 @@ public class CameraController : MonoBehaviour
 	float transitionAngle = 55;
 	[SerializeField]
 	float deltatransitionAngle = 10;
+	[SerializeField]
+	float angleStartTopViewRotation = 40;
+
 
 	public float TransitionAngle { get { return transitionAngle; } }
 	public float DeltatransitionAngle { get { return deltatransitionAngle; } }
+	public float AngleStartTopViewRotation { get { return angleStartTopViewRotation; } }
 
 
 	void Start()
