@@ -843,7 +843,7 @@ public class BoardController2 : MonoBehaviour
 			for (int x = position.x - 1; x <= position.x + 1; x++)
 			{
 				if (y >= board.Length || x >= board[0].Length || y < 0 || x < 0) continue;
-				if (temp[2] == new Vector2Int[x][y]) return true;
+				if (temp[2] == new Vector2Int(x,y)) return true;
 			}
 		}
 

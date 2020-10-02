@@ -5001,6 +5001,8 @@ MonoBehaviour:
   attack: {r: 1, g: 0, b: 0, a: 1}
   moveAndAttack: {r: 1, g: 1, b: 0, a: 1}
   jump: {r: 1, g: 1, b: 1, a: 1}
+  jumpAndMove: {r: 0, g: 1, b: 1, a: 1}
+  jumpAndAttack: {r: 1, g: 0, b: 1, a: 1}
 --- !u!4 &1772347990
 Transform:
   m_ObjectHideFlags: 0
