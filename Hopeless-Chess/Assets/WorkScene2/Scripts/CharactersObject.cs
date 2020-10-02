@@ -20,7 +20,7 @@ public class CharactersObject : ScriptableObject
 
     [SerializeField] private float maxAnger;
 
-    [SerializeField] private float maxDevotion;
+    [SerializeField] private float maxDevotion; 
 
 
 

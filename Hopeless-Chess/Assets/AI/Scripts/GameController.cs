@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	BoardController2 board;
 	[SerializeField]
-	ChessAI AI;
+	ChessAI AI; 
 
 	[SerializeField]
 	Camera mainCamera;
@@ -129,8 +129,7 @@ public class GameController : MonoBehaviour
 		if(isFirstMove == false)
 		{
 			PieceEated();
-			Anger.GetInstance().CheckAnger(board.GaveupPieces());
-			Morality.GetInstance().CheckMorality(board.GaveupPieces());
+			Morality.GetInstance().CheckMorality(board.GaveupPieces(), board);
 		}
 
 	}
