@@ -4,11 +4,132 @@ using UnityEngine;
 
 public class Afflictions : MonoBehaviour
 {
+    private static Afflictions instance;
+    protected Afflictions()
+    {
+
+    }
+
+    public static Afflictions GetAfflictions()
+    {
+        if(instance == null)
+        {
+            instance = new Afflictions();
+        }
+        return instance;
+    }
+
+    public void Escape(CharacterController piece)
+    {
+        Texture2D moveTexture = new Texture2D(15,15);
+        moveTexture.LoadImage(piece.moveTexture.EncodeToPNG());
+        
+            for(int y = 0; y < moveTexture.height; y++)
+            {
+               
+                for(int x = 0; x < moveTexture.width; x++)
+                {
+
+                    if(y < 7 && piece.isLight)
+                    {
+                        moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[0]);
+                    }
+                    else if(y > 7 && !piece.isLight)
+                    {
+                        moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[0]);
+                    }
+                    else
+                    {
+                        if(moveTexture.GetPixel(x,y) == GameModule.instance.MoveColors[3])
+                        {
+                            moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[1]);
+                        }
+                    }
+                }
+            }
+        piece.currentMoveTexture = moveTexture;
+        
+    }
+
+    public void Panic(CharacterController piece)
+    {
+        Texture2D moveTexture = new Texture2D(15,15);
+        moveTexture.LoadImage(piece.moveTexture.EncodeToPNG());
+        
+            for(int y = 0; y < moveTexture.height; y++)
+            {
+               
+                for(int x = 0; x < moveTexture.width; x++)
+                {
+                    if(moveTexture.GetPixel(x,y) == GameModule.instance.MoveColors[3]) 
+                    {
+                        moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[1]);
+                    }
+                    else if (moveTexture.GetPixel(x,y) == GameModule.instance.MoveColors[4])
+                    {
+                        moveTexture.SetPixel(x,y, GameModule.instance.MoveColors[5]);
+                    }
+                    else if (moveTexture.GetPixel(x,y) == GameModule.instance.MoveColors[2])
+                    {
+                        moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[0]);
+                    }
+                }
+            }
+        piece.currentMoveTexture = moveTexture;
+    }
+
+    /// <summary>
+    /// Восстанавливает половину морали фигуры
+    /// </summary>
+    /// <param name="piece"></param>
+    public void Overcoming(CharacterController piece)
+    {
+        piece.moralityCount = piece.character.MaxMorality / 2;
+    }
+
+    /// <summary>
+    /// Восстанавливает мораль фигуры
+    /// </summary>
+    /// <param name="piece"></param>
+    public void Heroism(CharacterController piece)
+    {
+        piece.moralityCount = piece.character.MaxMorality;
+    }
+
+    public void Rage(CharacterController piece)
+    {
+        Texture2D moveTexture = new Texture2D(15,15);
+        moveTexture.LoadImage(piece.moveTexture.EncodeToPNG());
+        
+            for(int y = 0; y < moveTexture.height; y++)
+            {
+               
+                for(int x = 0; x < moveTexture.width; x++)
+                {
+                    if(moveTexture.GetPixel(x,y) == GameModule.instance.MoveColors[3]) 
+                    {
+                        moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[2]);
+                    }
+
+                    else if (moveTexture.GetPixel(x,y) == GameModule.instance.MoveColors[4])
+                    {
+                        moveTexture.SetPixel(x,y, GameModule.instance.MoveColors[6]);
+                    }
+
+                    else if (moveTexture.GetPixel(x,y) == GameModule.instance.MoveColors[1])
+                    {
+                        moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[0]);
+                    }
+                }
+            }
+        piece.currentMoveTexture = moveTexture;
+    }
+    
 
 }
 
 
-/// <summary>
+/*/// <summary>
 /// Контроллер злости персонажей
 /// </summary>
 public class Anger : MonoBehaviour
@@ -79,114 +200,6 @@ public class Anger : MonoBehaviour
     }
 }
 
-/// <summary>
-/// Оббработка морали
-/// </summary>
-public class Morality : MonoBehaviour
-{
-    #region Singleton
-    public static Morality instance;
-
-    protected Morality()
-    {
-
-    }
-    public static Morality GetInstance()
-    {
-        if(instance == null)
-        {
-            instance = new Morality();
-        }
-        return instance;
-    }
-
-    #endregion
-
-    /// <summary>
-    /// Восстанавливает половину морали фигуры
-    /// </summary>
-    /// <param name="piece"></param>
-    public void Overcoming(CharacterController piece)
-    {
-        piece.moralityCount = piece.character.MaxMorality / 2;
-    }
-
-    /// <summary>
-    /// Добавляет мораль фигурам
-    /// </summary>
-    /// <param name="pieces"></param>
-    /// <param name="moralityCount"></param>
-    public void AddMorality(CharacterController[] pieces, float moralityCount)
-    {
-        for(int i = 0; i < pieces.Length; i++)
-        {
-            pieces[i].moralityCount += moralityCount;
-        }
-    }
-
-    /// <summary>
-    /// Добавляет мораль фигуре
-    /// </summary>
-    /// <param name="piece"></param>
-    /// <param name="moralityCount"></param>
-    public void AddMorality(CharacterController piece, float moralityCount)
-    {
-            piece.moralityCount += moralityCount;
-    }
-
-    /// <summary>
-    /// Добавление морали при превращении фигуры
-    /// </summary>
-    /// <param name="piece"></param>
-    /// <param name="pieces"></param>
-    public void OnTransformPiece(CharacterController piece, CharacterController[] pieces)
-    {
-        piece.moralityCount += 100f;
-        AddMorality(pieces, 10f);
-    }
-
-
-
-   /// <summary>
-   /// Изменение текстуры хода при отсутствии морали
-   /// </summary>
-   /// <param name="piece"></param>
-    public void Givingup(CharacterController piece)
-    {
-        piece.oldMoveTexture = piece.moveTexture;
-        piece.moveTexture = piece.givingupTexture;
-    }
-
-    /// <summary>
-    /// Переключение на обычную текстуру хода
-    /// </summary>
-    /// <param name="piece"></param>
-    public void DisableGivingup(CharacterController piece)
-    {
-        if(piece.oldMoveTexture != null && piece.moveTexture.name.Contains("givingup"))
-        {
-            piece.moveTexture = piece.oldMoveTexture;
-            piece.oldMoveTexture = null;
-        }
-    }
-
-    public void CheckMorality(CharacterController[] pieces)
-    {
-        for(int i = 0; i < pieces.Length; i++)
-        {
-            
-            if(pieces[i].moralityCount < 5f)
-            {
-                Givingup(pieces[i]);
-            }
-            else
-            {
-                
-                DisableGivingup(pieces[i]);
-            }
-        }
-    }
-}
 
 /// <summary>
 /// Обработка отношений с другими фигурами
@@ -247,3 +260,4 @@ public class Mood : MonoBehaviour
         }
     }
 }
+*/

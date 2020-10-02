@@ -19,16 +19,6 @@ public class CharacterController : Afflictions
     /// </summary>
      public float moralityCount;
 
-    /// <summary>
-    /// Текущий уровень злости (временно)
-    /// </summary>
-    [HideInInspector] public float angerCount;
-
-    /// <summary>
-    /// Текущий уровень преданности (временно)
-    /// </summary>
-    [HideInInspector] public float devotion;
-
     public CharacterController[] friends;
 
     public CharacterController[] enemies;
@@ -45,9 +35,7 @@ public class CharacterController : Afflictions
 
     public Texture2D moveTexture;
 
-    public Texture2D rageTexture;
-
-    public Texture2D givingupTexture;
+    public Texture2D currentMoveTexture;
 
     public ChessType pieceType;
 
@@ -67,9 +55,8 @@ public class CharacterController : Afflictions
         if(character != null)
         {
             moralityCount = character.MaxMorality;
-            angerCount = character.MaxAnger;
-            devotion = character.MaxDevotion;
         }
+        currentMoveTexture = moveTexture;
 
     }
 
@@ -191,37 +178,9 @@ public class CharacterController : Afflictions
     /// <returns></returns>
     public Texture2D GetMoveTexture()
     {
-        return moveTexture;
+        return currentMoveTexture;
     }
 
-
-    /// <summary>
-    /// Обрабатывает отказ фигуры ходить в определённом направлении
-    /// </summary>
-    public void GivingUp()
-    {
-
-    }
-
-
-    /// <summary>
-    /// Обрабатывает режим ярости фигуры
-    /// </summary>
-    public void RageMode()
-    {
-        
-    }
-
-    /// <summary>
-    /// Обрабатывает предательство фигуры
-    /// </summary>
-    public void Treason()
-    {
-        if(devotion == 0)
-        {
-            //...
-        }
-    }
 
     /// <summary>
     /// Обрабатывает перемещение фигуры по доске
