@@ -159,7 +159,7 @@ public class CharacterController : Afflictions
     {
         isSelected = true;
         // Анимация подпрыгивания.
-        this.GetComponent<Animation>().Play();
+        //this.GetComponent<Animation>().Play();
         return this;
     }
 
@@ -167,7 +167,7 @@ public class CharacterController : Afflictions
     {
         isSelected = false;
         // Анимация подпрыгивания.
-        this.GetComponent<Animation>().Stop();
+        //this.GetComponent<Animation>().Stop();
         return null;
     }
 

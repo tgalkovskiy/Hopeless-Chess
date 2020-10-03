@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 1183623414447775906}
   - component: {fileID: -8202794148426030479}
   - component: {fileID: -2050659605502286725}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: KnightDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,9 +161,9 @@ MonoBehaviour:
   enemies: []
   isDead: 0
   isSelected: 0
-  moveTexture: {fileID: 0}
+  moveTexture: {fileID: 2800000, guid: 223ac666a1bca254b843fe1fc9c4d6c6, type: 3}
   currentMoveTexture: {fileID: 0}
-  pieceType: 0
+  pieceType: 3
   isLight: 0
   oldMoveTexture: {fileID: 0}
   boardIndex: 0
