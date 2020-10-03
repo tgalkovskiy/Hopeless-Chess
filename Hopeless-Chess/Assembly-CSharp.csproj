@@ -69,10 +69,12 @@
     <Compile Include="Assets\AI\Scripts\ChessAI.cs" />
     <Compile Include="Assets\AI\Scripts\GameController.cs" />
     <Compile Include="Assets\AI\Scripts\GameModule.cs" />
+    <Compile Include="Assets\AI\Scripts\PieceView.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\Afflictions.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\BoardController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\CharacterController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\CharactersObject.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\Morality.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\VariantOfStoces.cs" />
     <None Include="Assets\AI\Free Low Poly Chess Set\README.txt" />
     <Reference Include="UnityEngine">
