@@ -47,6 +47,7 @@ public class GameModule : MonoBehaviour
 
     Color[] moveColors;
     Texture2D emptyMoveTexture;
+    GameObject boardTexture;
 
     /// <summary>
     /// 1 - King
@@ -84,7 +85,7 @@ public class GameModule : MonoBehaviour
     public CharactersObject[] QueenData {get; set;}
     public CharactersObject[] KingData {get; set;}
 
-    
+    public GameObject BoardTexture { get { return boardTexture; } }
 
     public void GetResources()
     {
@@ -121,6 +122,7 @@ public class GameModule : MonoBehaviour
         moveColors = new Color[] { none, move, attack, moveAndAttack, jump };
 
         emptyMoveTexture = Resources.Load<Texture2D>("Textures/Empty");
+        boardTexture = Resources.Load<GameObject>("Board");
 
         PawnsData = Resources.LoadAll<CharactersObject>("Characters/Pawns");
         RooksData = Resources.LoadAll<CharactersObject>("Characters/Rooks");

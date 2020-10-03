@@ -150,11 +150,21 @@ public class BoardController2 : MonoBehaviour
 
 	void CreateBoard()
 	{
+		var boardTexture = Instantiate(GameModule.instance.BoardTexture); 
+		boardTexture.transform.localScale = new Vector3((float)(board[0].Length)/10, 1, (float)(board.Length)/10);
+		boardTexture.GetComponent<MeshRenderer>().material.mainTextureScale =
+			new Vector2((float)(board[0].Length) / 2, (float)(board.Length) / 2);
+		if ((float)(board[0].Length) / 2 % 1 == 0.5f) boardTexture.transform.position = new Vector3(0.5f, 0);
+		if ((float)(board.Length) / 2 % 1 == 0.5f)
+			boardTexture.transform.position = new Vector3(boardTexture.transform.position.x, 0,- 0.5f);
+
+
 		squares = new GameObject[board.GetLength(0)][];
 
 		// Узнаем размеры префаба.
 		var squarSide = GameModule.instance.SquarePrefab.GetComponent<BoxCollider>().size.x;
-		var startPosition = new Vector3 (- 3.5f * squarSide, 0 ,3.5f * squarSide);
+		var startShift = (int)board.Length/2 - 0.5f;
+		var startPosition = new Vector3 (- startShift * squarSide, 0 , startShift * squarSide);
 
 		for (int i = 0; i < board.GetLength(0); i++)
 		{
