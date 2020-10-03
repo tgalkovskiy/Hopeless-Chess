@@ -278,7 +278,7 @@ public class BoardController2 : MonoBehaviour
 		blackTexture.SetPixel(piecePosition.x, blackTexture.height -1 - piecePosition.y, GameModule.instance.MoveColors[1]);
 		blackTexture.Apply();
 
-		image.GetComponent<MeshRenderer>().material.mainTexture = blackTexture;
+		image.GetComponent<MeshRenderer>().material.mainTexture = moveTexture;
 
 		StartSpiralSecuence(Math.Max(board.GetLength(0), board[0].GetLength(0)));
 

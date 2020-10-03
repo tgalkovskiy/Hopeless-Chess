@@ -108,9 +108,14 @@ public class CameraController : MonoBehaviour
 
 		if (goToPosition)
 		{
-			transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, isItLight ? startPositionLight : startPositionDark , Time.deltaTime * sensitivity);
+			transform.localEulerAngles =
+				Vector3.Lerp(
+					transform.localEulerAngles,
+					new Vector3(transform.localEulerAngles.x, isItLight ? startPositionLight.y : startPositionDark.y,0),
+					Time.deltaTime * sensitivity
+					);
 			transform.position = transform.localRotation * offset + target.position;
-			if (transform.localEulerAngles == (isItLight ? startPositionLight : startPositionDark)) goToPosition = false;
+			if (transform.localEulerAngles.y == (isItLight ? startPositionLight.y : startPositionDark.y)) goToPosition = false;
 		}
 		else transform.localEulerAngles = new Vector3(-Y, X, 0);
 
