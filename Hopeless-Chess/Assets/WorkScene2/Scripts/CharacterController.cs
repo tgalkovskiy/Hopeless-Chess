@@ -19,6 +19,8 @@ public class CharacterController : Afflictions
     /// </summary>
      public float moralityCount;
 
+     public float startMorality;
+
     public CharacterController[] friends;
 
     public CharacterController[] enemies;
@@ -44,10 +46,9 @@ public class CharacterController : Afflictions
     public Texture2D oldMoveTexture = null;
  //
     public int boardIndex;
-
     private void Start() 
     {
-
+        
         if(character == null)
         {
             InitializeCharacters();

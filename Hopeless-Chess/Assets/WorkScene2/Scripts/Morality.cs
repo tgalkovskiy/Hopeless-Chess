@@ -86,11 +86,12 @@ public class Morality : MonoBehaviour
     {
         for(int i = 0; i < pieces.Length; i++)
         {
-            if(pieces[i].moralityCount == 0)
+            if(pieces[i].moralityCount <= 0)
             {
                 if(board.IsMyQweenOrKingNear(pieces[i]))
                 {
                     Afflictions.GetAfflictions().Heroism(pieces[i]);
+                   // EffectsController.GetEffects().CreateEffect(pieces[i], 1f);
                 }
                 else if(board.AlliesCount(pieces[i]) >= 3)
                 {
