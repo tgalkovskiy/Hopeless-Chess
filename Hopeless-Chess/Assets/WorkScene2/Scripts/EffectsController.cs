@@ -20,14 +20,15 @@ public class EffectsController : MonoBehaviour
         return instance;
     }
 
-    public GameObject OvercomingEffect;
-    public GameObject HeroismEffect;
+    
 
-    public void CreateEffect(CharacterController character,  float removeTime = 1f)
+    public GameObject overcomingEffect;
+    public GameObject heroismEffect;
+
+    public void CreateEffect(CharacterController character, GameObject effectPrefab, float removeTime = 1f)
     {
         GameObject piece = character.gameObject;
-        Debug.Log(piece.transform.position);
-        GameObject effect = Instantiate(OvercomingEffect, piece.transform.position, Quaternion.identity, piece.transform);
+        GameObject effect = Instantiate(effectPrefab, piece.transform.position, Quaternion.identity, piece.transform);
         Destroy(effect, removeTime);
     }
 

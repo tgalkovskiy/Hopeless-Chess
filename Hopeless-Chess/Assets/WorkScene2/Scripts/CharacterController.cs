@@ -46,9 +46,12 @@ public class CharacterController : Afflictions
     public Texture2D oldMoveTexture = null;
  //
     public int boardIndex;
+
+    [HideInInspector] public int movesToRemoveAffliction;
     private void Start() 
     {
-        
+        moralityCount = startMorality;
+        movesToRemoveAffliction = -1;
         if(character == null)
         {
             InitializeCharacters();
@@ -58,7 +61,6 @@ public class CharacterController : Afflictions
             moralityCount = character.MaxMorality;
         }
         currentMoveTexture = moveTexture;
-
     }
 
     /// <summary>

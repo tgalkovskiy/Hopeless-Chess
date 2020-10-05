@@ -49,6 +49,8 @@ public class GameModule : MonoBehaviour
     Texture2D emptyMoveTexture;
     GameObject boardTexture;
 
+    EffectsController effectsController;
+
     /// <summary>
     /// 1 - King
     /// 2 - Queen
@@ -86,6 +88,8 @@ public class GameModule : MonoBehaviour
     public CharactersObject[] KingData {get; set;}
 
     public GameObject BoardTexture { get { return boardTexture; } }
+
+    public EffectsController Effects { get {return effectsController; } }
 
     public void GetResources()
     {
@@ -130,6 +134,8 @@ public class GameModule : MonoBehaviour
         KnightData = Resources.LoadAll<CharactersObject>("Characters/Knights");
         QueenData = Resources.LoadAll<CharactersObject>("Characters/Queens");
         KingData = Resources.LoadAll<CharactersObject>("Characters/Kings");
+        effectsController = Resources.Load<GameObject>("EffectController").GetComponent<EffectsController>();
+        
         
         
 

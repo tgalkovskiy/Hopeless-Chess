@@ -86,12 +86,12 @@ public class Morality : MonoBehaviour
     {
         for(int i = 0; i < pieces.Length; i++)
         {
-            if(pieces[i].moralityCount <= 0)
+            if(pieces[i].moralityCount <= 0 && pieces[i].movesToRemoveAffliction == -1)
             {
                 if(board.IsMyQweenOrKingNear(pieces[i]))
                 {
                     Afflictions.GetAfflictions().Heroism(pieces[i]);
-                   // EffectsController.GetEffects().CreateEffect(pieces[i], 1f);
+                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.heroismEffect, 1f);
                 }
                 else if(board.AlliesCount(pieces[i]) >= 3)
                 {
@@ -99,17 +99,29 @@ public class Morality : MonoBehaviour
                 }
                 else if(board.EmenyCount(pieces[i]) >= 3)
                 {
-                    Afflictions.GetAfflictions().Escape(pieces[i]);
+                    Afflictions.GetAfflictions().Escape(pieces[i], 3);
                 }
                 else if(board.IsAlliesDieNear(pieces[i]))
                 {
-                    Afflictions.GetAfflictions().Rage(pieces[i]);
+                    Afflictions.GetAfflictions().Rage(pieces[i], 2);
                 }
                 else if(board.IsMyQweenDie(pieces[i]))
                 {
-                    Afflictions.GetAfflictions().Panic(pieces[i]);
+                    Afflictions.GetAfflictions().Panic(pieces[i], 2);
                 }
-                
+            }
+            else if(pieces[i].movesToRemoveAffliction > 0)
+            {
+                pieces[i].movesToRemoveAffliction--;
+            }
+            if(pieces[i].movesToRemoveAffliction == 0)
+            {
+                if(pieces[i].currentMoveTexture != null)
+                {
+                 pieces[i].currentMoveTexture = pieces[i].moveTexture;
+                }
+                pieces[i].movesToRemoveAffliction = -1;
+                pieces[i].moralityCount = pieces[i].character.MaxMorality / 2;
             }
         }
     }

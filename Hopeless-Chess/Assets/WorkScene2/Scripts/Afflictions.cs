@@ -19,8 +19,9 @@ public class Afflictions : MonoBehaviour
         return instance;
     }
 
-    public void Escape(CharacterController piece)
+    public void Escape(CharacterController piece, int movesToRemove)
     {
+        piece.movesToRemoveAffliction = movesToRemove;
         Texture2D moveTexture = new Texture2D(15,15);
         moveTexture.LoadImage(piece.moveTexture.EncodeToPNG());
         
@@ -51,8 +52,9 @@ public class Afflictions : MonoBehaviour
         
     }
 
-    public void Panic(CharacterController piece)
+    public void Panic(CharacterController piece,int movesToRemove)
     {
+        piece.movesToRemoveAffliction = movesToRemove;
         Texture2D moveTexture = new Texture2D(15,15);
         moveTexture.LoadImage(piece.moveTexture.EncodeToPNG());
         
@@ -96,8 +98,9 @@ public class Afflictions : MonoBehaviour
         piece.moralityCount = piece.character.MaxMorality;
     }
 
-    public void Rage(CharacterController piece)
+    public void Rage(CharacterController piece, int movesToRemove)
     {
+        piece.movesToRemoveAffliction = movesToRemove;
         Texture2D moveTexture = new Texture2D(15,15);
         moveTexture.LoadImage(piece.moveTexture.EncodeToPNG());
         
