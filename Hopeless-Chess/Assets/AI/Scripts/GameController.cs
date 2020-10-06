@@ -150,13 +150,13 @@ public class GameController : MonoBehaviour
 		{
 			if(board.LastEatenPiece.isLight)
 			{
-				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), -5);
-				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), 5);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), -5 * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), 2 * board.LastEatenPiece.significanceMultiply);
 			}
 			else
 			{
-				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), 5);
-				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), -5);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), 2 * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), -5 * board.LastEatenPiece.significanceMultiply);
 			}
 		}
 	}

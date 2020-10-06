@@ -43,6 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5731e90b3e34b3543bedd500f461630d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overcomingEffect: {fileID: 0}
+  overcomingEffect: {fileID: 49027099912996709, guid: 0cddb296b8976d846a17771385fb06f9,
+    type: 3}
   heroismEffect: {fileID: 2033422466890777465, guid: f8637704a0dbfad4997e439eb54df07d,
+    type: 3}
+  rageEffect: {fileID: 5815451190436049826, guid: d07e2dbfb01dc8049ada5008bd1fa6d3,
     type: 3}

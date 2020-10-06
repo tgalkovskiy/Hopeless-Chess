@@ -91,11 +91,12 @@ public class Morality : MonoBehaviour
                 if(board.IsMyQweenOrKingNear(pieces[i]))
                 {
                     Afflictions.GetAfflictions().Heroism(pieces[i]);
-                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.heroismEffect, 1f);
+                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.heroismEffect);
                 }
                 else if(board.AlliesCount(pieces[i]) >= 3)
                 {
                     Afflictions.GetAfflictions().Overcoming(pieces[i]);
+                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.overcomingEffect, 6f);
                 }
                 else if(board.EmenyCount(pieces[i]) >= 3)
                 {
@@ -103,7 +104,8 @@ public class Morality : MonoBehaviour
                 }
                 else if(board.IsAlliesDieNear(pieces[i]))
                 {
-                    Afflictions.GetAfflictions().Rage(pieces[i], 2);
+                    Afflictions.GetAfflictions().Rage(pieces[i], 3);
+                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.rageEffect, 0f, false);
                 }
                 else if(board.IsMyQweenDie(pieces[i]))
                 {
@@ -122,7 +124,9 @@ public class Morality : MonoBehaviour
                 }
                 pieces[i].movesToRemoveAffliction = -1;
                 pieces[i].moralityCount = pieces[i].character.MaxMorality / 2;
+                Destroy(pieces[i].currentEffect, 2f);
             }
         }
+
     }
 }

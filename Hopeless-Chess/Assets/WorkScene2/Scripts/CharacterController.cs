@@ -47,6 +47,10 @@ public class CharacterController : Afflictions
  //
     public int boardIndex;
 
+    public GameObject currentEffect;
+
+    public int significanceMultiply; 
+
     [HideInInspector] public int movesToRemoveAffliction;
     private void Start() 
     {
@@ -61,8 +65,24 @@ public class CharacterController : Afflictions
             moralityCount = character.MaxMorality;
         }
         currentMoveTexture = moveTexture;
+        GetSignificance();
     }
 
+    public void GetSignificance()
+    {
+        if((int)pieceType == 1 ) //pawn
+        {
+            significanceMultiply = 1;
+        }
+        else if((int)pieceType > 1 && (int)pieceType < 5) //rook, bishop, knight
+        {
+            significanceMultiply = 2;
+        }
+        else
+        {
+            significanceMultiply = 3;
+        }
+    }
     /// <summary>
     /// Возвращает скрипт персонажа, включает флаг isSelected
     /// </summary>

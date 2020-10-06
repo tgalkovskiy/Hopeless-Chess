@@ -24,12 +24,19 @@ public class EffectsController : MonoBehaviour
 
     public GameObject overcomingEffect;
     public GameObject heroismEffect;
+    public GameObject rageEffect;
 
-    public void CreateEffect(CharacterController character, GameObject effectPrefab, float removeTime = 1f)
+
+    public void CreateEffect(CharacterController character, GameObject effectPrefab, float removeTime = 1f, bool isRemovingByTime = true)
     {
         GameObject piece = character.gameObject;
         GameObject effect = Instantiate(effectPrefab, piece.transform.position, Quaternion.identity, piece.transform);
-        Destroy(effect, removeTime);
+        effect.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        character.currentEffect = effect;
+        if(isRemovingByTime)
+        {
+            Destroy(effect, removeTime);
+        }
     }
 
 }
