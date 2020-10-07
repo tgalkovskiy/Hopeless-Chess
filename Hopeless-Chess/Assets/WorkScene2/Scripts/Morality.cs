@@ -35,7 +35,7 @@ public class Morality : MonoBehaviour
         for(int i = 0; i < pieces.Length; i++)
         {
             pieces[i].moralityCount += moralityCount;
-            pieces[i].gameObject.GetComponent<PieceView>().ShowChangeMorality(pieces[i].moralityCount);
+            pieces[i].gameObject.GetComponent<PieceView>().ShowChangeMorality(moralityCount);
         }
     }
 
@@ -47,7 +47,7 @@ public class Morality : MonoBehaviour
     public void AddMorality(CharacterController piece, float moralityCount)
     {
             piece.moralityCount += moralityCount;
-            piece.gameObject.GetComponent<PieceView>().ShowChangeMorality(piece.moralityCount);
+            piece.gameObject.GetComponent<PieceView>().ShowChangeMorality(moralityCount);
     }
 
     /// <summary>
@@ -55,11 +55,11 @@ public class Morality : MonoBehaviour
     /// </summary>
     /// <param name="piece"></param>
     /// <param name="pieces"></param>
-    public void OnTransformPiece(CharacterController piece, CharacterController[] pieces)
+    public void OnTransformPiece(CharacterController piece, CharacterController[] pieces, float moralityCount)
     {
-        piece.moralityCount += 100f;
+        piece.moralityCount += moralityCount;
         AddMorality(pieces, 10f);
-        piece.gameObject.GetComponent<PieceView>().ShowChangeMorality(piece.moralityCount);
+        piece.gameObject.GetComponent<PieceView>().ShowChangeMorality(moralityCount);
     }
 
 
