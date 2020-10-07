@@ -48,8 +48,9 @@ public class GameModule : MonoBehaviour
     Color[] moveColors;
     Texture2D emptyMoveTexture;
     GameObject boardTexture;
-
     EffectsController effectsController;
+    List<Material> materials;
+
 
     /// <summary>
     /// 1 - King
@@ -66,6 +67,8 @@ public class GameModule : MonoBehaviour
     public GameObject SelectedPrefab { get { return selectedPrefab; } }
 
     public Camera MainCamera { get { return mainCamera; } }
+
+    public List<Material> Materials { get { return materials; } }
 
 
     /// <summary>
@@ -135,9 +138,11 @@ public class GameModule : MonoBehaviour
         QueenData = Resources.LoadAll<CharactersObject>("Characters/Queens");
         KingData = Resources.LoadAll<CharactersObject>("Characters/Kings");
         effectsController = Resources.Load<GameObject>("EffectController").GetComponent<EffectsController>();
-        
-        
-        
+
+        materials = new List<Material>();
+        materials.AddRange( Resources.LoadAll<Material>("Materials/Text"));
+
+
 
     }
 }

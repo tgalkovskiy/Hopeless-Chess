@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using TMPro;
 using UnityEngine;
 
 public class PieceView : MonoBehaviour
@@ -13,9 +14,25 @@ public class PieceView : MonoBehaviour
     GameObject frontView;
     [SerializeField]
     GameObject topView;
+    [Space]
+    [SerializeField]
+    GameObject frontMoralityBar;
+    [SerializeField]
+    GameObject topMoralityBar;
+    [Space]
+    [SerializeField]
+    GameObject frontMoralityBarScale;
+    [SerializeField]
+    GameObject topMoralityBarScale;
+    [Space]
+    [SerializeField]
+    GameObject text;
 
-    Material frontViewMaterial;
-    Material topViewMaterial;
+
+
+    List<Material> frontList;
+    List<Material> topList;
+
 
     float deltaTopView;
 
@@ -29,8 +46,18 @@ public class PieceView : MonoBehaviour
     void Start()
     {
         camera = GameModule.instance.MainCamera;
-        frontViewMaterial = frontView.GetComponent<MeshRenderer>().material;
-        topViewMaterial = topView.GetComponent<MeshRenderer>().material;
+
+        frontList = new List<Material>();
+        topList = new List<Material>();
+
+        frontList.Add(frontView.GetComponent<MeshRenderer>().material);
+        frontList.Add(frontMoralityBar.GetComponent<MeshRenderer>().material);
+        frontList.Add(frontMoralityBarScale.GetComponent<MeshRenderer>().material);
+
+        topList.Add(topView.GetComponent<MeshRenderer>().material);
+        topList.Add(topMoralityBar.GetComponent<MeshRenderer>().material);
+        topList.Add(topMoralityBarScale.GetComponent<MeshRenderer>().material);
+
         CA = camera.transform.eulerAngles.x;
 
         topAngle = camera.GetComponent<CameraController>().TransitionAngle;
@@ -41,39 +68,52 @@ public class PieceView : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /// Смотрим на камеру
+        /// Смотрим на камеру фигуры
         var cameraProjection = new Vector3(camera.transform.position.x, transform.position.y, camera.transform.position.z);
         var angle = Vector3.Angle(transform.position - cameraProjection, Vector3.back);
 
         if ((camera.transform.position - transform.position).x < 0) angle = -angle;
 
         frontView.transform.eulerAngles = new Vector3( frontView.transform.eulerAngles.x, angle, 0 );
+        frontMoralityBar.transform.eulerAngles = new Vector3(frontView.transform.eulerAngles.x, angle, 0);
 
         if (Math.Abs(camera.transform.eulerAngles.y) < deltaTopView || Math.Abs(camera.transform.eulerAngles.y) > 360 - deltaTopView)
             topView.transform.eulerAngles = new Vector3(0, 180, 0);
         else if (Math.Abs(camera.transform.eulerAngles.y) > 180 - deltaTopView && Math.Abs(camera.transform.eulerAngles.y) < 180 + deltaTopView)
             topView.transform.eulerAngles = new Vector3(0, 0, 0);
+        /// Смотрим на камеру фигуры
 
-        /// Смотрим на камеру
-
-
-        /// Смена ракурса
-
+        /// Смена видимости при смене ракурса
         CA = camera.transform.eulerAngles.x;
         color = Math.Abs(CA - topAngle) / (delta);
 
-        if (CA >= topAngle) frontViewMaterial.color = new Color(0, 0, 0, 0);
-        else if (CA < topAngle&& CA > topAngle - delta)
-            frontViewMaterial.color = new Color(color,color,color,color);
-        else frontViewMaterial.color = new Color(1, 1, 1, 1);
-
-        if (CA <= topAngle - delta) topViewMaterial.color = new Color(0, 0, 0, 0);
+        if (CA >= topAngle) foreach (var item in frontList) item.color = new Color(0, 0, 0, 0);
         else if (CA < topAngle && CA > topAngle - delta)
-            topViewMaterial.color = new Color(1-color,1- color,1- color,1- color);
-        else topViewMaterial.color = new Color(1, 1, 1, 1);
+            foreach (var item in frontList) item.color = new Color(color, color, color, color);
+        else foreach(var item in frontList) item.color = new Color(1, 1, 1, 1);
 
+        if (CA <= topAngle - delta) foreach (var item in topList) item.color = new Color(0, 0, 0, 0); 
+        else if (CA < topAngle && CA > topAngle - delta)
+            foreach (var item in topList) item.color = new Color(1-color, 1 - color, 1 - color, 1 - color);
+        else foreach(var item in topList) item.color = new Color(1, 1, 1, 1);
+        /// Смена видимости при смене ракурса
 
-        /// Смена ракурса
-
+        if (Input.GetKey(KeyCode.LeftControl))
+		{
+            frontMoralityBar.SetActive(true);
+            topMoralityBar.SetActive(true);
+        }
+        else
+		{
+            frontMoralityBar.SetActive(false);
+            topMoralityBar.SetActive(false);
+        }
     }
+
+    void ChangeMorality(float delta)
+	{
+        text.GetComponent<MeshRenderer>().material = GameModule.instance.Materials[delta > 0 ? 0 :1] ;
+        text.GetComponent<TextMeshPro>().text = delta.ToString();
+        text.GetComponent<Animation>().Play();
+	}
 }

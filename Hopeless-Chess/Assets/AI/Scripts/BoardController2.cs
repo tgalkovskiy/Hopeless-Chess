@@ -40,10 +40,11 @@ public class BoardController2 : MonoBehaviour
 		darkPieces = new List<GameObject>();
 		movesArchive = new List<string>();
 
-		SetupStartPosition();
+		//SetupStartPosition();
 		//SetupMatePosition();
 		//SetupMiniGame();
 		//SetupMiniGame2();
+		SetupMiniGame3();
 
 		CreateBoard();
 		PlacePieces();
@@ -111,6 +112,22 @@ public class BoardController2 : MonoBehaviour
 			new int [] {   0,   0, 901,   0, 905},
 			new int [] {   0,   0,   0,   0,   0},
 			new int [] {   0,   0,   0,   0,   0},
+		};
+
+		moveNumber = 1;
+	}
+
+	void SetupMiniGame3()
+	{
+		board = new int[8][] {
+			new int [8] {    0,   0, 103,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
 		};
 
 		moveNumber = 1;
