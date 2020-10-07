@@ -25,6 +25,8 @@ public class EffectsController : MonoBehaviour
     public GameObject overcomingEffect;
     public GameObject heroismEffect;
     public GameObject rageEffect;
+    public GameObject panicEffect;
+    public GameObject escapeEffect;
 
 
     public void CreateEffect(CharacterController character, GameObject effectPrefab, float removeTime = 1f, bool isRemovingByTime = true)
@@ -32,6 +34,7 @@ public class EffectsController : MonoBehaviour
         GameObject piece = character.gameObject;
         GameObject effect = Instantiate(effectPrefab, piece.transform.position, Quaternion.identity, piece.transform);
         effect.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        effect.transform.position += Vector3.up / 2;
         character.currentEffect = effect;
         if(isRemovingByTime)
         {

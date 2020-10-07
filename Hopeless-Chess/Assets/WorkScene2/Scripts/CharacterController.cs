@@ -52,8 +52,11 @@ public class CharacterController : Afflictions
     public int significanceMultiply; 
 
     [HideInInspector] public int movesToRemoveAffliction;
+
+    [HideInInspector] public bool isFirstMove;
     private void Start() 
     {
+        isFirstMove = true;
         moralityCount = startMorality;
         movesToRemoveAffliction = -1;
         if(character == null)
@@ -202,6 +205,41 @@ public class CharacterController : Afflictions
     public Texture2D GetMoveTexture()
     {
         return currentMoveTexture;
+    }
+
+    public void OnPieceFirstMoveEnded()
+    {
+        Texture2D moveTexture = new Texture2D(15,15);
+        moveTexture.LoadImage(this.moveTexture.EncodeToPNG());
+        int greenCellsCount = 0;
+            for(int y = 0; y < moveTexture.height; y++)
+            {
+                if((greenCellsCount == 1 && isLight) || (greenCellsCount == 3 && !isLight))
+                {
+                    isFirstMove = false;
+                    break;
+                }
+                for(int x = 0; x < moveTexture.width; x++)
+                {
+                    if(moveTexture.GetPixel(x, y) == GameModule.instance.MoveColors[1])
+                    {
+                        
+                        greenCellsCount++;
+                        if((greenCellsCount == 1 && isLight) || (greenCellsCount == 3 && !isLight))
+                        {
+                            Debug.Log(greenCellsCount);
+                            moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[0]);
+                            break;
+                        }
+                    }
+                    
+                }
+               
+            }
+        this.moveTexture = moveTexture;
+        currentMoveTexture = moveTexture;
+    
+
     }
 
 

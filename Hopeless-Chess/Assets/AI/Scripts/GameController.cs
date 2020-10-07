@@ -20,13 +20,13 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	CharacterController lastCharacterSelected;
 
-	bool isFirstMove;
+	bool isInit;
 
 	void Start()
 	{
-		isFirstMove = true;
+		isInit = true;
 		NextTurn();
-		isFirstMove = false;
+		isInit = false;
 	}
 
 	void Update()
@@ -79,8 +79,15 @@ public class GameController : MonoBehaviour
 							Debug.Log("Игра окончена, это мат!");
 							//Destroy(this);
 						}
-
+						if(lastCharacterSelected.pieceType == CharacterController.ChessType.pawn)
+						{
+							if(lastCharacterSelected.isFirstMove == true)
+							{
+								lastCharacterSelected.OnPieceFirstMoveEnded();
+							}
+						}
 						if (lastCharacterSelected != null)  lastCharacterSelected = lastCharacterSelected.CanсelSelecteCharacter();
+						
 						NextTurn();
 						board.StopShowPieceMoves();
 
@@ -128,7 +135,7 @@ public class GameController : MonoBehaviour
 
 		
 		
-		if(isFirstMove == false)
+		if(isInit == false)
 		{
 			PieceEated();
 			Morality.GetInstance().CheckMorality(board.GaveupPieces(), board);

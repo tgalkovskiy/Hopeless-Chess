@@ -101,6 +101,7 @@ public class Morality : MonoBehaviour
                 else if(board.EmenyCount(pieces[i]) >= 3)
                 {
                     Afflictions.GetAfflictions().Escape(pieces[i], 3);
+                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.escapeEffect, 0f, false);
                 }
                 else if(board.IsAlliesDieNear(pieces[i]))
                 {
@@ -109,7 +110,8 @@ public class Morality : MonoBehaviour
                 }
                 else if(board.IsMyQweenDie(pieces[i]))
                 {
-                    Afflictions.GetAfflictions().Panic(pieces[i], 2);
+                    Afflictions.GetAfflictions().Panic(pieces[i], 3);
+                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.panicEffect, 0f, false);
                 }
             }
             else if(pieces[i].movesToRemoveAffliction > 0)
