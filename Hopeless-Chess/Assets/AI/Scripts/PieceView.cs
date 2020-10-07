@@ -109,8 +109,12 @@ public class PieceView : MonoBehaviour
             topMoralityBar.SetActive(false);
         }
     }
-
-    void ChangeMorality(float delta)
+    
+    /// <summary>
+    /// Всплывает цифра.
+    /// </summary>
+    /// <param name="delta"></param>
+    void ShowChangeMorality(float delta)
 	{
         text.GetComponent<MeshRenderer>().material = GameModule.instance.Materials[delta > 0 ? 0 :1] ;
         text.GetComponent<TextMeshPro>().text = delta.ToString();
