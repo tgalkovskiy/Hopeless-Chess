@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1183623414387373563}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.88, z: 0}
-  m_LocalScale: {x: 0.065, y: 1, z: 0.18}
+  m_LocalPosition: {x: 0.013, y: 0.823, z: 0}
+  m_LocalScale: {x: 0.097363606, y: 1, z: 0.15909237}
   m_Children: []
   m_Father: {fileID: 1183623414447775907}
   m_RootOrder: 3
@@ -131,11 +131,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontView: {fileID: 1183623414387373563}
   topView: {fileID: 1183623414498155383}
-  frontMoralityBar: {fileID: 7124558449878263811}
-  topMoralityBar: {fileID: 3576520296245763346}
-  frontMoralityBarScale: {fileID: 5162112895496324253}
-  topMoralityBarScale: {fileID: 5855283619230502332}
-  text: {fileID: 2327139929991741850}
 --- !u!114 &-3059303638271469229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,9 +156,6 @@ MonoBehaviour:
   isLight: 0
   oldMoveTexture: {fileID: 0}
   boardIndex: 0
-  currentEffect: {fileID: 0}
-  significanceMultiply: 0
-  movesToRemoveAffliction: 0
 --- !u!65 &-554230242927699787
 BoxCollider:
   m_ObjectHideFlags: 0
