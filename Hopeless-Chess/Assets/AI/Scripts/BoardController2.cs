@@ -42,9 +42,9 @@ public class BoardController2 : MonoBehaviour
 
 		//SetupStartPosition();
 		//SetupMatePosition();
-		//SetupMiniGame();
+		SetupMiniGame();
 		//SetupMiniGame2();
-		SetupMiniGame3();
+		//SetupMiniGame3();
 
 		CreateBoard();
 		PlacePieces();
@@ -170,7 +170,7 @@ public class BoardController2 : MonoBehaviour
 		var boardTexture = Instantiate(GameModule.instance.BoardTexture); 
 		boardTexture.transform.localScale = new Vector3((float)(board[0].Length)/10, 1, (float)(board.Length)/10);
 		boardTexture.GetComponent<MeshRenderer>().material.mainTextureScale =
-			new Vector2((float)(board[0].Length) / 2, (float)(board.Length) / 2);
+			new Vector2((float)(board[0].Length) / 8, (float)(board.Length) / 8);
 		if ((float)(board[0].Length) / 2 % 1 == 0.5f) boardTexture.transform.position = new Vector3(0.5f, 0);
 		if ((float)(board.Length) / 2 % 1 == 0.5f)
 			boardTexture.transform.position = new Vector3(boardTexture.transform.position.x, 0,- 0.5f);
