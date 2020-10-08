@@ -227,7 +227,7 @@ public class CharacterController : Afflictions
                         greenCellsCount++;
                         if((greenCellsCount == 1 && isLight) || (greenCellsCount == 3 && !isLight))
                         {
-                            Debug.Log(greenCellsCount);
+                           // Debug.Log(greenCellsCount);
                             moveTexture.SetPixel(x, y, GameModule.instance.MoveColors[0]);
                             break;
                         }

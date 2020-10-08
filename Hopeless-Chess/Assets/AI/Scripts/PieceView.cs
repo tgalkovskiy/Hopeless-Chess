@@ -74,8 +74,9 @@ public class PieceView : MonoBehaviour
 
         if ((camera.transform.position - transform.position).x < 0) angle = -angle;
 
-        frontView.transform.eulerAngles = new Vector3( frontView.transform.eulerAngles.x, angle, 0 );
+        frontView.transform.eulerAngles = new Vector3(frontView.transform.eulerAngles.x, angle, 0);
         frontMoralityBar.transform.eulerAngles = new Vector3(frontView.transform.eulerAngles.x, angle, 0);
+        text.transform.eulerAngles = new Vector3(0, 180 + angle, 0);
 
         if (Math.Abs(camera.transform.eulerAngles.y) < deltaTopView || Math.Abs(camera.transform.eulerAngles.y) > 360 - deltaTopView)
             topView.transform.eulerAngles = new Vector3(0, 180, 0);
@@ -116,8 +117,14 @@ public class PieceView : MonoBehaviour
     /// <param name="delta"></param>
     public void ShowChangeMorality(float delta)
 	{
-        text.GetComponent<MeshRenderer>().material = GameModule.instance.Materials[delta > 0 ? 0 :1] ;
+        Debug.Log(delta);
+       
+        text.SetActive(true);
+        text.GetComponent<MeshRenderer>().enabled = true;
+        //text.GetComponent<MeshRenderer>().material = GameModule.instance.Materials[1] ;
         text.GetComponent<TextMeshPro>().text = delta.ToString();
         text.GetComponent<Animation>().Play();
-	}
+
+
+    }
 }

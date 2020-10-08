@@ -40,9 +40,9 @@ public class BoardController2 : MonoBehaviour
 		darkPieces = new List<GameObject>();
 		movesArchive = new List<string>();
 
-		//SetupStartPosition();
+		SetupStartPosition();
 		//SetupMatePosition();
-		SetupMiniGame();
+		//SetupMiniGame();
 		//SetupMiniGame2();
 		//SetupMiniGame3();
 

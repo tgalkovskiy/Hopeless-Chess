@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour
 				//Сокращаю строчку.
 				hitObject = hit.collider.gameObject;
 
-				Debug.Log(hitObject.name);
+				//Debug.Log(hitObject.name);
 
 				if (hitObject.layer == LayerMask.NameToLayer("Piece"))
 				{

@@ -94,6 +94,8 @@ public class GameModule : MonoBehaviour
 
     public EffectsController Effects { get {return effectsController; } }
 
+    public Animation Rise { get; set; } 
+
     public void GetResources()
     {
         piecePrefabs = new GameObject[17];
@@ -142,7 +144,6 @@ public class GameModule : MonoBehaviour
         materials = new List<Material>();
         materials.AddRange( Resources.LoadAll<Material>("Materials/Text"));
 
-
-
+        Rise = Resources.Load<Animation>("Animation/RiseText");
     }
 }
