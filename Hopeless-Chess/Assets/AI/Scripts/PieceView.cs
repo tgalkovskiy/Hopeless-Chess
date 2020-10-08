@@ -63,6 +63,7 @@ public class PieceView : MonoBehaviour
         topAngle = camera.GetComponent<CameraController>().TransitionAngle;
         delta = camera.GetComponent<CameraController>().DeltatransitionAngle;
         deltaTopView = camera.GetComponent<CameraController>().AngleStartTopViewRotation;
+
     }
 
     // Update is called once per frame
@@ -125,6 +126,15 @@ public class PieceView : MonoBehaviour
         text.GetComponent<TextMeshPro>().text = delta.ToString();
         text.GetComponent<Animation>().Play();
 
+        ChangeMoralityBar();
+    }
 
+    public void ChangeMoralityBar()
+	{
+        var morality = gameObject.GetComponent<CharacterController>().moralityCount;
+        frontMoralityBarScale.transform.localScale =
+            new Vector3(morality/100*0.9f, frontMoralityBarScale.transform.localScale.y, frontMoralityBarScale.transform.localScale.z);
+        topMoralityBarScale.transform.localScale =
+            new Vector3(morality / 100 * 0.9f, topMoralityBarScale.transform.localScale.y, topMoralityBarScale.transform.localScale.z);
     }
 }
