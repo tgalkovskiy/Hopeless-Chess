@@ -36,6 +36,7 @@ public class Morality : MonoBehaviour
         {
             pieces[i].moralityCount += moralityCount;
             pieces[i].gameObject.GetComponent<PieceView>().ShowChangeMorality(moralityCount);
+            pieces[i].gameObject.GetComponent<PieceView>().ChangeMoralityBar();
         }
     }
 
@@ -48,6 +49,7 @@ public class Morality : MonoBehaviour
     {
             piece.moralityCount += moralityCount;
             piece.gameObject.GetComponent<PieceView>().ShowChangeMorality(moralityCount);
+            piece.gameObject.GetComponent<PieceView>().ChangeMoralityBar();
     }
 
     /// <summary>

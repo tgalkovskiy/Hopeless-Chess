@@ -57,7 +57,7 @@ public class CharacterController : Afflictions
     private void Start() 
     {
         isFirstMove = true;
-        moralityCount = startMorality;
+        
         movesToRemoveAffliction = -1;
         if(character == null)
         {
@@ -65,7 +65,13 @@ public class CharacterController : Afflictions
         }
         if(character != null)
         {
-            moralityCount = character.MaxMorality;
+            //moralityCount = character.MaxMorality;
+            moralityCount = startMorality;
+            if(moralityCount > character.MaxMorality)
+            {
+                moralityCount = character.MaxMorality;
+            }
+            gameObject.GetComponent<PieceView>().ChangeMoralityBar();
         }
         currentMoveTexture = moveTexture;
         GetSignificance();

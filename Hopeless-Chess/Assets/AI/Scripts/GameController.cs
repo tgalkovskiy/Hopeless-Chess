@@ -13,6 +13,12 @@ public class GameController : MonoBehaviour
 	ChessAI AI; 
 
 	[SerializeField]
+	public float moralityDamage;
+
+	[SerializeField]
+	public float moralityRegen;
+
+	[SerializeField]
 	Camera mainCamera;
 	Ray ray;
 	RaycastHit hit;
@@ -157,13 +163,13 @@ public class GameController : MonoBehaviour
 		{
 			if(board.LastEatenPiece.isLight)
 			{
-				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), -5 * board.LastEatenPiece.significanceMultiply);
-				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), 2 * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), -moralityDamage * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), moralityRegen * board.LastEatenPiece.significanceMultiply);
 			}
 			else
 			{
-				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), 2 * board.LastEatenPiece.significanceMultiply);
-				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), -5 * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), moralityRegen * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), -moralityDamage * board.LastEatenPiece.significanceMultiply);
 			}
 		}
 	}
