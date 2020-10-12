@@ -34,12 +34,17 @@ public class EffectsController : MonoBehaviour
         GameObject piece = character.gameObject;
         GameObject effect = Instantiate(effectPrefab, piece.transform.position, Quaternion.identity, piece.transform);
         effect.transform.rotation = Quaternion.Euler(-90, 0, 0);
-        effect.transform.position += Vector3.up / 2;
+        effect.transform.position += Vector3.up / 3;
         character.currentEffect = effect;
         if(isRemovingByTime)
         {
             Destroy(effect, removeTime);
         }
+    }
+
+    public void StartEndAnimation(GameObject effect)
+    {
+        effect.GetComponent<Animator>().Play("End");
     }
 
 }

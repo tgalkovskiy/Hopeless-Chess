@@ -101,7 +101,7 @@ public class Morality : MonoBehaviour
                 else if(board.AlliesCount(pieces[i]) >= 3)
                 {
                     Afflictions.GetAfflictions().Overcoming(pieces[i]);
-                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.overcomingEffect, 6f);
+                    EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.overcomingEffect, 7f);
                 }
                 else if(board.EmenyCount(pieces[i]) >= 3)
                 {
@@ -132,6 +132,7 @@ public class Morality : MonoBehaviour
                 pieces[i].movesToRemoveAffliction = -1;
                 pieces[i].moralityCount = pieces[i].character.MaxMorality / 2;
                 Destroy(pieces[i].currentEffect, 2f);
+                EffectsController.GetEffects().StartEndAnimation(pieces[i].currentEffect);
             }
         }
 

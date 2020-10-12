@@ -49,3 +49,7 @@ MonoBehaviour:
     type: 3}
   rageEffect: {fileID: 5815451190436049826, guid: d07e2dbfb01dc8049ada5008bd1fa6d3,
     type: 3}
+  panicEffect: {fileID: 4614833167420159608, guid: ca79ce122893199439176d5c724a68ca,
+    type: 3}
+  escapeEffect: {fileID: 529806268084928603, guid: c4a97ce336dc08447a3f192c918d5d32,
+    type: 3}
