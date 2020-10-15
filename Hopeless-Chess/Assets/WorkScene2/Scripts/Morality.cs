@@ -89,34 +89,40 @@ public class Morality : MonoBehaviour
 
     public void CheckMorality(CharacterController[] pieces, BoardController2 board)
     {
+
         for(int i = 0; i < pieces.Length; i++)
         {
             if(pieces[i].moralityCount <= 0 && pieces[i].movesToRemoveAffliction == -1)
             {
                 if(board.IsMyQweenOrKingNear(pieces[i]))
                 {
-                    Afflictions.GetAfflictions().Heroism(pieces[i]);
+                    pieces[i].gameObject.AddComponent<HeroismEffect>();
                     EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.heroismEffect);
+                    pieces[i].affliction = GameModule.instance.Afflictions.heroism;
                 }
                 else if(board.AlliesCount(pieces[i]) >= 3)
                 {
-                    Afflictions.GetAfflictions().Overcoming(pieces[i]);
+                    pieces[i].gameObject.AddComponent<OvercomingEffect>();
                     EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.overcomingEffect, 7f);
+                    pieces[i].affliction = GameModule.instance.Afflictions.overcoming;
                 }
                 else if(board.EmenyCount(pieces[i]) >= 3)
                 {
-                    Afflictions.GetAfflictions().Escape(pieces[i], 3);
+                    pieces[i].gameObject.AddComponent<EscapeEffect>();
                     EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.escapeEffect, 0f, false);
+                    pieces[i].affliction = GameModule.instance.Afflictions.escape;
                 }
                 else if(board.IsAlliesDieNear(pieces[i]))
                 {
-                    Afflictions.GetAfflictions().Rage(pieces[i], 3);
+                    pieces[i].gameObject.AddComponent<RageEffect>();
                     EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.rageEffect, 0f, false);
+                    pieces[i].affliction = GameModule.instance.Afflictions.rage;
                 }
                 else if(board.IsMyQweenDie(pieces[i]))
                 {
-                    Afflictions.GetAfflictions().Panic(pieces[i], 3);
+                    pieces[i].gameObject.AddComponent<PanicEffect>();
                     EffectsController.GetEffects().CreateEffect(pieces[i], GameModule.instance.Effects.panicEffect, 0f, false);
+                    pieces[i].affliction = GameModule.instance.Afflictions.panic;
                 }
             }
             else if(pieces[i].movesToRemoveAffliction > 0)
@@ -127,10 +133,11 @@ public class Morality : MonoBehaviour
             {
                 if(pieces[i].currentMoveTexture != null)
                 {
-                 pieces[i].currentMoveTexture = pieces[i].moveTexture;
+                    pieces[i].currentMoveTexture = pieces[i].moveTexture;
                 }
                 pieces[i].movesToRemoveAffliction = -1;
                 pieces[i].moralityCount = pieces[i].character.MaxMorality / 2;
+                pieces[i].affliction = null;
                 Destroy(pieces[i].currentEffect, 2f);
                 EffectsController.GetEffects().StartEndAnimation(pieces[i].currentEffect);
             }

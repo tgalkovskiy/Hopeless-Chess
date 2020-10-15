@@ -3,7 +3,12 @@ guid: f839698f756539e499aa7e2fc2bd3dba
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - rage: {fileID: 11400000, guid: 5898493163be26248a91fb039a8e1ae6, type: 2}
+  - panic: {instanceID: 0}
+  - escape: {instanceID: 0}
+  - heroism: {instanceID: 0}
+  - overcoming: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

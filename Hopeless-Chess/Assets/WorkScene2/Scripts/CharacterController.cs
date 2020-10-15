@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Обрабатывает состояние фигуры в текущий момент времени
 /// </summary>
-public class CharacterController : Afflictions
+public class CharacterController : MonoBehaviour
 {
     /// <summary>
     /// Основная информация о персонаже (не изменяется в ходе игры)
@@ -54,6 +54,8 @@ public class CharacterController : Afflictions
     [HideInInspector] public int movesToRemoveAffliction;
 
     [HideInInspector] public bool isFirstMove;
+
+    public AfflictionsData affliction;
     private void Start() 
     {
         isFirstMove = true;
