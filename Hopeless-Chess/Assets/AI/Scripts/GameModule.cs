@@ -51,6 +51,8 @@ public class GameModule : MonoBehaviour
     EffectsController effectsController;
     List<Material> materials;
 
+    Afflictions afflictions;
+
 
     /// <summary>
     /// 1 - King
@@ -95,6 +97,8 @@ public class GameModule : MonoBehaviour
     public EffectsController Effects { get {return effectsController; } }
 
     public Animation Rise { get; set; } 
+
+    public Afflictions Afflictions {get {return afflictions;}}
 
     public void GetResources()
     {
@@ -145,5 +149,7 @@ public class GameModule : MonoBehaviour
         materials.AddRange( Resources.LoadAll<Material>("Materials/Text"));
 
         Rise = Resources.Load<Animation>("Animation/RiseText");
+
+        afflictions = GameObject.FindGameObjectWithTag("AfflictionController").GetComponent<Afflictions>();
     }
 }
