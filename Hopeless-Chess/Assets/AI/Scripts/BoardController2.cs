@@ -12,6 +12,11 @@ public class BoardController2 : MonoBehaviour
 	List<GameObject> darkPieces;
 
 	[SerializeField]
+	int SetupNumber;
+
+	[Space]
+
+	[SerializeField]
 	Transform fatherBoard2;
 	[SerializeField]
 	GameObject image;
@@ -34,12 +39,7 @@ public class BoardController2 : MonoBehaviour
 		darkPieces = new List<GameObject>();
 		movesArchive = new List<string>();
 
-		SetupStartPosition();
-		//SetupMatePosition();
-		//SetupMiniGame();
-		//SetupMiniGame2();
-		//SetupMiniGame3();
-
+		board = GameModule.instance.BoardSetups[SetupNumber];
 		CreateBoard();
 		PlacePieces();
 
@@ -48,86 +48,6 @@ public class BoardController2 : MonoBehaviour
 		SwitchOffAllSquars();
 
 		
-	}
-
-	/// <summary>
-	/// 1 - King
-	/// 2 - Queen
-	/// 3 - Bishop
-	/// 4 - Knight
-	/// 5 - Rock
-	/// 6 - Pawn
-	/// </summary>
-	void SetupStartPosition()
-	{
-		moveNumber = 1;
-
-		board = new int[8][] {
-			new int [8] {  105, 104, 103, 101, 102, 113, 114, 115 },
-			new int [8] {  106, 116, 126, 136, 146, 156, 166, 176 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {  906, 916, 926, 936, 946, 956, 966, 976 },
-			new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
-		};
-
-	}
-
-	void SetupMatePosition()
-	{
-		board = new int[8][] {
-			new int [8] {  105,   0, 103, 101, 102, 113, 114, 115 },
-			new int [8] {  106, 116, 126,   0, 146, 156, 166, 176 },
-			new int [8] {  104,   0,   0, 136,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0, 916,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0, 926,   0,   0,   0,   0,   0 },
-			new int [8] {  906,   0,   0, 936, 946, 956, 966, 976 },
-			new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
-		};
-
-		moveNumber = 1;
-	}
-
-	void SetupMiniGame()
-	{
-		board = new int[][] {
-			new int [] {  105,   0,   0 },
-			new int [] {  104,   0, 103 },
-			new int [] {    0, 903,   0 }
-		};
-
-		moveNumber = 1;
-	}
-
-	void SetupMiniGame2()
-	{
-		board = new int[][] {
-			new int [] { 101,   0,   0,   0,   0},
-			new int [] {   0,   0, 901,   0, 905},
-			new int [] {   0,   0,   0,   0,   0},
-			new int [] {   0,   0,   0,   0,   0},
-		};
-
-		moveNumber = 1;
-	}
-
-	void SetupMiniGame3()
-	{
-		board = new int[8][] {
-			new int [8] {    0,   0, 103,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-			new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-		};
-
-		moveNumber = 1;
 	}
 
 	/// <summary>
@@ -144,6 +64,11 @@ public class BoardController2 : MonoBehaviour
 		}
 		return characters;
 	}
+
+
+	//
+	// Начало работы доски
+	//
 
 	public void ShowBoard()
 	{
@@ -223,10 +148,17 @@ public class BoardController2 : MonoBehaviour
 		}
 	}
 
+	//
+	// Начало работы доски
+	//
+
+	
 
 
 
-
+	//
+	// Переключение колладеров фигур
+	//
 
 
 	public void SwitchOffBlackColliders()
@@ -261,11 +193,19 @@ public class BoardController2 : MonoBehaviour
 		}
 	}
 
+	//
+	// Переключение колладеров фигур
+	//
 
 
 
 
 
+
+
+	//
+	// Поиск движения фигуры.
+	//
 
 	public List <Vector2Int> FindPieceMoves(CharacterController piece)
 	{
@@ -540,6 +480,13 @@ public class BoardController2 : MonoBehaviour
 	}
 
 	#endregion
+
+
+	//
+	// Поиск движения фигуры.
+	//
+
+
 
 
 
@@ -838,6 +785,13 @@ public class BoardController2 : MonoBehaviour
 
 
 
+
+
+	///
+	/// Методы для AI
+	///
+
+
 	public float BoardScore(string turn)
 	{
 		return 0;
@@ -852,6 +806,14 @@ public class BoardController2 : MonoBehaviour
 	{
 
 	}
+
+
+
+
+
+
+
+
 
 
 

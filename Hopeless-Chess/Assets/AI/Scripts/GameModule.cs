@@ -22,12 +22,40 @@ public class GameModule : MonoBehaviour
     }
 
 
-    GameObject[] piecePrefabs;
-    GameObject squarePrefab;
-    GameObject selectedPrefab;
 
+
+
+
+
+    public Camera MainCamera { get { return mainCamera; } }
     [SerializeField]
     Camera mainCamera;
+
+
+    #region Prefabs
+
+    /// <summary>
+    /// 1 - King
+    /// 2 - Queen
+    /// 3 - Bishop
+    /// 4 - Knight
+    /// 5 - Rock
+    /// 6 - Pawn
+    /// </summary>
+    public GameObject[] PiecePrefabs { get { return piecePrefabs; } }
+    GameObject[] piecePrefabs;
+
+    public GameObject SquarePrefab { get { return squarePrefab; } }
+    GameObject squarePrefab;
+
+    public GameObject SelectedPrefab { get { return selectedPrefab; } }
+    GameObject selectedPrefab;
+
+    #endregion
+
+
+
+    #region Color
 
     [Space]
     [SerializeField]
@@ -45,33 +73,6 @@ public class GameModule : MonoBehaviour
     [SerializeField]
     Color jumpAndAttack;
 
-    Color[] moveColors;
-    Texture2D emptyMoveTexture;
-    GameObject boardTexture;
-    EffectsController effectsController;
-    List<Material> materials;
-
-    Afflictions afflictions;
-
-
-    /// <summary>
-    /// 1 - King
-    /// 2 - Queen
-    /// 3 - Bishop
-    /// 4 - Knight
-    /// 5 - Rock
-    /// 6 - Pawn
-    /// </summary>
-    public GameObject[] PiecePrefabs { get { return piecePrefabs; } }
-
-    public GameObject SquarePrefab { get { return squarePrefab; } }
-
-    public GameObject SelectedPrefab { get { return selectedPrefab; } }
-
-    public Camera MainCamera { get { return mainCamera; } }
-
-    public List<Material> Materials { get { return materials; } }
-
 
     /// <summary>
     /// 0 - none; 
@@ -83,26 +84,119 @@ public class GameModule : MonoBehaviour
     /// 6 - jump and attack; 
     /// </summary>
     public Color[] MoveColors { get { return moveColors; } }
+    Color[] moveColors;
+
+    #endregion
+
+
+
+    public List<Material> Materials { get { return materials; } }
+    List<Material> materials;
+
+
     public Texture2D EmptyMoveTexture { get { return emptyMoveTexture; } }
-
-    public CharactersObject[] PawnsData {get; set;}
-    public CharactersObject[] RooksData {get; set;}
-    public CharactersObject[] BishopsData {get; set;}
-    public CharactersObject[] KnightData {get; set;}
-    public CharactersObject[] QueenData {get; set;}
-    public CharactersObject[] KingData {get; set;}
-
+    Texture2D emptyMoveTexture;
     public GameObject BoardTexture { get { return boardTexture; } }
+    GameObject boardTexture;
 
-    public EffectsController Effects { get {return effectsController; } }
 
-    public Animation Rise { get; set; } 
 
-    public Afflictions Afflictions {get {return afflictions;}}
+    #region PieceData
+    public CharactersObject[] PawnsData { get; set; }
+    public CharactersObject[] RooksData { get; set; }
+    public CharactersObject[] BishopsData { get; set; }
+    public CharactersObject[] KnightData { get; set; }
+    public CharactersObject[] QueenData { get; set; }
+    public CharactersObject[] KingData { get; set; }
+
+    #endregion
+
+
+
+    public EffectsController Effects { get { return effectsController; } }
+    EffectsController effectsController;
+
+
+    public Afflictions Afflictions { get { return afflictions; } }
+    Afflictions afflictions;
+
+
+    #region BoradSetups
+
+    public List<int[][]> BoardSetups { get { return boardSetups; } }
+    List<int[][]> boardSetups = new List<int[][]>() {
+
+    /// <summary>
+	/// 1 - King
+	/// 2 - Queen
+	/// 3 - Bishop
+	/// 4 - Knight
+	/// 5 - Rock
+	/// 6 - Pawn
+	/// </summary>
+
+        // Setup 0
+        new int[8][] {
+            new int [8] {  105, 104, 103, 101, 102, 113, 114, 115 },
+            new int [8] {  106, 116, 126, 136, 146, 156, 166, 176 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {  906, 916, 926, 936, 946, 956, 966, 976 },
+            new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
+
+        },
+
+        // Setup 1
+        new int[8][] {
+            new int [8] {  105,   0, 103, 101, 102, 113, 114, 115 },
+            new int [8] {  106, 116, 126,   0, 146, 156, 166, 176 },
+            new int [8] {  104,   0,   0, 136,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0, 916,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0, 926,   0,   0,   0,   0,   0 },
+            new int [8] {  906,   0,   0, 936, 946, 956, 966, 976 },
+            new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
+        },
+
+        // Setup 2
+        new int[][] {
+            new int[] {  105,   0,   0 },
+            new int[] { 104, 0, 103 },
+            new int[] { 0, 903, 0 }
+        },
+
+        // Setup 3
+        new int[][] {
+            new int [] { 101,   0,   0,   0,   0},
+            new int [] {   0,   0, 901,   0, 905},
+            new int [] {   0,   0,   0,   0,   0},
+            new int [] {   0,   0,   0,   0,   0},
+        },
+
+        // Setup 4
+        new int[8][] {
+            new int [8] {    0,   0, 103,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
+        }
+
+    };
+
+    #endregion
+
 
     public void GetResources()
     {
-        piecePrefabs = new GameObject[17];
+		#region prefabs
+
+		piecePrefabs = new GameObject[17];
         //piecePrefabs[1] = Resources.Load<GameObject>("PiecePrefabs/KingLight");
         //piecePrefabs[2] = Resources.Load<GameObject>("PiecePrefabs/QueenLight");
         //piecePrefabs[3] = Resources.Load<GameObject>("PiecePrefabs/BishopLight");
@@ -132,24 +226,29 @@ public class GameModule : MonoBehaviour
         squarePrefab = Resources.Load<GameObject>("Square");
         selectedPrefab = Resources.Load<GameObject>("Selected");
 
+		#endregion
+
         moveColors = new Color[] { none, move, attack, moveAndAttack, jump };
+
+        materials = new List<Material>();
+        materials.AddRange( Resources.LoadAll<Material>("Materials/Text"));
 
         emptyMoveTexture = Resources.Load<Texture2D>("Textures/Empty");
         boardTexture = Resources.Load<GameObject>("Board");
 
-        PawnsData = Resources.LoadAll<CharactersObject>("Characters/Pawns");
+		#region pieceData
+
+		PawnsData = Resources.LoadAll<CharactersObject>("Characters/Pawns");
         RooksData = Resources.LoadAll<CharactersObject>("Characters/Rooks");
         BishopsData = Resources.LoadAll<CharactersObject>("Characters/Bishops");
         KnightData = Resources.LoadAll<CharactersObject>("Characters/Knights");
         QueenData = Resources.LoadAll<CharactersObject>("Characters/Queens");
         KingData = Resources.LoadAll<CharactersObject>("Characters/Kings");
+
+		#endregion
+
         effectsController = Resources.Load<GameObject>("EffectController").GetComponent<EffectsController>();
 
-        materials = new List<Material>();
-        materials.AddRange( Resources.LoadAll<Material>("Materials/Text"));
-
-        Rise = Resources.Load<Animation>("Animation/RiseText");
-
-        afflictions = GameObject.FindGameObjectWithTag("AfflictionController").GetComponent<Afflictions>();
+        //afflictions = GameObject.FindGameObjectWithTag("AfflictionController").GetComponent<Afflictions>();
     }
 }
