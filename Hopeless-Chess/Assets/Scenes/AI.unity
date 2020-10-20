@@ -559,7 +559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &277885188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1925,6 +1925,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 57326719}
   AI: {fileID: 277885188}
+  moralityDamage: 15
+  moralityRegen: 10
   mainCamera: {fileID: 1271300251}
   lastCharacterSelected: {fileID: 0}
 --- !u!4 &1413725187
@@ -1958,7 +1960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1418539469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2119,7 +2121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1461306105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2355,7 +2357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1791028926}
   m_Layer: 0
-  m_Name: BackGround
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

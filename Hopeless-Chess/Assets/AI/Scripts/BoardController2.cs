@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Schema;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.UIElements;
 
 public class BoardController2 : MonoBehaviour
 {
@@ -64,6 +58,8 @@ public class BoardController2 : MonoBehaviour
 	/// </summary>
 	void SetupStartPosition()
 	{
+		moveNumber = 1;
+
 		board = new int[8][] {
 			new int [8] {  105, 104, 103, 101, 102, 113, 114, 115 },
 			new int [8] {  106, 116, 126, 136, 146, 156, 166, 176 },
@@ -75,7 +71,6 @@ public class BoardController2 : MonoBehaviour
 			new int [8] {  905, 904, 903, 901, 902, 913, 914, 915 }
 		};
 
-		moveNumber = 1;
 	}
 
 	void SetupMatePosition()
@@ -225,6 +220,12 @@ public class BoardController2 : MonoBehaviour
 			}
 		}
 	}
+
+
+
+
+
+
 
 	public void SwitchOffBlackColliders()
 	{

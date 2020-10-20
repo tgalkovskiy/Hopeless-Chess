@@ -63,7 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AI\Free Low Poly Chess Set\Example\Scripts\CameraRotate.cs" />
     <Compile Include="Assets\AI\Scripts\BoardController2.cs" />
     <Compile Include="Assets\AI\Scripts\CameraController.cs" />
     <Compile Include="Assets\AI\Scripts\ChessAI.cs" />
@@ -71,6 +70,12 @@
     <Compile Include="Assets\AI\Scripts\GameModule.cs" />
     <Compile Include="Assets\AI\Scripts\PieceView.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\Afflictions.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\Afflictions\EscapeEffect.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\Afflictions\HeroismEffect.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\Afflictions\OvercomingEffect.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\Afflictions\PanicEffect.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\Afflictions\RageEffect.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\AfflictionsData.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\BoardController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\CharacterController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\CharactersObject.cs" />
@@ -91,7 +96,6 @@
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\AI\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\AI\Free Low Poly Chess Set\README.txt" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
