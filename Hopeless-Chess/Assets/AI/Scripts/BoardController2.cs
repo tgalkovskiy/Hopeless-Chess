@@ -46,6 +46,8 @@ public class BoardController2 : MonoBehaviour
 		SwitchOffLhiteColliders();
 		SwitchOffBlackColliders();
 		SwitchOffAllSquars();
+
+		
 	}
 
 	/// <summary>
@@ -774,7 +776,7 @@ public class BoardController2 : MonoBehaviour
 		return true;
 	}
 
-	public CharacterController[] GaveupPieces()
+	public CharacterController[] AllPieces()
 	{
 		List<CharacterController> allPieces = new List<CharacterController>();	
 		for(int i = 0; i < darkPieces.Count; i++)

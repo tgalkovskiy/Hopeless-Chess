@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEditor;
 
 public class GameController : MonoBehaviour
 {
-
 	bool isLightTurn;
 	[SerializeField]
 	BoardController2 board;
@@ -28,11 +28,27 @@ public class GameController : MonoBehaviour
 
 	bool isInit;
 
+	public MoralityPreset moralityPreset;
+
+	[ConditionalHide("moralityPreset", (int)MoralityPreset.different)]
+	public int pawnMorality;
+	[ConditionalHide("moralityPreset", (int)MoralityPreset.different)]
+	public int rookMorality;
+	[ConditionalHide("moralityPreset", (int)MoralityPreset.different)]
+	public int bishopMorality;
+	[ConditionalHide("moralityPreset", (int)MoralityPreset.different)]
+	public int knightMorality;
+	[ConditionalHide("moralityPreset", (int)MoralityPreset.different)]
+	public int queenMorality;
+
+
+
 	void Start()
 	{
 		isInit = true;
 		NextTurn();
 		isInit = false;
+		StartCoroutine(InitInTheEnd());
 	}
 
 	void Update()
@@ -144,7 +160,7 @@ public class GameController : MonoBehaviour
 		if(isInit == false)
 		{
 			PieceEated();
-			Morality.GetInstance().CheckMorality(board.GaveupPieces(), board);
+			Morality.GetInstance().CheckMorality(board.AllPieces(), board);
 		}
 
 	}
@@ -172,6 +188,58 @@ public class GameController : MonoBehaviour
 				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), -moralityDamage * board.LastEatenPiece.significanceMultiply);
 			}
 		}
+	}
+	
+	public void SetCharacterMoralityPreset(CharacterController[] pieces)
+	{
+		for(int i = 0; i < pieces.Length; i++)
+		{
+			if(moralityPreset == MoralityPreset.nothing)
+			{
+				pieces[i].moralityCount = 0;
+			}
+			else if(moralityPreset == MoralityPreset.full)
+			{
+				pieces[i].moralityCount = pieces[i].character.MaxMorality;
+			}
+			else if(moralityPreset == MoralityPreset.different)
+			{
+				if(pieces[i].pieceType == CharacterController.ChessType.pawn)
+				{
+					pieces[i].moralityCount = pawnMorality;
+				}
+				else if(pieces[i].pieceType == CharacterController.ChessType.rook)
+				{
+					pieces[i].moralityCount = rookMorality;
+				}
+				else if(pieces[i].pieceType == CharacterController.ChessType.bishop)
+				{
+					pieces[i].moralityCount = bishopMorality;
+				}
+				else if(pieces[i].pieceType == CharacterController.ChessType.knight)
+				{
+					pieces[i].moralityCount = knightMorality;
+				}
+				else if(pieces[i].pieceType == CharacterController.ChessType.queen)
+				{
+					pieces[i].moralityCount = queenMorality;
+				}
+			}
+			
+		}
+	}
+
+	public enum MoralityPreset
+	{
+		none,
+		full,
+		different,
+		nothing
+	}
+	private IEnumerator InitInTheEnd()
+	{
+		yield return new WaitForEndOfFrame();
+		SetCharacterMoralityPreset(board.AllPieces());
 	}
 
 }
