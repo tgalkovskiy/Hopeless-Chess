@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+//using UniRx;
 using UnityEngine;
 
 public class ChessAI : MonoBehaviour
 {
-	[SerializeField]
+
 	BoardController2 board;
+
 	[Space]
 
 	[SerializeField]
@@ -21,160 +25,202 @@ public class ChessAI : MonoBehaviour
 		light, dark, none
 	}
 
-	public SideAI Side { get { return side; } } 
+	public SideAI Side { get { return side; } }
 
-	private void Start()
+	private void Awake()
 	{
-		
+		board = GameObject.FindGameObjectWithTag("Board").GetComponent<BoardController2>();
 	}
 
-	public string BestMove(bool isWhitesTurn)
-	{
-		if (isWhitesTurn && side == SideAI.dark) return null;
-		if (!isWhitesTurn && side == SideAI.light) return null;
 
+	public IEnumerator BestMoveCorutine(bool isWhitesTurn)
+	{
+		Debug.Log(BestMove(isWhitesTurn));
+		yield return null;
+	}
+
+	public string BestMove (bool isWhitesTurn)
+	{
 		string bestMove = null;
 
-		float boardScore;
-		float tempBoardScore;
+		////Начало асинхрона
+		//var heavyMethod = Observable.Start(() =>
+		//{
+		////Начало асинхрона
 
-		//List<string> Moves = new List<string>();
-
-		switch (AIPower)
-		{
-			case 1:
-				#region Первый уровень погружения (рандомные ходы)
-			
-				bestMove = board.GiveAllPieceMoves(isWhitesTurn)[UnityEngine.Random.Range(0, board.GiveAllPieceMoves(isWhitesTurn).Count - 1)];
-
-				#endregion
-				break;
-			case 2:
-				#region Второй уровень погружения (если можно съесть - съест)
+			Debug.Log("Процесс идет");
 
 
-				List<string>  Moves=  board.GiveAllPieceMoves(isWhitesTurn);
+			if (isWhitesTurn && side == SideAI.dark) return null;
+			if (!isWhitesTurn && side == SideAI.light) return null;
 
-				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
-				if (isWhitesTurn)
-				{
-					boardScore = -9999;
-					foreach (var item in Moves)
+			float boardScore;
+			float tempBoardScore;
+
+			//List<string> Moves = new List<string>();
+
+			switch (AIPower)
+			{
+				case 1:
+					#region Первый уровень погружения (рандомные ходы)
+					board.ShowBoard();
+					//bestMove = board.MovesFilterKingDilema(isWhitesTurn)
+					//	[UnityEngine.Random.Range(0, board.MovesFilterKingDilema(isWhitesTurn).Count - 1)];
+
+					Debug.Log(new int[] {1,2,3 }.ToString());
+
+					bestMove = board.MovesFilterKingDilema(isWhitesTurn) [0];
+
+					#endregion
+					break;
+				case 2:
+					#region Второй уровень погружения (если можно съесть - съест)
+
+					Debug.Log( "  BoardScore =  " + BoardScore());
+
+					List<string>  Moves =  board.MovesFilterKingDilema(isWhitesTurn);
+
+					Debug.Log("  BoardScore =  " + BoardScore());
+
+					// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
+					if (isWhitesTurn)
 					{
-						board.MovePieceOnBoard(item);
-						tempBoardScore = BoardScore();
-						board.UndoMovePieceOnBord(item);
 
-						if (tempBoardScore > boardScore)
+						Debug.Log("  BoardScore =  " + BoardScore());
+						boardScore = -9999;
+						foreach (var item in Moves)
 						{
-							boardScore = tempBoardScore;
-							bestMove = item;
+							board.MovePieceOnBoard(item);
+							tempBoardScore = BoardScore();
+							//Debug.Log(item + "  BoardScore =  " + tempBoardScore);
+							board.UndoMovePieceOnBord(item);
+
+							if (tempBoardScore > boardScore)
+							{
+								boardScore = tempBoardScore;
+								bestMove = item;
+							}
 						}
 					}
-				}
-				else
-				{
-					boardScore = 9999;
-					foreach (var item in Moves)
+					else
 					{
-						board.MovePieceOnBoard(item);
-						tempBoardScore = BoardScore();
-						board.UndoMovePieceOnBord(item);
-
-						//Debug.Log(boardScore);
-
-						if (tempBoardScore < boardScore)
+						boardScore = 9999;
+						foreach (var item in Moves)
 						{
-							boardScore = tempBoardScore;
-							bestMove = item;
+							board.MovePieceOnBoard(item);
+							tempBoardScore = BoardScore();
+							//Debug.Log(item + "  BoardScore =  " + tempBoardScore);
+							board.UndoMovePieceOnBord(item);
+
+							//Debug.Log(boardScore);
+
+							if (tempBoardScore < boardScore)
+							{
+								boardScore = tempBoardScore;
+								bestMove = item;
+							}
 						}
 					}
-				}
 
-				#endregion
-				break;
-			case 3:
-				#region Третий уровень погружения (просчет ходов)
+					#endregion
+					break;
+				case 3:
+					#region Третий уровень погружения (просчет ходов)
 
-				Moves = board.GiveAllPieceMoves(isWhitesTurn);
+					Moves = board.MovesFilterKingDilema(isWhitesTurn);
 
-				//Debug.Log(Moves.Count);
+					//Debug.Log(Moves.Count);
 
-				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
-				if (isWhitesTurn)
-				{
-					float bestBoardScore = -9999;
-					foreach (var item in Moves)
+					// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
+					if (isWhitesTurn)
 					{
-						tempBoardScore = MinMaxVirtualScore(depth -1,item, isWhitesTurn);
+						float bestBoardScore = -9999;
+						foreach (var item in Moves)
+						{
+							tempBoardScore = MinMaxVirtualScore(depth -1,item, isWhitesTurn);
 						
-						if (tempBoardScore >= bestBoardScore)
-						{
-							bestBoardScore = tempBoardScore;
-							bestMove = item;
+							if (tempBoardScore >= bestBoardScore)
+							{
+								bestBoardScore = tempBoardScore;
+								bestMove = item;
+							}
 						}
 					}
-				}
-				else
-				{
-					float bestBoardScore = 9999;
-					foreach (var item in Moves)
+					else
 					{
-						tempBoardScore = MinMaxVirtualScore(depth -1,item, isWhitesTurn);
-
-						if (tempBoardScore <= bestBoardScore)
+						float bestBoardScore = 9999;
+						foreach (var item in Moves)
 						{
-							bestBoardScore = tempBoardScore;
-							bestMove = item;
+							tempBoardScore = MinMaxVirtualScore(depth -1,item, isWhitesTurn);
+
+							if (tempBoardScore <= bestBoardScore)
+							{
+								bestBoardScore = tempBoardScore;
+								bestMove = item;
+							}
 						}
+						//Debug.Log("bestMove = " + bestMove + "MINbestBoardScore = " + bestBoardScore);
 					}
-					//Debug.Log("bestMove = " + bestMove + "MINbestBoardScore = " + bestBoardScore);
-				}
 
-				#endregion
-				break;
-			case 4:
-				#region Четвертый уровень погружения (оптимизация 3-его уровня)
+					#endregion
+					break;
+				case 4:
+					#region Четвертый уровень погружения (оптимизация 3-его уровня)
 
-				depth = 2;
+					//depth = 2;
 
-				Moves = board.GiveAllPieceMoves(isWhitesTurn);
+					Moves = board.MovesFilterKingDilema(isWhitesTurn);
 
-				// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
-				if (isWhitesTurn)
-				{
-					boardScore = -9999;
-					foreach (var item in Moves)
+					// Если ход белых - мы будем искать наибольшее значание, если черных - наменьшее.
+					if (isWhitesTurn)
 					{
-						tempBoardScore = MinMaxVirtualScoreAlphaBeta(depth -1 , item, isWhitesTurn, -9999, 9999);
-						if (tempBoardScore <= boardScore)
+						boardScore = -9999;
+						foreach (var item in Moves)
 						{
-							boardScore = tempBoardScore;
-							bestMove = item;
+							tempBoardScore = MinMaxVirtualScoreAlphaBeta(depth -1 , item, isWhitesTurn, -9999, 9999);
+							if (tempBoardScore <= boardScore)
+							{
+								boardScore = tempBoardScore;
+								bestMove = item;
+							}
 						}
 					}
-				}
-				else
-				{
-					boardScore = 9999;
-					foreach (var item in Moves)
+					else
 					{
-						tempBoardScore = MinMaxVirtualScoreAlphaBeta(depth -1, item, isWhitesTurn, - 9999, 9999);
-						if (tempBoardScore >= boardScore)
+						boardScore = 9999;
+						foreach (var item in Moves)
 						{
-							boardScore = tempBoardScore;
-							bestMove = item;
+							tempBoardScore = MinMaxVirtualScoreAlphaBeta(depth -1, item, isWhitesTurn, - 9999, 9999);
+							if (tempBoardScore >= boardScore)
+							{
+								boardScore = tempBoardScore;
+								bestMove = item;
+							}
 						}
 					}
-				}
 
-				#endregion
-				break;
-		}
+					#endregion
+					break;
+			}
+
+		////Конец  асинхрона
+		//	return "0";
+		//});
+		////Конец  асинхрона
+
+		////Метод необходимый для запуска асинхрона
+		//Observable.WhenAll(heavyMethod)
+		//.ObserveOnMainThread()
+		//.Subscribe(result =>
+		//{
+		//	Debug.Log(string.Format("Thread = {0}, first result = {1} UtcNow = {2}", Thread.CurrentThread.ManagedThreadId, result[0], DateTime.UtcNow));
+		//});
+
 
 		return bestMove;
 	}
 
+	
 	float MinMaxVirtualScore (float curentDepth, string move, bool isWhitesTurn)
 	{
 		//Debug.Log("curentDepth = " + curentDepth +" move = " + move);
@@ -194,7 +240,7 @@ public class ChessAI : MonoBehaviour
 		isWhitesTurn = !isWhitesTurn;
 		//Делаем виртуальный ход
 
-		List<string> Moves = board.GiveAllPieceMoves(isWhitesTurn);
+		List<string> Moves = board.MovesFilterKingDilema(isWhitesTurn);
 
 		if (isWhitesTurn)
 		{
@@ -237,7 +283,7 @@ public class ChessAI : MonoBehaviour
 		isWhitesTurn = !isWhitesTurn;
 		//Делвем выртуальный ход
 
-		List<string> Moves = board.GiveAllPieceMoves(isWhitesTurn);
+		List<string> Moves = board.MovesFilterKingDilema(isWhitesTurn);
 
 		if (isWhitesTurn)
 		{
@@ -281,6 +327,7 @@ public class ChessAI : MonoBehaviour
 		float boardScore = 0;
 		int piece;
 		float side;
+		float tempPieceValue;
 
 		//board.ShowBoard();
 
@@ -290,28 +337,168 @@ public class ChessAI : MonoBehaviour
 			{
 				piece = curentBoard[i][j] % 10;
 				side = curentBoard[i][j] > 500 ? -1 : 1 ;
-				boardScore += side * pieceCost[piece];
-				//Debug.Log($"piece= {piece} side= {side} ++ = {side * pieceCost[piece]}  boardScore= {boardScore}");
+
+				switch (piece)
+				{
+					case 0: //Пустота
+						tempPieceValue = 0;
+						break;
+					case 1: //Король
+						tempPieceValue = 900 + ( side == 1 ? kingEvalWhite[i][j] : kingEvalBlack[i][j]) ;
+						break;
+					case 2: //Королева
+						tempPieceValue = 90 +  qweenEval[i][j];
+						//Debug.Log("tempPieceValue = " + tempPieceValue + "    j = " + j + "  i = " + i);
+						break;
+					case 3: //Слон
+						tempPieceValue = 30 + (side == 1 ? bishopEvalWhite[i][j] : bishopEvalBlack[i][j]);
+						break;
+					case 4: //Конь
+						tempPieceValue = 30 + knightEval[i][j];
+						break;
+					case 5: //Ладья
+						tempPieceValue = 50 + (side == 1 ? rookEvalWhite[i][j] : rookEvalBlack[i][j]);
+						break;
+					case 6: //Пешка
+						tempPieceValue = 10 + (side == 1 ? pawnEvalWhites[i][j] : pawnEvalBlack[i][j]);
+						break;
+
+					default:
+						Debug.Log("Ошибка в подсчете стоимости доски!");
+						tempPieceValue = 0;
+						break;
+				}
+
+				boardScore += side * tempPieceValue;
 			}
 		}
 		return boardScore;
 	}
 
-	static float[] pieceCost = new float[]
+	#region Evals
+
+
+	float[][] pawnEvalWhites = new float[][]
 	{
-		0,   //Пустое место
-		900, //Король
-		90,  //Королева
-		30,  //Слон
-		30,  //Конь
-		50,  //Ладья
-		10	 //Пешка
+		new float[] { 0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f },
+		new float[] { 0.5f,  1.0f,  1.0f, -2.0f, -2.0f,  1.0f,  1.0f,  0.5f },
+		new float[] { 0.5f, -0.5f, -1.0f,  0.0f,  0.0f, -1.0f, -0.5f,  0.5f },
+		new float[] { 0.0f,  0.0f,  0.0f,  2.0f,  2.0f,  0.0f,  0.0f,  0.0f },
+		new float[] { 0.5f,  0.5f,  1.0f,  2.5f,  2.5f,  1.0f,  0.5f,  0.5f },
+		new float[] { 1.0f,  1.0f,  2.0f,  3.0f,  3.0f,  2.0f,  1.0f,  1.0f },
+		new float[] { 5.0f,  5.0f,  5.0f,  5.0f,  5.0f,  5.0f,  5.0f,  5.0f },
+		new float[] { 0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f }
 	};
 
+	float[][] pawnEvalBlack = new float[][]
+	{
+		new float[] { 0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f },
+		new float[] { 5.0f,  5.0f,  5.0f,  5.0f,  5.0f,  5.0f,  5.0f,  5.0f },
+		new float[] { 1.0f,  1.0f,  2.0f,  3.0f,  3.0f,  2.0f,  1.0f,  1.0f },
+		new float[] { 0.5f,  0.5f,  1.0f,  2.5f,  2.5f,  1.0f,  0.5f,  0.5f },
+		new float[] { 0.0f,  0.0f,  0.0f,  2.0f,  2.0f,  0.0f,  0.0f,  0.0f },
+		new float[] { 0.5f, -0.5f, -1.0f,  0.0f,  0.0f, -1.0f, -0.5f,  0.5f },
+		new float[] { 0.5f,  1.0f,  1.0f, -2.0f, -2.0f,  1.0f,  1.0f,  0.5f },
+		new float[] { 0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f }
+	};
 
+	float[][] knightEval = new float[][]
+	{
+		new float[] { -5.0f, -4.0f, -3.0f, -3.0f, -3.0f, -3.0f, -4.0f, -5.0f },
+		new float[] { -4.0f, -2.0f,  0.0f,  0.0f,  0.0f,  0.0f, -2.0f, -4.0f },
+		new float[] { -3.0f,  0.0f,  1.0f,  1.5f,  1.5f,  1.0f,  0.0f, -3.0f },
+		new float[] { -3.0f,  0.5f,  1.5f,  2.0f,  2.0f,  1.5f,  0.5f, -3.0f },
+		new float[] { -3.0f,  0.0f,  1.5f,  2.0f,  2.0f,  1.5f,  0.0f, -3.0f },
+		new float[] { -3.0f,  0.5f,  1.0f,  1.5f,  1.5f,  1.0f,  0.5f, -3.0f },
+		new float[] { -4.0f, -2.0f,  0.0f,  0.5f,  0.5f,  0.0f, -2.0f, -4.0f },
+		new float[] { -5.0f, -4.0f, -3.0f, -3.0f, -3.0f, -3.0f, -4.0f, -5.0f }
+	};
 
+	float[][] bishopEvalWhite = new float[][]
+	{
+		new float[] { -2.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -2.0f },
+		new float[] { -1.0f,  0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.5f, -1.0f },
+		new float[] { -1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f, -1.0f },
+		new float[] { -1.0f,  0.0f,  1.0f,  1.0f,  1.0f,  1.0f,  0.0f, -1.0f },
+		new float[] { -1.0f,  0.5f,  0.5f,  1.0f,  1.0f,  0.5f,  0.5f, -1.0f },
+		new float[] { -1.0f,  0.0f,  0.5f,  1.0f,  1.0f,  0.5f,  0.0f, -1.0f },
+		new float[] { -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -1.0f },
+		new float[] { -2.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -2.0f }
+	};
 
+	float[][] bishopEvalBlack = new float[][]
+	{
+		new float[] { -2.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -2.0f },
+		new float[] { -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -1.0f },
+		new float[] { -1.0f,  0.0f,  0.5f,  1.0f,  1.0f,  0.5f,  0.0f, -1.0f },
+		new float[] { -1.0f,  0.5f,  0.5f,  1.0f,  1.0f,  0.5f,  0.5f, -1.0f },
+		new float[] { -1.0f,  0.0f,  1.0f,  1.0f,  1.0f,  1.0f,  0.0f, -1.0f },
+		new float[] { -1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f, -1.0f },
+		new float[] { -1.0f,  0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.5f, -1.0f },
+		new float[] { -2.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -2.0f }
+	};
 
+	float[][] rookEvalWhite = new float[][]
+	{
+		new float[] {  0.0f,  0.0f,  0.0f,  0.5f,  0.5f,  0.0f,  0.0f,  0.0f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] {  0.5f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  0.5f },
+		new float[] {  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f }
+	};
+
+	float[][] rookEvalBlack = new float[][]
+	{
+		new float[] {  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f },
+		new float[] {  0.5f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] { -0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -0.5f },
+		new float[] {  0.0f,  0.0f,  0.0f,  0.5f,  0.5f,  0.0f,  0.0f,  0.0f }
+	};
+
+	float[][] qweenEval = new float[][]
+	{
+		new float[] { -2.0f, -1.0f, -1.0f, -0.5f, -0.5f, -1.0f, -1.0f, -2.0f },
+		new float[] { -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f, -1.0f },
+		new float[] { -1.0f,  0.0f,  0.5f,  0.5f,  0.5f,  0.5f,  0.0f, -1.0f },
+		new float[] { -0.5f,  0.0f,  0.5f,  0.5f,  0.5f,  0.5f,  0.0f, -0.5f },
+		new float[] {  0.0f,  0.0f,  0.5f,  0.5f,  0.5f,  0.5f,  0.0f, -0.5f },
+		new float[] { -1.0f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.0f, -1.0f },
+		new float[] { -1.0f,  0.0f,  0.5f,  0.0f,  0.0f,  0.0f,  0.0f, -1.0f },
+		new float[] { -2.0f, -1.0f, -1.0f, -0.5f, -0.5f, -1.0f, -1.0f, -2.0f }
+	};
+
+	float[][] kingEvalWhite = new float[][]
+	{
+		new float[] {  2.0f,  3.0f,  1.0f,  0.0f,  0.0f,  1.0f,  3.0f,  2.0f },
+		new float[] {  2.0f,  2.0f,  0.0f,  0.0f,  0.0f,  0.0f,  2.0f,  2.0f },
+		new float[] { -1.0f, -2.0f, -2.0f, -2.0f, -2.0f, -2.0f, -2.0f, -1.0f },
+		new float[] { -2.0f, -3.0f, -3.0f, -4.0f, -4.0f, -3.0f, -3.0f, -2.0f },
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f },
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f },
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f },
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f }
+	};
+
+	float[][] kingEvalBlack = new float[][]
+	{
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f },
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f },
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f },
+		new float[] { -3.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -4.0f, -3.0f },
+		new float[] { -2.0f, -3.0f, -3.0f, -4.0f, -4.0f, -3.0f, -3.0f, -2.0f },
+		new float[] { -1.0f, -2.0f, -2.0f, -2.0f, -2.0f, -2.0f, -2.0f, -1.0f },
+		new float[] {  2.0f,  2.0f,  0.0f,  0.0f,  0.0f,  0.0f,  2.0f,  2.0f },
+		new float[] {  2.0f,  3.0f,  1.0f,  0.0f,  0.0f,  1.0f,  3.0f,  2.0f }
+	};
+
+	#endregion
 
 }
 

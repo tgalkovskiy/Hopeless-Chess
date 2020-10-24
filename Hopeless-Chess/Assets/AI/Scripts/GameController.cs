@@ -7,6 +7,7 @@ using UnityEditor;
 public class GameController : MonoBehaviour
 {
 	bool isLightTurn;
+
 	[SerializeField]
 	BoardController2 board;
 	[SerializeField]
@@ -148,7 +149,9 @@ public class GameController : MonoBehaviour
 
 		if (AI.Side != ChessAI.SideAI.none)
 		{
+			//StartCoroutine(AI.BestMoveCorutine(isLightTurn));
 			Debug.Log(AI.BestMove(isLightTurn));
+
 		}
 
 
@@ -157,11 +160,11 @@ public class GameController : MonoBehaviour
 
 		
 		
-		if(isInit == false)
-		{
-			PieceEated();
-			Morality.GetInstance().CheckMorality(board.AllPieces(), board);
-		}
+		//if(isInit == false)
+		//{
+		//	PieceEated();
+		//	Morality.GetInstance().CheckMorality(board.AllPieces(), board);
+		//}
 
 	}
 

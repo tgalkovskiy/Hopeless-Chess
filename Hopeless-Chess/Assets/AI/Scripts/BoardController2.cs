@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BoardController2 : MonoBehaviour
 {
 	int[][] board;
@@ -25,6 +26,9 @@ public class BoardController2 : MonoBehaviour
 
 	CharacterController lastMovedPiece;
 	CharacterController lastEatenPiece;
+
+	//Переменна которая говорит идет ли проверка на чек. Нужна для того чтобы не зациклилось находжение движений фигуры.
+	bool isItCheck; 
 
 	public CharacterController LastMovedPiece { get { return lastMovedPiece; } }
 	public CharacterController LastEatenPiece { get { return lastEatenPiece; } }
@@ -274,10 +278,11 @@ public class BoardController2 : MonoBehaviour
 					if (board[Y][X] == 0) continue;
 					if (!isMoveSquareAround(blackTexture, X, Y)) continue;
 					// Проверяем что фигуры из разных команд
+
 					if (Math.Abs( board[Y][X] - board[piecePosition.y][piecePosition.x]) >700)
 					{
 						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
-						blackTexture.Apply();
+						blackTexture.Apply();						
 						selectedSquars.Add(new Vector2Int(X, Y));
 					}
 					break;
@@ -335,6 +340,7 @@ public class BoardController2 : MonoBehaviour
 					break;
 				case 6:
 					if (board[Y][X] == 0) continue;
+
 					if (Math.Abs(board[Y][X] - board[piecePosition.y][piecePosition.x]) > 700)
 					{
 						blackTexture.SetPixel(X, blackTexture.height - 1 - Y, GameModule.instance.MoveColors[2]);
@@ -359,11 +365,13 @@ public class BoardController2 : MonoBehaviour
 	#region Дополнительный функции для ShowPieceMoves
 
 	/// <summary>
-	/// 0 - none
-	/// 1 - move
-	/// 2 - attack
-	/// 3 - move and attack
-	/// 4 - jump
+	/// 0 - none;  
+	/// 1 - move; 
+	/// 2 - attack; 
+	/// 3 - move and attack; 
+	/// 4 - jump and move and attack; 
+	/// 5 - junp and move; 
+	/// 6 - jump and attack; 
 	/// </summary>
 	/// <param name="color"></param>
 	/// <returns></returns>
@@ -493,6 +501,7 @@ public class BoardController2 : MonoBehaviour
 
 	public void GlowSquares(List<Vector2Int> positions)
 	{
+		//Debug.Log("Glow");
 		foreach (var item in positions)
 		{
 			Instantiate(
@@ -590,14 +599,18 @@ public class BoardController2 : MonoBehaviour
 
 	public bool IsItCheck(bool isLightTurn)
 	{
+		if (isItCheck) return false;
+		else isItCheck = true;
+
 		var kingPosition = FindPosition(isLightTurn ? 101 : 901);
 		foreach (var item in isLightTurn ? darkPieces : lightPieces)
-		{
 			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
-			{
-				if (kingPosition == item2)	return true;
-			}
-		}
+				if (kingPosition == item2)
+				{
+					isItCheck = false;
+					return true;
+				}
+		isItCheck = false;
 		return false;
 	}
 
@@ -660,7 +673,7 @@ public class BoardController2 : MonoBehaviour
 	/// <param name="form"></param>
 	/// <param name="to"></param>
 	/// <returns></returns>
-	string Archivator(Vector2Int form, Vector2Int to)
+	public string Archivator(Vector2Int form, Vector2Int to)
 	{
 		return ($"{moveNumber}:{board[to.y][to.x]}-{form.x}:{form.y}-{to.x}:{to.y}");
 	}
@@ -677,6 +690,8 @@ public class BoardController2 : MonoBehaviour
 
 		board[piecePosition.y][piecePosition.x] = board[squarePosition.y][squarePosition.x];
 		board[squarePosition.y][squarePosition.x] = eatenPiece;
+
+		movesArchive.Remove(move);
 	}
 
 	/// <summary>
@@ -684,7 +699,7 @@ public class BoardController2 : MonoBehaviour
 	/// </summary>
 	/// <param name="move"></param>
 	/// <returns></returns>
-	Vector2Int[] DeArchivator (string move)
+	public Vector2Int[] DeArchivator (string move)
 	{
 		var vectors = new Vector2Int[3];
 		var temp = move.Split(new char[] { '-' });
@@ -738,49 +753,6 @@ public class BoardController2 : MonoBehaviour
 
 	}
 		
-	public List<string> GiveAllPieceMoves(bool turn)
-	{
-		var allMoves = new List<string>();
-		foreach (var item in turn? lightPieces:darkPieces)
-		{
-			// Проверка. Есть ли фигура на доске. Ее могли виртуально съесть
-			if (
-				FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex) ==
-				new Vector2Int(board.GetLength(0) + 1, board[0].GetLength(0) + 1)
-				) continue;
-
-			foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
-			{
-				var temp = Archivator(
-				FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
-				item2
-				);
-
-				allMoves.Add(temp);
-			}
-		}
-
-		return allMoves;
-	}
-
-	bool KingDilemma (Vector2Int piece2, GameObject piece1,  bool turn, string move)
-	{
-		//Король короля может съесть всегда.
-		if (piece1.GetComponent<CharacterController>().boardIndex == (turn ? 101 : 901))
-			if (board[piece2.y][piece2.x] == (turn ? 901 : 101))
-				return true;
-
-
-		bool answer = true;
-
-		//Нельзя ходить туда где шах.
-		MovePieceOnBoard(move);
-		if (IsItCheck(turn)) answer =  false;
-		UndoMovePieceOnBord(move);
-
-		return answer;
-	}
-
 
 
 
@@ -807,7 +779,65 @@ public class BoardController2 : MonoBehaviour
 
 	}
 
+	public List<string> GiveAllPieceMoves(bool turn)
+	{
+		Debug.Log(1);
 
+		var allMoves = new List<string>();
+		foreach (var item in turn ? lightPieces : darkPieces)
+		{
+			//// Проверка. Есть ли фигура на доске. Ее могли виртуально съесть
+			//if (
+			//	FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex) ==
+			//	new Vector2Int(board.GetLength(0) + 1, board[0].GetLength(0) + 1)
+			//	) continue;
+
+			//foreach (var item2 in FindPieceMoves(item.GetComponent<CharacterController>()))
+			//{
+			//	var temp = Archivator(
+			//	FindPieceOnBoard(item.GetComponent<CharacterController>().boardIndex),
+			//	item2
+			//	);
+
+			//	allMoves.Add(temp);
+			//}
+		}
+
+		return allMoves;
+	}
+
+	/// <summary>
+	/// Удаляет движения где есть шах. Но не тот где колорь ест короля.
+	/// </summary>
+	/// <param name="isWhitesTurn"></param>
+	/// <returns></returns>
+	public List<string> MovesFilterKingDilema(bool isWhitesTurn)
+	{
+		var moves = new List<string>();
+		var removeItem = new List<string>();
+		moves = GiveAllPieceMoves(isWhitesTurn);
+		Vector2Int[] move = new Vector2Int[3];
+		string temp = "";
+
+		foreach (var item in moves)
+		{
+
+			//Если есть возможность атаковать короля королем, то сохрянаем это движение.
+			move = DeArchivator(item);
+			if (board[move[1].y][move[1].x] == (isWhitesTurn ? 101 : 901))
+				if (board[move[2].y][move[2].x] == (isWhitesTurn ? 901 : 101))
+					temp = item;
+
+			// Удаляем все движения с шахом.
+			MovePieceOnBoard(item);
+			if (IsItCheck(isWhitesTurn)) removeItem.Add(item);
+			UndoMovePieceOnBord(item);
+		}
+
+		foreach (var item in removeItem) moves.Remove(item);
+		if (temp != "") moves.Add(temp);
+		return moves;
+	}
 
 
 
