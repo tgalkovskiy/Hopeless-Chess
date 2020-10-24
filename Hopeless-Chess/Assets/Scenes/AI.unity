@@ -573,8 +573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582bb345b4af2964a996b5b9364d1095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 57326719}
-  side: 1
+  board: {fileID: 0}
+  side: 2
   AIPower: 4
   depth: 2
 --- !u!4 &277885189

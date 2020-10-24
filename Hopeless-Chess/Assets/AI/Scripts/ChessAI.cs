@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class ChessAI : MonoBehaviour
 {
-
+	[SerializeField]
 	BoardController2 board;
 
 	[Space]
@@ -29,7 +29,7 @@ public class ChessAI : MonoBehaviour
 
 	private void Awake()
 	{
-		board = GameObject.FindGameObjectWithTag("Board").GetComponent<BoardController2>();
+		//board = GameObject.FindGameObjectWithTag("Board").GetComponent<BoardController2>();
 	}
 
 
