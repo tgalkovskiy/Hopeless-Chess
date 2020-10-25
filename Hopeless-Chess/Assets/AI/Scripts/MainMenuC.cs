@@ -81,71 +81,62 @@ public class MainMenuC : MonoBehaviour
 
 
 
-    public void SaveSounds()
+    public void SoundValue()
     {
-        SaveSettings.GetInstance().SaveSounds(soundSlider.value);
+        PPM.instance.SoundValue = soundSlider.value;
     }
 
-    public void SaveMusic()
+    public void MusicValue()
     {
-        SaveSettings.GetInstance().SaveMusic(musicSlider.value);
+        PPM.instance.MusicValue = musicSlider.value;
     }
 
-    public void SaveAmbient()
+    public void AmbientValue()
     {
-        SaveSettings.GetInstance().SaveAmbient(ambientSlider.value);
+        PPM.instance.AmbientValue = ambientSlider.value;
     }
 
 
 
 
-    public void SaveDamage()
+    public void MoralityDamage()
     {
         float.TryParse(damageText.text, out float result);
-        SaveSettings.GetInstance().SaveDamage(result);
+        PPM.instance.MoralityDamage = result;
     }
 
-    public void SaveRegeneration()
+    public void MoralityHeal()
     {
         float.TryParse(regenText.text, out float result);
-        SaveSettings.GetInstance().SaveRegeneration(result);
+        PPM.instance.MoralityHeal = result;
     }
 
-    public void SaveMoralityPreset()
+    public void MoralityPreset()
     {
         int.TryParse(moralityText.text, out int result);
-        SaveSettings.GetInstance().SaveMoralityPreset(result);
+        PPM.instance.MoralityPresetInt = result;
     }
 
-    public void SaveBoardArrangement()
+    public void BoardArrangement()
     {
         int.TryParse(boardText.text, out int result);
-        SaveSettings.GetInstance().SaveBoardArrangement(result);
+        PPM.instance.BoardArrangement = result;
     }
 
 
     void SetGameSettings()
     {
-        if (SaveSettings.GetInstance().GetSounds() == 0) SaveSettings.GetInstance().SaveSounds(1);
-        if (SaveSettings.GetInstance().GetMusic() == 0) SaveSettings.GetInstance().SaveMusic(1);
-        if (SaveSettings.GetInstance().GetAmbient() == 0) SaveSettings.GetInstance().SaveAmbient(1);
-
-        soundSlider.value = SaveSettings.GetInstance().GetSounds();
-        musicSlider.value = SaveSettings.GetInstance().GetMusic();
-        ambientSlider.value = SaveSettings.GetInstance().GetAmbient();
+        soundSlider.value = PPM.instance.SoundValue;
+        musicSlider.value = PPM.instance.MusicValue;
+        ambientSlider.value = PPM.instance.AmbientValue;
     }
 
     void SetBoardSettings()
 	{
-        if (SaveSettings.GetInstance().GetDamage() == 0) SaveSettings.GetInstance().SaveDamage(15);
-        if (SaveSettings.GetInstance().GetRegeneration() == 0) SaveSettings.GetInstance().SaveRegeneration(5);
-        if (PlayerPrefs.GetInt("MoralityPreset", 0) == 0) SaveSettings.GetInstance().SaveMoralityPreset(2);
-        if (SaveSettings.GetInstance().GetBoardArrangement() == 0) SaveSettings.GetInstance().SaveBoardArrangement(0);
-
-        damagePlaceholder.text = SaveSettings.GetInstance().GetDamage().ToString();
-        regenPlaceholder.text = SaveSettings.GetInstance().GetRegeneration().ToString();
-        moralityPlaceholder.text = PlayerPrefs.GetInt("MoralityPreset", 0).ToString();
-        boardPlaceholder.text = SaveSettings.GetInstance().GetBoardArrangement().ToString();
+        damagePlaceholder.text = PPM.instance.MoralityDamage.ToString();
+        regenPlaceholder.text = PPM.instance.MoralityHeal.ToString();
+        moralityPlaceholder.text = PPM.instance.MoralityPreset.ToString();
+        boardPlaceholder.text = PPM.instance.BoardArrangement.ToString();
     }
 
 }

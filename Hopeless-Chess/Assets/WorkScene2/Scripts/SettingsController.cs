@@ -16,7 +16,7 @@ public class SettingsController : MonoBehaviour
     public void InitializeSettings()
     {
         gameController.moralityDamage = saveSettings.GetDamage();
-        gameController.moralityRegen = saveSettings.GetRegeneration();
+        gameController.moralityHeal = saveSettings.GetRegeneration();
         gameController.moralityPreset = saveSettings.GetMoralityPreset();
     }
 }

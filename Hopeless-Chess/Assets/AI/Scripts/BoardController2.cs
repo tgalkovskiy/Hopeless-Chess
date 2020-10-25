@@ -43,7 +43,7 @@ public class BoardController2 : MonoBehaviour
 		darkPieces = new List<GameObject>();
 		movesArchive = new List<string>();
 
-		board = GameModule.instance.BoardSetups[SetupNumber];
+		board = GameModule.instance.BoardSetups[(int)PPM.instance.BoardArrangement];
 		CreateBoard();
 		PlacePieces();
 

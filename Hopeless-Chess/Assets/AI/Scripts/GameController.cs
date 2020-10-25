@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
 	public float moralityDamage;
 
 	[SerializeField]
-	public float moralityRegen;
+	public float moralityHeal;
 
 	[SerializeField]
 	Camera mainCamera;
@@ -46,6 +46,10 @@ public class GameController : MonoBehaviour
 
 	void Start()
 	{
+		moralityDamage = PPM.instance.MoralityDamage;
+		moralityHeal = PPM.instance.MoralityHeal;
+		moralityPreset = PPM.instance.MoralityPreset;
+
 		isInit = true;
 		NextTurn();
 		isInit = false;
@@ -183,11 +187,11 @@ public class GameController : MonoBehaviour
 			if(board.LastEatenPiece.isLight)
 			{
 				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), -moralityDamage * board.LastEatenPiece.significanceMultiply);
-				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), moralityRegen * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), moralityHeal * board.LastEatenPiece.significanceMultiply);
 			}
 			else
 			{
-				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), moralityRegen * board.LastEatenPiece.significanceMultiply);
+				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), moralityHeal * board.LastEatenPiece.significanceMultiply);
 				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), -moralityDamage * board.LastEatenPiece.significanceMultiply);
 			}
 		}
