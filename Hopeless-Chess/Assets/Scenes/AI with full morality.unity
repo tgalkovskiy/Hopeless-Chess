@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.40759543, g: 0.34559438, b: 0.43211195, a: 1}
+  m_IndirectSpecularColor: {r: 0.40745258, g: 0.3458093, b: 0.4321036, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1876,11 +1876,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 57326719}
   AI: {fileID: 277885188}
-  moralityDamage: 0
-  moralityRegen: 0
+  moralityDamage: 10
+  moralityRegen: 5
   mainCamera: {fileID: 1271300251}
   lastCharacterSelected: {fileID: 0}
-  moralityPreset: 3
+  moralityPreset: 1
   pawnMorality: 0
   rookMorality: 0
   bishopMorality: 0

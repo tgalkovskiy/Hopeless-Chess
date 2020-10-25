@@ -68,6 +68,7 @@
     <Compile Include="Assets\AI\Scripts\ChessAI.cs" />
     <Compile Include="Assets\AI\Scripts\GameController.cs" />
     <Compile Include="Assets\AI\Scripts\GameModule.cs" />
+    <Compile Include="Assets\AI\Scripts\MainMenuC.cs" />
     <Compile Include="Assets\AI\Scripts\PieceView.cs" />
     <Compile Include="Assets\WorkScene2\Plugins\ConditionalHideAttribute.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\Afflictions.cs" />
@@ -81,7 +82,9 @@
     <Compile Include="Assets\WorkScene2\Scripts\CharacterController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\CharactersObject.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\EffectsController.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\MenuController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\Morality.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\SettingsController.cs" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
@@ -671,12 +674,7 @@
       <HintPath>D:/Unity/Hopeless-Chess/Hopeless-Chess/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="UniRx.csproj">
-      <Project>{7B1E39B5-3E92-C413-D7B1-3FC32FF61879}</Project>
-      <Name>UniRx</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

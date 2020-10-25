@@ -10,7 +10,7 @@ public class SettingsController : MonoBehaviour
     private SaveSettings saveSettings = SaveSettings.GetInstance();
     public void Start() 
     {
-        InitializeSettings();
+        if (gameController!=null) InitializeSettings();
     }
 
     public void InitializeSettings()

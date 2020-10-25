@@ -8,17 +8,10 @@ public class GameModule : MonoBehaviour
 
     void Awake()
     {
-        if (instance)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-        }
+        if (instance) Destroy(gameObject);
+        else instance = this;
 
         GetResources();
-
     }
 
 
