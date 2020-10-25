@@ -101,6 +101,11 @@ public class GameController : MonoBehaviour
 					{
 						board.MovePiece(lastCharacterSelected, hitObject);
 
+						if(board.LastEatenPiece != null)
+						{
+							PieceEated();
+						}
+
 						if (board.IsItMate(lastCharacterSelected, hitObject, isLightTurn))
 						{
 							Debug.Log("Игра окончена, это мат!");
@@ -181,11 +186,12 @@ public class GameController : MonoBehaviour
 	}
 
 	public void PieceEated()
-	{
+	{Debug.Log("Eated");
 		if(board.LastEatenPiece != null)
 		{
 			if(board.LastEatenPiece.isLight)
 			{
+				Debug.Log("Eated");
 				Morality.GetInstance().AddMorality(board.GetControllers(board.LightPieces).ToArray(), -moralityDamage * board.LastEatenPiece.significanceMultiply);
 				Morality.GetInstance().AddMorality(board.GetControllers(board.DarkPieces).ToArray(), moralityHeal * board.LastEatenPiece.significanceMultiply);
 			}
