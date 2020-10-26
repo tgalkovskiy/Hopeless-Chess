@@ -10,7 +10,11 @@ public class AfflictionsData : ScriptableObject
 
     [SerializeField] private string name;
 
+    [SerializeField] [TextArea(3, 10)] private string shortDiscription;
+
     [SerializeField] [TextArea(3, 10)] private string discription;
+
+
 
     [SerializeField] private Sprite ico;
 
@@ -23,6 +27,16 @@ public class AfflictionsData : ScriptableObject
     public string Name 
     {
         get {return name;}
+    }
+
+
+    /// <summary>
+    /// Краткое описание
+    /// </summary>
+    /// <returns></returns>
+    public string ShortDisctiption
+    {
+        get {return shortDiscription;}
     }
 
     /// <summary>
