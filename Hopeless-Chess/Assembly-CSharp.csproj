@@ -86,6 +86,7 @@
     <Compile Include="Assets\WorkScene2\Scripts\MenuController.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\Morality.cs" />
     <Compile Include="Assets\WorkScene2\Scripts\SettingsController.cs" />
+    <Compile Include="Assets\WorkScene2\Scripts\UIController.cs" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\AI\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

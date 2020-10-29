@@ -166,19 +166,21 @@ public class GameModule : MonoBehaviour
             new int [] {   0,   0, 901,   0, 905},
             new int [] {   0,   0,   0,   0,   0},
             new int [] {   0,   0,   0,   0,   0},
-        },
-
-        // Setup 4
-        new int[8][] {
-            new int [8] {    0,   0, 103,   0,   0,   0,   0,   0 },
-            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
-            new int [8] {    0,   0,   0,   0,   0,   0,   0,   0 },
         }
+        
+        //,
+
+        //// Setup 4
+        //new int[][] {
+        //    new int [] {  105, 104, 103, 101 },
+        //    new int [] {  106, 116, 126, 136 },
+        //    new int [] {    0,   0,   0,   0 },
+        //    new int [] {    0,   0,   0,   0 },
+        //    new int [] {    0,   0,   0,   0 },
+        //    new int [] {    0,   0,   0,   0 },
+        //    new int [] {  906, 916, 926, 936 },
+        //    new int [] {  905, 904, 903, 901 }
+        //}
 
     };
 
@@ -242,6 +244,6 @@ public class GameModule : MonoBehaviour
 
         effectsController = Resources.Load<GameObject>("EffectController").GetComponent<EffectsController>();
 
-        //afflictions = GameObject.FindGameObjectWithTag("AfflictionController").GetComponent<Afflictions>();
+        afflictions = GameObject.FindGameObjectWithTag("AfflictionController").GetComponent<Afflictions>();
     }
 }

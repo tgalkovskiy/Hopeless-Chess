@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
@@ -166,7 +167,7 @@ public class UIController : MonoBehaviour, IPointerExitHandler, IPointerEnterHan
 
     public void ExitTheGame()
     {
-        Application.Quit();
+        SceneManager.LoadScene(0);
     }
 
 }

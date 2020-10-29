@@ -50,7 +50,7 @@ public class PPM : MonoBehaviour
 
     public float MoralityHeal
     {
-        get { return PlayerPrefs.GetFloat("MoralityHeal", 10); }
+        get { return PlayerPrefs.GetFloat("MoralityHeal", 5); }
         set { PlayerPrefs.SetFloat("MoralityHeal", value); }
     }
 
@@ -65,7 +65,6 @@ public class PPM : MonoBehaviour
         get 
         {
             int value = PlayerPrefs.GetInt("MoralityPreset");
-            Debug.Log("value= " + value);
             object presetObject = Enum.GetValues(typeof(GameController.MoralityPreset)).GetValue(value);
            // Debug.Log("presetObject= " + presetObject);
             GameController.MoralityPreset moralityPreset;
@@ -77,7 +76,7 @@ public class PPM : MonoBehaviour
 
     public int BoardArrangement
     {
-        get { return PlayerPrefs.GetInt("BoardArrangement", 5); }
+        get { return PlayerPrefs.GetInt("BoardArrangement", 0); }
         set { PlayerPrefs.SetInt("BoardArrangement", value); }
     }
 

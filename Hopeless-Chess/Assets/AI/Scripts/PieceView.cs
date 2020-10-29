@@ -118,7 +118,7 @@ public class PieceView : MonoBehaviour
     /// <param name="delta"></param>
     public void ShowChangeMorality(float delta)
 	{
-        Debug.Log(delta);
+        //Debug.Log(delta);
        
         text.SetActive(true);
         text.GetComponent<MeshRenderer>().enabled = true;
