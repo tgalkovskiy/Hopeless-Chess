@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
 
+    
     public bool _isMenuScene;
 
     public GameObject settingsWindow;

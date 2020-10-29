@@ -164,4 +164,9 @@ public class UIController : MonoBehaviour, IPointerExitHandler, IPointerEnterHan
         
     }
 
+    public void ExitTheGame()
+    {
+        Application.Quit();
+    }
+
 }
